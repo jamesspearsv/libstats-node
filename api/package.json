@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "npm install && node app.js",
-    "client": "cd ../client && npm install && npm run dev",
-    "start": "concurrently \"npm run server\" \"npm run client\""
+    "start": "node app.js",
+    "client": "cd ../client && npm run dev",
+    "dev": "concurrently \"npm start\" \"npm run client\""
   },
   "author": "James Spears",
   "license": "ISC",

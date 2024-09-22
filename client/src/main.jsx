@@ -6,6 +6,9 @@ import './index.css';
 
 const router = createBrowserRouter(routes);
 
+// Set api url based on env
+const API_URL = import.meta.VITE_API_URL || 'localhost:3002';
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
