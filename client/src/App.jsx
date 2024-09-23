@@ -18,8 +18,16 @@ function App() {
           },
           success: {
             iconTheme: {
-              primary: 'green',
+              primary: '#185c36',
               secondary: 'white',
+            },
+          },
+          error: {
+            style: {
+              iconTheme: {
+                primary: '#dc3545',
+                secondary: 'white',
+              },
             },
           },
         }}
