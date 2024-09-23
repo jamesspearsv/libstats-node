@@ -4,19 +4,11 @@ import styles from './Nav.module.css';
 function Nav() {
   return (
     <nav className={styles.nav}>
-      <ul className={styles.navList}>
-        <NavLink to='/'>
-          <li>Home</li>
-        </NavLink>
-        <NavLink to='/record'>
-          <li>Record</li>
-        </NavLink>
-        <NavLink to='/reports'>
-          <li>Reports</li>
-        </NavLink>
-        <NavLink to='/admin'>
-          <li>Admin</li>
-        </NavLink>
+      <ul className={styles.list} id="list">
+        <NavLink to="/">LibStats</NavLink>
+        <NavLink to="/record">Record</NavLink>
+        <NavLink to="/reports">Reports</NavLink>
+        <NavLink to="/admin">Admin</NavLink>
       </ul>
     </nav>
   );

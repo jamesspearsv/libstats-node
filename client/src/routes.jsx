@@ -4,7 +4,12 @@ const routes = [
   {
     path: '/',
     element: <App />,
-    children: [],
+    children: [
+      // { index: true, element: 'Home' },
+      { path: 'record', element: 'Record' },
+      { path: 'reports', element: 'Reports' },
+      { path: 'admin', element: 'Admin' },
+    ],
   },
 ];
 
