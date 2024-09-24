@@ -20,11 +20,6 @@
   margin: 0.5rem 0;
 }
 
-.form div {
-  display: flex;
-  flex-direction: column;
-}
-
-input:invalid {
-  border: red solid 1px;
+.form select {
+  border: solid 1px red;
 }
