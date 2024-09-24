@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import Form from '../components/Form';
 import toast from 'react-hot-toast';
 import RecordFormStructure from '../assets/RecordFormStructure';
-import SelectInput from './SelectInput';
+import SelectInput from '../components/SelectInput';
 
 function Record() {
   const today = new Date();
