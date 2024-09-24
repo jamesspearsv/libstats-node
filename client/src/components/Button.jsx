@@ -15,7 +15,7 @@ function Button({ text, action, style, type }) {
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
-  action: PropTypes.func.isRequired,
+  action: PropTypes.func,
   style: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 };

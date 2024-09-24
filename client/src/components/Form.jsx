@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import styles from './Form.module.css';
 
-function Form({ action, method, title, children }) {
+function Form({ onSubmit, title, style, children }) {
   return (
-    <form action={action} method={method} className={styles.form}>
+    <form onSubmit={onSubmit} className={styles.form} style={style}>
       <h3 className={styles.title}>{title}</h3>
       {children}
     </form>
   );
 }
 
-// Form.propType = {
-//   children: PropTypes.element.isRequired,
-// };
+Form.propType = {
+  children: PropTypes.element.isRequired,
+};
 
 export default Form;
