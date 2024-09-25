@@ -1,65 +1,21 @@
 const RecordFormStructure = [
   {
-    name: 'type',
-    label: 'Type',
-    options: [
-      {
-        value: 'digital resources',
-        label: 'Digital Resources',
-      },
-      {
-        value: 'directional',
-        label: 'Directional',
-      },
-      {
-        value: 'information services',
-        label: 'Information Services',
-      },
-      {
-        value: 'known item requests',
-        label: 'Known Item Requests',
-      },
-      {
-        value: 'tech help',
-        label: 'Tech Help',
-      },
+    title: 'Type',
+    values: [
+      'Digital Resources',
+      'Directional',
+      'Information Services',
+      'Known Item Requests',
+      'Tech Help',
     ],
   },
   {
-    name: 'location',
-    label: 'Location',
-    options: [
-      {
-        value: 'circulation',
-        label: 'Circulation',
-      },
-      {
-        value: 'reference',
-        label: 'Reference',
-      },
-      {
-        value: 'childrens ',
-        label: 'Childrens',
-      },
-    ],
+    title: 'Location',
+    values: ['Circulation', 'Reference', 'Childrens'],
   },
   {
-    name: 'format',
-    label: 'Format',
-    options: [
-      {
-        value: 'in-person',
-        label: 'In-Person',
-      },
-      {
-        value: 'phone',
-        label: 'Phone',
-      },
-      {
-        value: 'virtual ',
-        label: 'Virtual',
-      },
-    ],
+    title: 'Format',
+    values: ['In-person', 'Phone', 'Virtual'],
   },
 ];
 

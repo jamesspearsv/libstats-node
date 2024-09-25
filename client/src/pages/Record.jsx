@@ -4,6 +4,7 @@ import Form from '../components/Form';
 import toast from 'react-hot-toast';
 import RecordFormStructure from '../assets/RecordFormStructure';
 import SelectInput from '../components/SelectInput';
+import Modal from '../components/Modal';
 
 function Record() {
   const today = new Date();
@@ -16,6 +17,7 @@ function Record() {
 
   // Component state
   const [formState, setFormState] = useState(defaultFormState);
+  const [isOpen, setIsOpen] = useState(false);
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -38,24 +40,44 @@ function Record() {
     console.log(updatedState);
   }
 
+  function handleModalOpen(e) {
+    setIsOpen(true);
+  }
+
   return (
-    <Form
-      onSubmit={handleFormSubmit}
-      title={'Add New Interaction'}
-      style={{ margin: 'auto ' }}
-    >
-      {RecordFormStructure.map((select, index) => (
-        <SelectInput
-          key={index}
-          name={select.name}
-          label={select.label}
-          options={select.options}
-          handleChange={handleChange}
-          formState={formState[select.name]}
+    <>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <p>this is a dialog box</p>
+      </Modal>
+      <Form
+        onSubmit={handleFormSubmit}
+        title={'Add New Interaction'}
+        style={{ margin: 'auto ' }}
+      >
+        {RecordFormStructure.map(({ title, values }, index) => {
+          return (
+            <SelectInput
+              key={index}
+              title={title}
+              values={values}
+              handleChange={handleChange}
+              formState={formState[title.toLowerCase()]}
+            />
+          );
+        })}
+        <Button variant='primary' type='submit' text='Submit' />
+      </Form>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}
+      >
+        <Button
+          variant='primary'
+          text='Need Help?'
+          type='button'
+          action={handleModalOpen}
         />
-      ))}
-      <Button style="primary" type="submit" text="Submit" />
-    </Form>
+      </div>
+    </>
   );
 }
 
