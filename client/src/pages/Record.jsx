@@ -52,7 +52,7 @@ function Record() {
       <Form
         onSubmit={handleFormSubmit}
         title={'Add New Interaction'}
-        style={{ margin: 'auto ' }}
+        style={{ margin: 'auto ', width: '35%' }}
       >
         {RecordFormStructure.map(({ title, values }, index) => {
           return (
@@ -65,15 +65,15 @@ function Record() {
             />
           );
         })}
-        <Button variant='primary' type='submit' text='Submit' />
+        <Button variant="primary" type="submit" text="Submit" />
       </Form>
       <div
         style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}
       >
         <Button
-          variant='primary'
-          text='Need Help?'
-          type='button'
+          variant="primary"
+          text="Need Help?"
+          type="button"
           action={handleModalOpen}
         />
       </div>
