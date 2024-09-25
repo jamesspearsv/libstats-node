@@ -1,7 +1,7 @@
 import App from './App';
 import Home from './pages/Home';
 import Record from './pages/Record';
-import Report from './pages/Report';
+import Reports from './pages/Reports';
 
 const routes = [
   {
@@ -10,7 +10,7 @@ const routes = [
     children: [
       { index: true, element: <Home /> },
       { path: 'record', element: <Record /> },
-      { path: 'reports', element: <Report /> },
+      { path: 'reports', element: <Reports /> },
       { path: 'admin', element: 'TODO -- Admin Dashboard' },
     ],
   },
