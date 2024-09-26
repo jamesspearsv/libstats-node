@@ -77,6 +77,9 @@ function Record() {
           action={handleModalOpen}
         />
       </div>
+      <p>{formState.type ? formState.type : 'null'}</p>
+      <p>{formState.location ? formState.location : 'null'}</p>
+      <p>{formState.format ? formState.format : 'null'}</p>
     </>
   );
 }

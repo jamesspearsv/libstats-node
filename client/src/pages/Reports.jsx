@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
 import toast from 'react-hot-toast';
+import Button from '../components/Button';
 
 function Reports() {
   const defaultFormState = {
@@ -85,9 +86,9 @@ function Reports() {
           />
         </div>
       </Form>
-      <p>{formState.location}</p>
-      <p>{formState.start}</p>
-      <p>{formState.end}</p>
+      <p>{formState.start ? formState.start : 'null'}</p>
+      <p>{formState.end ? formState.end : 'null'}</p>
+      <p>{formState.location ? formState.location : 'null'}</p>
     </>
   );
 }
