@@ -8,7 +8,6 @@ function Nav() {
         <NavLink to="/">LibStats</NavLink>
         <NavLink to="/record">Record</NavLink>
         <NavLink to="/reports">Reports</NavLink>
-        <NavLink to="/admin">Admin</NavLink>
       </ul>
     </nav>
   );
