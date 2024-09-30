@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import styles from './SelectInput.module.css';
 
 function SelectInput({ title, values, handleChange, formState }) {
   const style = {
@@ -9,10 +10,10 @@ function SelectInput({ title, values, handleChange, formState }) {
   const id = title.toLowerCase();
 
   return (
-    <div style={style}>
+    <div style={style} className={styles.customSelect}>
       <label htmlFor={id}>{title}</label>
       <select name={id} id={id} onChange={handleChange} value={formState}>
-        <option value='' disabled>{`Select ${title}`}</option>
+        <option value="" disabled>{`Select ${title}`}</option>
         {values.map((value, index) => (
           <option key={index} value={value.toLowerCase()}>
             {value}
