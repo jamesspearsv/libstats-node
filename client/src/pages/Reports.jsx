@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
 import toast from 'react-hot-toast';
-import Button from '../components/Button';
 
 function Reports() {
   const defaultFormState = {
@@ -52,7 +51,7 @@ function Reports() {
   return (
     <>
       <Form
-        title="Build Report"
+        title='Build Report'
         style={{
           gap: '1rem',
           width: 'fit-content',
@@ -61,27 +60,27 @@ function Reports() {
       >
         <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
           <div>
-            <label htmlFor="start">Start Date</label>
+            <label htmlFor='start'>Start Date</label>
             <input
-              type="date"
-              name="start"
-              id="start"
+              type='date'
+              name='start'
+              id='start'
               value={formState.start}
               onChange={handleDateChange}
             />
           </div>
           <div>
-            <label htmlFor="end">End Date</label>
+            <label htmlFor='end'>End Date</label>
             <input
-              type="date"
-              name="end"
-              id="end"
+              type='date'
+              name='end'
+              id='end'
               value={formState.end}
               onChange={handleDateChange}
             />
           </div>
           <SelectInput
-            title="Location"
+            title='Location'
             values={['Circulation', 'Reference', 'Childrens']}
             handleChange={handleSelectChange}
             formState={formState.location}

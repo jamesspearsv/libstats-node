@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm install && node app.js",
+    "start": "npm install && node src/app.js",
     "client": "cd ../client && npm run dev",
-    "api": "npm install && nodemon app.js",
+    "api": "npm install && nodemon src/app.js",
     "dev": "concurrently \"npm run api\" \"npm run client\""
   },
   "author": "James Spears",
