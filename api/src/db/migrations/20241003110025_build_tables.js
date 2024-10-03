@@ -18,8 +18,11 @@ exports.up = function (knex) {
       table.increments('interaction_id').notNullable();
       table.integer('type_id').notNullable();
       table.integer('location_id').notNullable();
-      table.foreign('type_id').references('types.type_id');
-      table.foreign('location_id').references('locations.location_id');
+      table.foreign('type_id').references('types.type_id').onDelete('CASCADE');
+      table
+        .foreign('location_id')
+        .references('locations.location_id')
+        .onDelete('CASCADE');
     });
 };
 

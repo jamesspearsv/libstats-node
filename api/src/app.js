@@ -1,5 +1,4 @@
 const express = require('express');
-require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -8,14 +7,12 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const config = require('../knexfile');
-const knex = require('knex');
-const db = knex(config[NODE_ENV]);
-
 app.use((req, res, next) => {
   console.log(`${new Date()} -- URL: ${req.url}`);
   next();
 });
+
+const db = require('./db/connection');
 
 app.get('/', async (req, res) => {
   const rows = await db
