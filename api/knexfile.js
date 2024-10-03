@@ -7,7 +7,7 @@ module.exports = {
   development: {
     client: 'better-sqlite3',
     connection: {
-      filename: './src/db/dev.sqlite',
+      filename: './data/dev.sqlite',
     },
     migrations: {
       directory: './src/db/migrations',
@@ -20,7 +20,7 @@ module.exports = {
   production: {
     client: 'better-sqlite3',
     connection: {
-      filename: './src/db/production.sqlite',
+      filename: './data/production.sqlite',
     },
     migrations: {
       directory: './src/db/migrations',

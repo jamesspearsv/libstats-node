@@ -26,7 +26,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./api/src/db/production.sqlite:/app/src/db/production.sqlite
+      - ./api/data/production.sqlite:/api/data/production.sqlite
     restart: unless-stopped
 
 networks:

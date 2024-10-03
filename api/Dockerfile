@@ -2,7 +2,7 @@
 FROM node:18-slim
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /api
 
 # Install necessary build tools (for compiling native modules like better-sqlite3)
 RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
