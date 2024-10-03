@@ -1,37 +1,20 @@
 const express = require('express');
+const router = require('./routes/router');
 
-const app = express();
 const PORT = process.env.PORT || 3002;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// app logger
 app.use((req, res, next) => {
   console.log(`${new Date()} -- URL: ${req.url}`);
   next();
 });
 
-const db = require('./db/connection');
-
-app.get('/', async (req, res) => {
-  const rows = await db
-    .select(
-      'interactions.interaction_id',
-      'types.type_name',
-      'locations.location_name'
-    )
-    .from('interactions')
-    .join('types', 'interactions.type_id', '=', 'types.type_id')
-    .join(
-      'locations',
-      'interactions.location_id',
-      '=',
-      'locations.location_id'
-    );
-  res.json(rows);
-});
-
+app.use(router);
 app.listen(PORT, () => {
   console.log('##########################');
   console.log(`- Running in ${NODE_ENV} mode`);
