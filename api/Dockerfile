@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3001
 
 # Run migrations before starting the backend server
-CMD ["sh", "-c", "npx knex migrate:latest && npm start"]
+CMD ["sh", "-c", "npx knex migrate:latest && npx knex seed:run && npm start"]
