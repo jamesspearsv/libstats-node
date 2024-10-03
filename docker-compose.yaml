@@ -23,9 +23,10 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - DATABASE=./production.db
     networks:
       - app-network
+    volumes:
+      - ./api/src/db/production.sqlite3:/app/src/db/production.sqlite3
     restart: unless-stopped
 
 networks:

@@ -2,19 +2,19 @@
   "name": "libstats-node",
   "version": "1.0.0",
   "description": "LibStats reference statistics tracking tool build on NodeJS and React",
-  "main": "./server/app.js",
-  "type": "module",
+  "main": "./app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm install && node src/app.js",
+    "start": "node src/app.js",
     "client": "cd ../client && npm run dev",
-    "api": "npm install && nodemon src/app.js",
+    "api": "nodemon src/app.js",
     "dev": "concurrently \"npm run api\" \"npm run client\""
   },
   "author": "James Spears",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.0"
+    "better-sqlite3": "^11.3.0",
+    "express": "^4.21.0",
+    "knex": "^3.1.0"
   },
   "devDependencies": {
     "concurrently": "^9.0.1",
