@@ -1,12 +1,7 @@
 const queries = require('../db/queries');
 
-async function typesGet(res, res) {
-  const data = await queries.selectTypes();
-  res.json(data);
-}
-
-async function locationsGet(req, res) {
-  const data = await queries.selectLocations();
+async function selectAllGet(req, res) {
+  const data = await queries.selectAllFromTable(req.url.substring(1));
   res.json(data);
 }
 
@@ -16,7 +11,6 @@ async function interactionsGet(req, res) {
 }
 
 module.exports = {
-  typesGet,
-  locationsGet,
+  selectAllGet,
   interactionsGet,
 };
