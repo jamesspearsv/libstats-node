@@ -1,8 +1,14 @@
 const queries = require('../db/queries');
 
-function typesGet(res, res) {}
+async function typesGet(res, res) {
+  const data = await queries.selectTypes();
+  res.json(data);
+}
 
-function locationsGet(req, res) {}
+async function locationsGet(req, res) {
+  const data = await queries.selectLocations();
+  res.json(data);
+}
 
 async function interactionsGet(req, res) {
   const data = await queries.selectInteractions();

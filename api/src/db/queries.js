@@ -19,4 +19,13 @@ async function selectInteractions() {
   return rows;
 }
 
-module.exports = { selectInteractions };
+async function selectLocations(req, res) {
+  const rows = db.select('*').from('locations');
+  return rows;
+}
+async function selectTypes(req, res) {
+  const rows = db.select('*').from('types');
+  return rows;
+}
+
+module.exports = { selectInteractions, selectLocations, selectTypes };
