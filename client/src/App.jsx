@@ -1,13 +1,19 @@
 import { Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useState } from 'react';
 import styles from './App.module.css';
 import Nav from './components/Nav';
 
 function App() {
+  // Set api url based on env
+  const [apiurl, setApiurl] = useState(
+    import.meta.VITE_API_URL || 'http://localhost:3002'
+  );
+
   return (
     <>
       <Toaster
-        position="top-right"
+        position='top-right'
         toastOptions={{
           style: {
             backgroundColor: '#f5f4f4',
@@ -31,7 +37,7 @@ function App() {
       />
       <Nav />
       <main className={styles.main}>
-        <Outlet />
+        <Outlet context={[apiurl, setApiurl]} />
       </main>
     </>
   );

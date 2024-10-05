@@ -7,16 +7,29 @@ function SelectInput({ label, options, handleChange, formState }) {
     flexDirection: 'column',
   };
 
-  const id = title.toLowerCase();
+  const id = label.toLowerCase();
+  console.log(formState[id]);
 
-  return <div style={style} className={styles.customSelect}></div>;
+  return (
+    <div style={style} className={styles.customSelect}>
+      <label htmlFor={id}>{label}</label>
+      <select name={id} id={id} value={formState[id]} onChange={handleChange}>
+        <option value='' disabled>{`Select ${label}`}</option>
+        {options.map((option, index) => (
+          <option value={option.id} key={index}>
+            {option.value}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 }
 
 SelectInput.propTypes = {
   label: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
-  formState: PropTypes.string.isRequired,
+  formState: PropTypes.object.isRequired,
 };
 
 export default SelectInput;

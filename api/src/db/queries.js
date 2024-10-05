@@ -3,18 +3,17 @@ const db = require('./connection');
 async function selectInteractions() {
   const rows = await db
     .select(
-      'interactions.interaction_id',
-      'types.type_name',
-      'locations.location_name'
+      'interactions.id',
+      'types.value as type',
+      'locations.value as location',
+      'formats.value as format'
     )
     .from('interactions')
-    .join('types', 'interactions.type_id', '=', 'types.type_id')
-    .join(
-      'locations',
-      'interactions.location_id',
-      '=',
-      'locations.location_id'
-    );
+    .join('types', 'interactions.type_id', '=', 'types.id')
+    .join('locations', 'interactions.location_id', '=', 'locations.id')
+    .join('formats', 'interactions.format_id', '=', 'formats.id');
+
+  console.log(rows);
 
   return rows;
 }

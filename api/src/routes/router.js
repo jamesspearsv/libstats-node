@@ -7,5 +7,6 @@ const router = Router();
 router.get('/types', controller.selectAllGet);
 router.get('/locations', controller.selectAllGet);
 router.get('/interactions', controller.interactionsGet);
+router.get('/options', controller.optionsGet);
 
 module.exports = router;

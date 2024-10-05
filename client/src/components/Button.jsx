@@ -14,12 +14,12 @@ function Button({ text, action, variant, type, style }) {
   );
 }
 
-Button.propTypes = {
-  text: PropTypes.string.isRequired,
-  action: PropTypes.func,
-  style: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  styles: PropTypes.object,
-};
+// Button.propTypes = {
+//   text: PropTypes.string.isRequired,
+//   action: PropTypes.func,
+//   style: PropTypes.string.isRequired,
+//   type: PropTypes.string.isRequired,
+//   styles: PropTypes.object,
+// };
 
 export default Button;

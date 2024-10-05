@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import Button from '../components/Button';
 import Form from '../components/Form';
 import toast from 'react-hot-toast';
@@ -7,6 +8,7 @@ import SelectInput from '../components/SelectInput';
 import Modal from '../components/Modal';
 
 function Record() {
+  const mounted = useRef(false);
   const today = new Date();
   const defaultFormState = {
     type: '',
@@ -16,8 +18,33 @@ function Record() {
   };
 
   // Component state
+  const [apiurl, setApiurl] = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
+  const [formOptions, setFormOptions] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchOptions() {
+      const url = `${apiurl}/options`;
+      console.log(url);
+      const res = await fetch(url);
+      console.log(res);
+      const data = await res.json();
+      console.log(data);
+      setFormOptions(data);
+      setLoading(false);
+    }
+
+    if (!mounted.current) {
+      fetchOptions();
+    }
+
+    return () => {
+      mounted.current = true;
+      setLoading(true);
+    };
+  }, []);
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -32,7 +59,7 @@ function Record() {
     toast.success('Form submitted!');
   }
 
-  function handleChange(e) {
+  function handleSelectChange(e) {
     const id = e.currentTarget.id;
     const updatedState = { ...formState };
     updatedState[id] = e.currentTarget.value;
@@ -43,6 +70,28 @@ function Record() {
   function handleModalOpen(e) {
     setIsOpen(true);
   }
+  const selects = (
+    <>
+      <SelectInput
+        label='Type'
+        options={formOptions.types}
+        handleChange={handleSelectChange}
+        formState={formState}
+      />
+      <SelectInput
+        label='Location'
+        options={formOptions.locations}
+        handleChange={handleSelectChange}
+        formState={formState}
+      />
+      <SelectInput
+        label='Format'
+        options={formOptions.formats}
+        handleChange={handleSelectChange}
+        formState={formState}
+      />
+    </>
+  );
 
   return (
     <>
@@ -54,7 +103,28 @@ function Record() {
         title={'Add New Interaction'}
         style={{ margin: 'auto ', width: 'max(30%, 350px)' }}
       >
-        {/* ADD SELECT ELEMENTS */}
+        {!loading && (
+          <>
+            <SelectInput
+              label='Type'
+              options={formOptions.types}
+              handleChange={handleSelectChange}
+              formState={formState}
+            />
+            <SelectInput
+              label='Location'
+              options={formOptions.locations}
+              handleChange={handleSelectChange}
+              formState={formState}
+            />
+            <SelectInput
+              label='Format'
+              options={formOptions.formats}
+              handleChange={handleSelectChange}
+              formState={formState}
+            />
+          </>
+        )}
         <Button variant='primary' type='submit' text='Submit' />
       </Form>
       <div
