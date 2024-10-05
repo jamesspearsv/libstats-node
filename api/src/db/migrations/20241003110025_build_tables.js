@@ -5,23 +5,28 @@
 exports.up = function (knex) {
   return knex.schema
     .createTable('types', (table) => {
-      table.increments('type_id').notNullable();
-      table.string('type_name').notNullable();
-      table.string('type_label').notNullable();
+      table.increments('id').notNullable();
+      table.string('value').notNullable();
+      table.text('desc').notNullable();
     })
     .createTable('locations', (table) => {
-      table.increments('location_id').notNullable();
-      table.string('location_name').notNullable();
-      table.string('location_label').notNullable();
+      table.increments('id').notNullable();
+      table.string('value').notNullable();
+    })
+    .createTable('formats', (table) => {
+      table.increments('id').notNullable();
+      table.string('value').notNullable();
     })
     .createTable('interactions', (table) => {
-      table.increments('interaction_id').notNullable();
+      table.increments('id').notNullable();
       table.integer('type_id').notNullable();
       table.integer('location_id').notNullable();
-      table.foreign('type_id').references('types.type_id').onDelete('CASCADE');
+      table.integer('format_id').notNullable();
+      table.foreign('type_id').references('types.id').onDelete('CASCADE');
+      table.foreign('format_id').references('formats.id').onDelete('CASCADE');
       table
         .foreign('location_id')
-        .references('locations.location_id')
+        .references('locations.id')
         .onDelete('CASCADE');
     });
 };
@@ -34,5 +39,6 @@ exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists('interactions')
     .dropTableIfExists('types')
-    .dropTableIfExists('locations');
+    .dropTableIfExists('locations')
+    .dropTableIfExists('formats');
 };
