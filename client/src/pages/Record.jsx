@@ -54,26 +54,16 @@ function Record() {
         title={'Add New Interaction'}
         style={{ margin: 'auto ', width: 'max(30%, 350px)' }}
       >
-        {RecordFormStructure.map(({ title, values }, index) => {
-          return (
-            <SelectInput
-              key={index}
-              title={title}
-              values={values}
-              handleChange={handleChange}
-              formState={formState[title.toLowerCase()]}
-            />
-          );
-        })}
-        <Button variant="primary" type="submit" text="Submit" />
+        {/* ADD SELECT ELEMENTS */}
+        <Button variant='primary' type='submit' text='Submit' />
       </Form>
       <div
         style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}
       >
         <Button
-          variant="primary"
-          text="Need Help?"
-          type="button"
+          variant='primary'
+          text='Need Help?'
+          type='button'
           action={handleModalOpen}
         />
       </div>

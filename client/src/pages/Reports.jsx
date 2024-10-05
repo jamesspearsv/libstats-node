@@ -79,12 +79,7 @@ function Reports() {
               onChange={handleDateChange}
             />
           </div>
-          <SelectInput
-            title='Location'
-            values={['Circulation', 'Reference', 'Childrens']}
-            handleChange={handleSelectChange}
-            formState={formState.location}
-          />
+          {/* ADD SELECT ELEMENT */}
         </div>
       </Form>
       <p>{formState.start ? formState.start : 'null'}</p>
