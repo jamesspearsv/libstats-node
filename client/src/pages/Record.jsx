@@ -3,7 +3,6 @@ import { useOutletContext } from 'react-router-dom';
 import Button from '../components/Button';
 import Form from '../components/Form';
 import toast from 'react-hot-toast';
-import RecordFormStructure from '../assets/RecordFormStructure';
 import SelectInput from '../components/SelectInput';
 import Modal from '../components/Modal';
 
@@ -44,7 +43,7 @@ function Record() {
       mounted.current = true;
       setLoading(true);
     };
-  }, []);
+  }, [apiurl]);
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -70,28 +69,6 @@ function Record() {
   function handleModalOpen(e) {
     setIsOpen(true);
   }
-  const selects = (
-    <>
-      <SelectInput
-        label='Type'
-        options={formOptions.types}
-        handleChange={handleSelectChange}
-        formState={formState}
-      />
-      <SelectInput
-        label='Location'
-        options={formOptions.locations}
-        handleChange={handleSelectChange}
-        formState={formState}
-      />
-      <SelectInput
-        label='Format'
-        options={formOptions.formats}
-        handleChange={handleSelectChange}
-        formState={formState}
-      />
-    </>
-  );
 
   return (
     <>

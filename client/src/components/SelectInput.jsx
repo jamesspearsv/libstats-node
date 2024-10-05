@@ -8,7 +8,6 @@ function SelectInput({ label, options, handleChange, formState }) {
   };
 
   const id = label.toLowerCase();
-  console.log(formState[id]);
 
   return (
     <div style={style} className={styles.customSelect}>
