@@ -25,7 +25,23 @@ async function optionsGet(req, res) {
 }
 
 async function addPost(req, res) {
-  res.send('WORK IN PROGRESS');
+  const data = req.body;
+
+  setTimeout(async () => {
+    try {
+      // Check that body contains all valid keys
+      for (const key in data) {
+        const check = await queries.checkIfExists(key + 's', data[key]);
+        if (!check) throw 'invalid key';
+      }
+      // If valid body insert interaction
+      await queries.insertInteraction(data);
+      res.status(200).send('data received');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error);
+    }
+  }, 1000);
 }
 
 module.exports = {

@@ -4,9 +4,7 @@ const controller = require('../controllers/controller');
 
 const router = Router();
 
-// router.get('/types', controller.selectAllGet);
-// router.get('/locations', controller.selectAllGet);
-
+// ** ROUTES ** //
 router.get('/interactions', controller.interactionsGet);
 router.get('/options', controller.optionsGet);
 router.post('/add', controller.addPost);
