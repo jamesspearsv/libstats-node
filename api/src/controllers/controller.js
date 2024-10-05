@@ -24,8 +24,13 @@ async function optionsGet(req, res) {
   res.json(data);
 }
 
+async function addPost(req, res) {
+  res.send('WORK IN PROGRESS');
+}
+
 module.exports = {
   selectAllGet,
   interactionsGet,
   optionsGet,
+  addPost,
 };

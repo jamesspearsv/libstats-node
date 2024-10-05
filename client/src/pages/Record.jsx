@@ -8,12 +8,10 @@ import Modal from '../components/Modal';
 
 function Record() {
   const mounted = useRef(false);
-  const today = new Date();
   const defaultFormState = {
     type: '',
     location: '',
     format: '',
-    date: today.toLocaleDateString(),
   };
 
   // Component state
@@ -35,12 +33,10 @@ function Record() {
       setLoading(false);
     }
 
-    if (!mounted.current) {
-      fetchOptions();
-    }
+    fetchOptions();
 
     return () => {
-      mounted.current = true;
+      // mounted.current = true;
       setLoading(true);
     };
   }, [apiurl]);

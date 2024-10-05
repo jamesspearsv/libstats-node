@@ -6,7 +6,8 @@ async function selectInteractions() {
       'interactions.id',
       'types.value as type',
       'locations.value as location',
-      'formats.value as format'
+      'formats.value as format',
+      'timestamp'
     )
     .from('interactions')
     .join('types', 'interactions.type_id', '=', 'types.id')

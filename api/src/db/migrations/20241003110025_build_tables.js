@@ -22,6 +22,7 @@ exports.up = function (knex) {
       table.integer('type_id').notNullable();
       table.integer('location_id').notNullable();
       table.integer('format_id').notNullable();
+      table.datetime('timestamp').notNullable();
       table.foreign('type_id').references('types.id').onDelete('CASCADE');
       table.foreign('format_id').references('formats.id').onDelete('CASCADE');
       table
