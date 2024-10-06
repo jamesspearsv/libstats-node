@@ -24,19 +24,25 @@ function Record() {
 
   // Effect to fetch interaction options for form
   useEffect(() => {
-    const url = `${apiurl}/options`;
+    async function fetchOptions() {
+      const url = `${apiurl}/options`;
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((json) => {
+        // check that res is okay or throw error
+        if (!res.ok) throw json.error;
+
+        console.log('message: ', json.message);
         setFormOptions(json);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error(error);
         setLoading(false);
         setError(true);
-      });
+      }
+    }
+    fetchOptions();
 
     return () => {
       setLoading(true);
@@ -47,7 +53,7 @@ function Record() {
   // HANDLE FORM SUBMISSION
   function handleFormSubmit(e) {
     e.preventDefault();
-    // return if any form selects are invalid
+    // return early if any form selects are invalid
     for (const value in formState) {
       if (!formState[value]) {
         toast.error('Please complete the form');
@@ -55,22 +61,34 @@ function Record() {
       }
     }
 
-    // prepare for fetch call
-    const url = apiurl + '/add';
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(formState),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
+    // handle post with fetch api
+    async function postInteraction() {
+      // prepare for fetch call
+      const currentToast = toast.loading('Adding interaction...');
+      const url = `${apiurl}/add`;
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(formState),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
 
-    // post data to api
-    const currentToast = toast.loading('Adding interaction...');
-    fetch(url, options).then((res) => {
-      if (!res.ok) toast.error('Error', { id: currentToast });
-      else toast.success('Success', { id: currentToast });
-    });
+      try {
+        const res = await fetch(url, options);
+        const json = await res.json();
+
+        // check that res is okay or throw error
+        if (!res.ok) throw json.error;
+
+        console.log('message: ', json.message);
+        toast.success('Success!', { id: currentToast });
+      } catch (error) {
+        console.error(error);
+        toast.error(error, { id: currentToast });
+      }
+    }
+    postInteraction();
 
     setFormState(defaultFormState);
   }
@@ -88,7 +106,7 @@ function Record() {
     setIsOpen(true);
   }
 
-  // Render component based on loading and error state
+  // // Render component based on loading and error state
   if (loading) {
     return;
   } else if (error) {
@@ -143,9 +161,6 @@ function Record() {
             action={handleModalOpen}
           />
         </div>
-        {/* <p>{formState.type ? formState.type : 'null'}</p>
-        <p>{formState.location ? formState.location : 'null'}</p>
-        <p>{formState.format ? formState.format : 'null'}</p> */}
       </>
     );
   }
