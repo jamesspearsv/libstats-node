@@ -25,7 +25,6 @@ function Record() {
   // Effect to fetch interaction options for form
   useEffect(() => {
     const url = `${apiurl}/options`;
-    console.log(url);
 
     fetch(url)
       .then((res) => res.json())

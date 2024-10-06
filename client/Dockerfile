@@ -1,5 +1,5 @@
 # Stage 1: Build the React app using Vite
-FROM node:16-alpine AS builder
+FROM node:18-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -11,7 +11,15 @@ RUN npm install
 # Copy the rest of the app's files
 COPY . .
 
-ENV VITE_API_URL=http://api:3001
+# Set env variables for Vite build process
+# ENV VITE_API_URL=http://localhost:3001
+
+# Set environment variable for Vite at build time
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+
+RUN echo "VITE_API_URL is set to: ${VITE_API_URL}"
+
 
 # Build the app for production
 RUN npm run build

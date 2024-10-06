@@ -2,13 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const router = require('./routes/router');
 
-const PORT = process.env.PORT || 3002;
-const NODE_ENV = process.env.NODE_ENV || 'development';
-
 const app = express();
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const PORT = NODE_ENV === 'production' ? 3001 : 3002;
+
+const origins = process.env.ORIGINS
+  ? process.env.ORIGINS.split(',')
+  : ['http://localhost:3000'];
+
 app.use(
   cors({
-    origin: ['*'], // Allow both localhost and client
+    origin: origins,
     methods: ['GET', 'POST'],
     credentials: true,
   })
@@ -17,10 +22,9 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app logger
+// request logger
 app.use((req, res, next) => {
   console.log(`${new Date()} -- URL: ${req.url}`);
-  console.log(req.headers);
   next();
 });
 

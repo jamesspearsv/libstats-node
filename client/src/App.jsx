@@ -10,8 +10,7 @@ function App() {
     import.meta.env.VITE_API_URL || 'http://localhost:3002'
   );
 
-  console.log(import.meta.env);
-  console.log(apiurl);
+  console.log('api url:', apiurl);
 
   return (
     <>
