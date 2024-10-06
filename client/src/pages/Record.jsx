@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
 import Modal from '../components/Modal';
+import Error from '../components/Error';
 
 const defaultFormState = {
   type: '',
@@ -107,63 +108,55 @@ function Record() {
   }
 
   // // Render component based on loading and error state
-  if (loading) {
-    return;
-  } else if (error) {
-    return (
-      <>
-        <h1>Error!</h1>
-        <p>Something went wrong. Please try again later.</p>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-          <p>this is a dialog box</p>
-        </Modal>
-        <Form
-          onSubmit={handleFormSubmit}
-          title={'Add New Interaction'}
-          style={{ margin: 'auto ', width: 'max(30%, 350px)' }}
-        >
-          <SelectInput
-            label='Type'
-            options={formOptions.types}
-            handleChange={handleSelectChange}
-            formState={formState}
-          />
-          <SelectInput
-            label='Location'
-            options={formOptions.locations}
-            handleChange={handleSelectChange}
-            formState={formState}
-          />
-          <SelectInput
-            label='Format'
-            options={formOptions.formats}
-            handleChange={handleSelectChange}
-            formState={formState}
-          />
-          <Button variant='primary' type='submit' text='Submit' />
-        </Form>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '1rem',
-          }}
-        >
-          <Button
-            variant='primary'
-            text='Need Help?'
-            type='button'
-            action={handleModalOpen}
-          />
-        </div>
-      </>
-    );
-  }
+  if (error) return <Error />;
+  if (loading) return;
+
+  return (
+    <>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <p>this is a dialog box</p>
+      </Modal>
+      <Form
+        onSubmit={handleFormSubmit}
+        title={'Add New Interaction'}
+        style={{ margin: 'auto ', width: 'max(30%, 350px)' }}
+      >
+        <SelectInput
+          label='Type'
+          options={formOptions.types}
+          handleChange={handleSelectChange}
+          formState={formState}
+        />
+        <SelectInput
+          label='Location'
+          options={formOptions.locations}
+          handleChange={handleSelectChange}
+          formState={formState}
+        />
+        <SelectInput
+          label='Format'
+          options={formOptions.formats}
+          handleChange={handleSelectChange}
+          formState={formState}
+        />
+        <Button variant='primary' type='submit' text='Submit' />
+      </Form>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '1rem',
+        }}
+      >
+        <Button
+          variant='primary'
+          text='Need Help?'
+          type='button'
+          action={handleModalOpen}
+        />
+      </div>
+    </>
+  );
 }
 
 export default Record;

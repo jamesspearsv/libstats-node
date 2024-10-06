@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
-import toast from 'react-hot-toast';
+import Error from '../components/Error';
 
 function Reports() {
   const defaultFormState = {
@@ -15,10 +16,13 @@ function Reports() {
   const [apiurl, setApiurl] = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
   const [locationOptions, setLocationOptions] = useState([]);
+
   const [formLoading, setFormLoading] = useState(true);
   const [dataLoading, setDataLoading] = useState(true);
   const [error, setError] = useState(false);
-  // todo -- add state for storing fetch results
+
+  // TODO -- add state for storing fetch results
+  const [interactions, setInteractions] = useState([]);
 
   // Effect to fetch interaction options for form
   useEffect(() => {
@@ -57,21 +61,31 @@ function Reports() {
       }
     }
 
+    if (formState.end < formState.start) return;
+
     async function fetchInteractions() {
       try {
         const url = `${apiurl}/report?start=${formState.start}&end=${formState}&location=${formState.location}`;
 
         const res = await fetch(url);
         const json = await res.json();
+
+        if (!res.ok) throw json.error;
+
         console.log(json);
+        setDataLoading(false);
       } catch (error) {
         console.error(error);
+        setError(true);
       }
     }
 
-    // TODO -- add clean up function
-
     fetchInteractions();
+
+    return () => {
+      setDataLoading(true);
+      setError(false);
+    };
   }, [formState, apiurl]);
 
   // Check that end date comes after start date when formState changes
@@ -109,6 +123,8 @@ function Reports() {
     }
     setFormState(updatedState);
   }
+
+  if (error) return <Error />;
 
   return (
     <>
@@ -152,10 +168,15 @@ function Reports() {
           </div>
         </Form>
       )}
-      {dataLoading ? <p>Complete the form above</p> : ''}
-      <p>{formState.start ? formState.start : 'null'}</p>
-      <p>{formState.end ? formState.end : 'null'}</p>
-      <p>{formState.location ? formState.location : 'null'}</p>
+      {dataLoading ? (
+        <p>Complete the form above</p>
+      ) : (
+        <>
+          <p>{formState.start ? formState.start : 'null'}</p>
+          <p>{formState.end ? formState.end : 'null'}</p>
+          <p>{formState.location ? formState.location : 'null'}</p>
+        </>
+      )}
     </>
   );
 }
