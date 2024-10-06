@@ -40,7 +40,6 @@ function Reports() {
         setFormLoading(false);
       } catch (error) {
         console.error(error);
-        setFormLoading(false);
         setError(true);
       }
     }
