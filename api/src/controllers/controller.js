@@ -1,15 +1,13 @@
 const queries = require('../db/queries');
 
-async function selectAllGet(req, res) {
-  const data = await queries.selectAllFromTable(req.url.substring(1));
-  res.json(data);
-}
-
+// select all interactions from db
 async function interactionsGet(req, res) {
   const data = await queries.selectInteractions();
   res.json(data);
 }
 
+// get all options from types, locations, and formats tables
+// used to populate form options in client
 async function optionsGet(req, res) {
   const types = await queries.selectAllFromTable('types');
   const locations = await queries.selectAllFromTable('locations');
@@ -27,14 +25,15 @@ async function optionsGet(req, res) {
 async function addPost(req, res) {
   const data = req.body;
 
+  // Introduce timeout so client animation can play
   setTimeout(async () => {
     try {
-      // Check that body contains all valid keys
+      // Check that body contains only valid keys
       for (const key in data) {
         const check = await queries.checkIfExists(key + 's', data[key]);
         if (!check) throw 'invalid key';
       }
-      // If valid body insert interaction
+      // If valid body insert interaction into db
       await queries.insertInteraction(data);
       res.status(200).send('data received');
     } catch (error) {
@@ -45,7 +44,6 @@ async function addPost(req, res) {
 }
 
 module.exports = {
-  selectAllGet,
   interactionsGet,
   optionsGet,
   addPost,

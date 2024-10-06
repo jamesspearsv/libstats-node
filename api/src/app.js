@@ -6,13 +6,21 @@ const PORT = process.env.PORT || 3002;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ['*'], // Allow both localhost and client
+    methods: ['GET', 'POST'],
+    credentials: true,
+  })
+);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // app logger
 app.use((req, res, next) => {
   console.log(`${new Date()} -- URL: ${req.url}`);
+  console.log(req.headers);
   next();
 });
 

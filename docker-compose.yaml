@@ -4,10 +4,12 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
       - '80:80'
     environment:
-      - VITE_API_URL=http://api:3001
+      VITE_API_URL: 'http://api:3001'
     depends_on:
       - api
     networks:

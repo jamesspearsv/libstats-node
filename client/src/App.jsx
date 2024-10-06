@@ -7,8 +7,11 @@ import Nav from './components/Nav';
 function App() {
   // Set api url based on env
   const [apiurl, setApiurl] = useState(
-    import.meta.VITE_API_URL || 'http://localhost:3002'
+    import.meta.env.VITE_API_URL || 'http://localhost:3002'
   );
+
+  console.log(import.meta.env);
+  console.log(apiurl);
 
   return (
     <>

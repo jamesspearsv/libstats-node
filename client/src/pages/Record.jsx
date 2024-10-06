@@ -18,25 +18,34 @@ function Record() {
   const [apiurl, setApiurl] = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
   const [formOptions, setFormOptions] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Effect to fetch interaction options for form
   useEffect(() => {
-    (async () => {
-      const url = `${apiurl}/options`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setFormOptions(data);
-      setLoading(false);
-    })();
+    const url = `${apiurl}/options`;
+    console.log(url);
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((json) => {
+        setFormOptions(json);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+        setError(true);
+      });
 
     return () => {
       setLoading(true);
+      setError(false);
     };
   }, [apiurl]);
 
-  // Handle form submission
+  // HANDLE FORM SUBMISSION
   function handleFormSubmit(e) {
     e.preventDefault();
     // return if any form selects are invalid
@@ -80,9 +89,16 @@ function Record() {
     setIsOpen(true);
   }
 
-  // Render component based on loading state
+  // Render component based on loading and error state
   if (loading) {
     return;
+  } else if (error) {
+    return (
+      <>
+        <h1>Error!</h1>
+        <p>Something went wrong. Please try again later.</p>
+      </>
+    );
   } else {
     return (
       <>
@@ -112,7 +128,6 @@ function Record() {
             handleChange={handleSelectChange}
             formState={formState}
           />
-
           <Button variant='primary' type='submit' text='Submit' />
         </Form>
         <div

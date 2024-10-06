@@ -17,11 +17,13 @@ async function selectInteractions() {
   return rows;
 }
 
+// utiliity query to select all columns from specifie table
 async function selectAllFromTable(table) {
   const rows = db.select('*').from(table);
   return rows;
 }
 
+// Insert interaction into interactions table
 async function insertInteraction({ type, location, format }) {
   const now = new Date().toISOString();
   await db
@@ -35,6 +37,7 @@ async function insertInteraction({ type, location, format }) {
   return 1;
 }
 
+// return boolean value if id exists in table
 async function checkIfExists(table, id) {
   try {
     await db(table).where('id', id).first();
