@@ -55,6 +55,7 @@ function Reports() {
     for (const key in formState) {
       // return if form is incomplete
       if (!formState[key]) {
+        setDataLoading(true);
         return;
       }
     }
@@ -92,6 +93,7 @@ function Reports() {
     toast.dismiss();
     if (formState.end != '' && formState.start != '') {
       if (formState.end < formState.start) {
+        setDataLoading(true);
         toast.error('Start date cannot be after end date', {
           duration: Infinity,
           position: 'top-center',
