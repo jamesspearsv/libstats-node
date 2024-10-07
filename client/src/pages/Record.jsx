@@ -23,7 +23,7 @@ function Record() {
   const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Effect to fetch interaction options for form
+  // ** FETCH FORM OPTIONS ON MOUNT ** //
   useEffect(() => {
     async function fetchOptions() {
       const url = `${apiurl}/options`;
@@ -34,7 +34,6 @@ function Record() {
         // check that res is okay or throw error
         if (!res.ok) throw json.error;
 
-        console.log('message: ', json.message);
         setFormOptions(json);
         setLoading(false);
       } catch (error) {
@@ -50,7 +49,7 @@ function Record() {
     };
   }, [apiurl]);
 
-  // HANDLE FORM SUBMISSION
+  // ** HANDLE FORM SUBMISSION ** //
   function handleFormSubmit(e) {
     e.preventDefault();
     // return early if any form selects are invalid
@@ -81,7 +80,6 @@ function Record() {
         // check that res is okay or throw error
         if (!res.ok) throw json.error;
 
-        console.log('message: ', json.message);
         toast.success('Success!', { id: currentToast });
       } catch (error) {
         console.error(error);
@@ -93,7 +91,7 @@ function Record() {
     setFormState(defaultFormState);
   }
 
-  // Handle select element change and update state
+  // ** HANDLE SELECT INPUT CHANGE ** //
   function handleSelectChange(e) {
     const id = e.currentTarget.id;
     const updatedState = { ...formState };
@@ -101,7 +99,7 @@ function Record() {
     setFormState(updatedState);
   }
 
-  // Open Modal
+  // ** OPEN MODAL ** //
   function handleModalOpen() {
     setIsOpen(true);
   }
@@ -121,24 +119,24 @@ function Record() {
         style={{ margin: 'auto ', width: 'max(30%, 350px)' }}
       >
         <SelectInput
-          label='Type'
+          label="Type"
           options={formOptions.types}
           handleChange={handleSelectChange}
           formState={formState}
         />
         <SelectInput
-          label='Location'
+          label="Location"
           options={formOptions.locations}
           handleChange={handleSelectChange}
           formState={formState}
         />
         <SelectInput
-          label='Format'
+          label="Format"
           options={formOptions.formats}
           handleChange={handleSelectChange}
           formState={formState}
         />
-        <Button variant='primary' type='submit' text='Submit' />
+        <Button variant="primary" type="submit" text="Submit" />
       </Form>
       <div
         style={{
@@ -148,9 +146,9 @@ function Record() {
         }}
       >
         <Button
-          variant='primary'
-          text='Need Help?'
-          type='button'
+          variant="primary"
+          text="Need Help?"
+          type="button"
           action={handleModalOpen}
         />
       </div>

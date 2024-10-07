@@ -7,7 +7,7 @@ async function selectInteractions() {
       'types.value as type',
       'locations.value as location',
       'formats.value as format',
-      'timestamp'
+      'date'
     )
     .from('interactions')
     .join('types', 'interactions.type_id', '=', 'types.id')
@@ -29,11 +29,11 @@ async function insertInteraction({ type, location, format }) {
     const date = new Date();
 
     const year = date.getFullYear();
-    const month = ('0' + date.getMonth()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
 
     const today = `${year}-${month}-${day}`;
-    console.log('today:', today);
+    // console.log('today:', today);
 
     await db
       .insert({
@@ -67,12 +67,12 @@ async function selectInteractionsInRange(start, end, location_id) {
       'types.value as type',
       'locations.value as location',
       'formats.value as format',
-      'timestamp'
+      'date'
     )
     .join('types', 'interactions.type_id', '=', 'types.id')
     .join('locations', 'interactions.location_id', '=', 'locations.id')
     .join('formats', 'interactions.format_id', '=', 'formats.id')
-    .whereBetween('timestamp', [start, end])
+    .whereBetween('date', [start, end])
     .where('location_id', location_id);
 
   return rows;

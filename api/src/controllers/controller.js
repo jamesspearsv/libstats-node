@@ -58,10 +58,7 @@ async function reportGet(req, res) {
   // get interactions from db between date range
   try {
     // parse incoming query
-    const query = req.query;
-    const start = `${query.start}T00:00:00.000Z`;
-    const end = `${query.end}T23:59:59.999Z`;
-    const location = query.location;
+    const { start, end, location } = req.query;
 
     // check that location is valid
     const check = await queries.checkIfExists('locations', location);

@@ -24,7 +24,7 @@ function Reports() {
   // TODO -- add state for storing fetch results
   const [interactions, setInteractions] = useState([]);
 
-  // Effect to fetch interaction options for form
+  // ** FETCH FORM OPTIONS ON COMPONENT MOUNT ** //
   useEffect(() => {
     async function fetchOptions() {
       const url = `${apiurl}/options`;
@@ -35,7 +35,6 @@ function Reports() {
         // check that res is okay or throw error
         if (!res.ok) throw json.error;
 
-        console.log('message: ', json.message);
         setLocationOptions(json.locations);
         setFormLoading(false);
       } catch (error) {
@@ -51,7 +50,7 @@ function Reports() {
     };
   }, [apiurl]);
 
-  // Effect to fetch interaction when form is completed
+  // ** FETCH DATA WHEN SELECTION FORM IS COMPLETE ** //
   useEffect(() => {
     for (const key in formState) {
       // return if form is incomplete
@@ -71,7 +70,8 @@ function Reports() {
 
         if (!res.ok) throw json.error;
 
-        console.log(json);
+        // TODO -- parse and store data
+        console.log(json.rows);
         setDataLoading(false);
       } catch (error) {
         console.error(error);
@@ -87,7 +87,7 @@ function Reports() {
     };
   }, [formState, apiurl]);
 
-  // Check that end date comes after start date when formState changes
+  // ** CHECK THAT START AND END DATE ARE VALID ** //
   useEffect(() => {
     toast.dismiss();
     if (formState.end != '' && formState.start != '') {
@@ -123,13 +123,14 @@ function Reports() {
     setFormState(updatedState);
   }
 
+  // early return if any errors
   if (error) return <Error />;
 
   return (
     <>
       {!formLoading && (
         <Form
-          title='Build Report'
+          title="Build Report"
           style={{
             gap: '0.5rem',
             width: 'fit-content',
@@ -139,27 +140,27 @@ function Reports() {
         >
           <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
             <div>
-              <label htmlFor='start'>Start Date</label>
+              <label htmlFor="start">Start Date</label>
               <input
-                type='date'
-                name='start'
-                id='start'
+                type="date"
+                name="start"
+                id="start"
                 value={formState.start}
                 onChange={handleDateChange}
               />
             </div>
             <div>
-              <label htmlFor='end'>End Date</label>
+              <label htmlFor="end">End Date</label>
               <input
-                type='date'
-                name='end'
-                id='end'
+                type="date"
+                name="end"
+                id="end"
                 value={formState.end}
                 onChange={handleDateChange}
               />
             </div>
             <SelectInput
-              label='Location'
+              label="Location"
               options={locationOptions}
               handleChange={handleSelectChange}
               formState={formState}
