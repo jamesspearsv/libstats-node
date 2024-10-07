@@ -26,24 +26,32 @@ async function selectAllFromTable(table) {
 // Insert interaction into interactions table
 async function insertInteraction({ type, location, format }) {
   try {
-    const now = new Date().toISOString();
+    const date = new Date();
+
+    const year = date.getFullYear();
+    const month = ('0' + date.getMonth()).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+
+    const today = `${year}-${month}-${day}`;
+    console.log('today:', today);
+
     await db
       .insert({
         type_id: type,
         location_id: location,
         format_id: format,
-        timestamp: now,
+        date: today,
       })
       .into('interactions');
     return true;
   } catch (error) {
+    console.error(error);
     return false;
   }
 }
 
 // return boolean value if id exists in table
 async function checkIfExists(table, id) {
-  console.log(table, id);
   const row = await db(table).where('id', id).first();
   return !!row;
 }

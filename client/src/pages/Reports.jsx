@@ -64,7 +64,7 @@ function Reports() {
 
     async function fetchInteractions() {
       try {
-        const url = `${apiurl}/report?start=${formState.start}&end=${formState}&location=${formState.location}`;
+        const url = `${apiurl}/report?start=${formState.start}&end=${formState.end}&location=${formState.location}`;
 
         const res = await fetch(url);
         const json = await res.json();
