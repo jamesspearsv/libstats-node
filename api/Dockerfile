@@ -7,6 +7,9 @@ WORKDIR /api
 # Install necessary build tools (for compiling native modules like better-sqlite3)
 RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
+# Set environment variable
+ENV TZ=America/New_York
+
 # Install dependencies inside the container
 COPY package.json package-lock.json* ./
 RUN npm install --omit=dev
