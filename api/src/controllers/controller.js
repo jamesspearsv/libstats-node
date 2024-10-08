@@ -65,12 +65,34 @@ async function reportGet(req, res) {
     if (!check) throw 'Invalid location id'; // if not throw error
 
     const rows = await queries.selectInteractionsInRange(start, end, location);
+    const count_type = await queries.countInteractionsInRange(
+      start,
+      end,
+      location,
+      'type'
+    );
+    const count_format = await queries.countInteractionsInRange(
+      start,
+      end,
+      location,
+      'format'
+    );
 
-    res.json({ message: 'ok', rows });
+    res.json({ message: 'ok', rows, count_type, count_format });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error });
   }
+}
+
+async function countGet(req, res) {
+  const { start, end, location } = req.query;
+
+  console.log(
+    await queries.countInteractionsInRange(start, end, location, 'type')
+  );
+
+  res.send('wip');
 }
 
 module.exports = {
@@ -78,4 +100,5 @@ module.exports = {
   optionsGet,
   addPost,
   reportGet,
+  countGet,
 };

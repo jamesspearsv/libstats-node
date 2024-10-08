@@ -57,9 +57,9 @@ async function checkIfExists(table, id) {
 }
 
 async function selectInteractionsInRange(start, end, location_id) {
-  console.log('start:', start);
-  console.log('end: ', end);
-  console.log('location_id', location_id);
+  // console.log('start:', start);
+  // console.log('end: ', end);
+  // console.log('location_id', location_id);
 
   const rows = await db('interactions')
     .select(
@@ -73,13 +73,22 @@ async function selectInteractionsInRange(start, end, location_id) {
     .join('locations', 'interactions.location_id', '=', 'locations.id')
     .join('formats', 'interactions.format_id', '=', 'formats.id')
     .whereBetween('date', [start, end])
-    .where('location_id', location_id);
+    .andWhere('location_id', location_id);
 
   return rows;
 }
 
-async function countInteractionsInRange(start, end, location_id) {
-  // do some stuff
+async function countInteractionsInRange(start, end, location_id, category) {
+  // count interaction and group by category
+  const types = await db('interactions')
+    .select(`${category}s.id`, `${category}s.value`)
+    .count('interactions.id as number_of_interactions')
+    .join(`${category}s`, `interactions.${category}_id`, `${category}s.id`)
+    .whereBetween('interactions.date', [start, end])
+    .andWhere('interactions.location_id', location_id)
+    .groupBy(`${category}s.value`);
+
+  return types;
 }
 
 module.exports = {

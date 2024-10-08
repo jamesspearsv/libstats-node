@@ -15,14 +15,14 @@ function Reports() {
   // eslint-disable-next-line no-unused-vars
   const [apiurl, setApiurl] = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
-  const [locationOptions, setLocationOptions] = useState([]);
+  const [options, setOptions] = useState({});
 
   const [formLoading, setFormLoading] = useState(true);
   const [dataLoading, setDataLoading] = useState(true);
   const [error, setError] = useState(false);
 
   // TODO -- add state for storing fetch results
-  const [interactions, setInteractions] = useState([]);
+  const [report, setReport] = useState({});
 
   // ** FETCH FORM OPTIONS ON COMPONENT MOUNT ** //
   useEffect(() => {
@@ -35,7 +35,7 @@ function Reports() {
         // check that res is okay or throw error
         if (!res.ok) throw json.error;
 
-        setLocationOptions(json.locations);
+        setOptions(json);
         setFormLoading(false);
       } catch (error) {
         console.error(error);
@@ -72,7 +72,8 @@ function Reports() {
         if (!res.ok) throw json.error;
 
         // TODO -- parse and store data
-        console.log(json.rows);
+        console.log(json);
+        setReport(json);
         setDataLoading(false);
       } catch (error) {
         console.error(error);
@@ -163,7 +164,7 @@ function Reports() {
             </div>
             <SelectInput
               label="Location"
-              options={locationOptions}
+              options={options.locations}
               handleChange={handleSelectChange}
               formState={formState}
             />
