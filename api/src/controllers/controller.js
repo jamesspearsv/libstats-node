@@ -1,6 +1,8 @@
 const queries = require('../db/queries');
 
-// select all interactions from db
+// ** TODO -- ADD ERROR HANDLING CONTROLLER ** //
+
+// Select all interactions from db
 // CURRENTLY NOT USED FOR ANYTHING. JUST DEBUGGING
 async function interactionsGet(req, res) {
   const data = await queries.selectInteractions();
@@ -65,6 +67,7 @@ async function reportGet(req, res) {
     if (!check) throw 'Invalid location id'; // if not throw error
 
     const rows = await queries.selectInteractionsInRange(start, end, location);
+    const count_days = await queries.countByDay(start, end, location);
     const count_type = await queries.countInteractionsInRange(
       start,
       end,
@@ -78,7 +81,17 @@ async function reportGet(req, res) {
       'format'
     );
 
-    res.json({ message: 'ok', rows, count_type, count_format });
+    // throw error is unable to complete any queries
+    if (!rows || !count_days || !count_format || !count_type)
+      throw 'Error building report';
+
+    res.json({
+      message: 'ok',
+      rows,
+      count_type,
+      count_format,
+      count_days,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error });
