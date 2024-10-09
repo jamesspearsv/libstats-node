@@ -23,7 +23,7 @@ services:
       context: ./api
       dockerfile: Dockerfile
     ports:
-      - '3001:3001'
+      - '${NODE_PORT}:${NODE_PORT}'
     env_file: '.env'
     networks:
       - app-network

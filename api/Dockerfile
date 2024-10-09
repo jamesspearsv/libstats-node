@@ -17,8 +17,9 @@ RUN npm install --omit=dev
 # Copy the rest of the app's source code
 COPY . .
 
-# Expose port 3001 for the backend
-EXPOSE 3001
+# Expose port 8080 for the backend
+# Fallback value if docker-compose.yaml is not used
+EXPOSE 8080
 
 # Run migrations before starting the backend server
 CMD ["sh", "-c", "npx knex migrate:latest && npx knex seed:run && npm start"]

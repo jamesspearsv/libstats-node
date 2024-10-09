@@ -7,7 +7,7 @@ import Nav from './components/Nav';
 function App() {
   // Set api url based on env
   const [apiurl, setApiurl] = useState(
-    import.meta.env.VITE_API_URL || 'http://localhost:3002'
+    import.meta.env.VITE_API_URL || 'http://localhost:8080'
   );
 
   console.log('api url:', apiurl);
@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       <Toaster
-        position='top-right'
+        position="top-right"
         toastOptions={{
           style: {
             backgroundColor: '#f5f4f4',
