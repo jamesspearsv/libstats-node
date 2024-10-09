@@ -105,34 +105,31 @@ async function countByDay(start, end, location) {
   try {
     const startDate = start; //'2024-10-01'; // Example start date
     const endDate = end; //'2024-10-07'; // Example end date
+    const locationId = location;
 
     // Query the datebase for the total number of interactions per day
-    // in a given date range and at a given location. Limited to 100
+    // in a given date range and at a given location.
     const rows = await db.raw(
-      `
-      WITH date_range AS (
-        SELECT DATE(DATE(?) , '+' || (n - 1) || ' days') as date
-        FROM (
-          SELECT ROW_NUMBER() OVER () AS n
-          FROM sqlite_master
-          LIMIT 100
-        )
-        WHERE DATE(DATE(?) , '+' || (n - 1) || ' days') <= DATE(?)
+      `WITH RECURSIVE date_range AS (
+        SELECT DATE(?) AS date
+        UNION ALL
+        SELECT DATE(date, '+1 day')
+        FROM date_range
+        WHERE date < DATE(?)
       )
-      SELECT IFNULL(interaction_counts.number_of_interactions, 0) as number_of_interactions, date_range.date
-      FROM date_range
-      LEFT JOIN (
-        SELECT COUNT(*) as number_of_interactions, DATE(date) as date
-        FROM interactions
-        WHERE DATE(date) BETWEEN ? AND ?
-        AND location_id = ? -- Moved location_id filter here
-        GROUP BY DATE(date)
-      ) as interaction_counts
-      ON date_range.date = interaction_counts.date;
-      `,
-      [startDate, startDate, endDate, startDate, endDate, location]
+      SELECT dr.date, 
+             COUNT(i.id) AS number_of_interactions
+      FROM date_range dr
+      LEFT JOIN interactions i 
+        ON dr.date = i.date 
+        AND i.location_id = ?
+      GROUP BY dr.date
+      ORDER BY dr.date ASC;
+    `,
+      [startDate, endDate, locationId]
     );
 
+    // console.log(rows);
     return rows;
   } catch (error) {
     console.error(error);
