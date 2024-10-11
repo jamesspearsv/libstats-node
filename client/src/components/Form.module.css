@@ -13,13 +13,15 @@
   text-align: center;
 }
 
+/* Default styles for form elements */
 .form input,
 .form button,
 .form select {
   margin: 0.5rem 0;
 }
 
-.form input {
+.form input,
+.form select {
   width: 100%;
   padding: 0.675em 1rem 0.675em 1em;
   background-color: #fff;
@@ -27,10 +29,6 @@
   border-radius: 0.25rem;
   color: #000;
   cursor: pointer;
-}
-
-.form input[type='date'] {
-  width: 170px;
 }
 
 .form div {

@@ -11,10 +11,10 @@ function Form({ onSubmit, title, style, children }) {
 }
 
 Form.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
   children: PropTypes.element,
   title: PropTypes.string.isRequired,
-  style: PropTypes.obj,
+  // style: PropTypes.obj,
 };
 
 export default Form;

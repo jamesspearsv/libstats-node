@@ -122,19 +122,19 @@ function Record() {
           label="Type"
           options={formOptions.types}
           handleChange={handleSelectChange}
-          formState={formState}
+          value={formState.type}
         />
         <SelectInput
           label="Location"
           options={formOptions.locations}
           handleChange={handleSelectChange}
-          formState={formState}
+          value={formState.location}
         />
         <SelectInput
           label="Format"
           options={formOptions.formats}
           handleChange={handleSelectChange}
-          formState={formState}
+          value={formState.format}
         />
         <Button variant="primary" type="submit" text="Submit" />
       </Form>

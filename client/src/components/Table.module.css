@@ -1,0 +1,14 @@
+.table {
+  width: fit-content;
+  margin: auto;
+  height: 40dvh;
+  overflow-y: auto;
+}
+
+.table tr {
+  border: solid 10px red;
+}
+
+.table td {
+  padding: 1rem 3rem;
+}

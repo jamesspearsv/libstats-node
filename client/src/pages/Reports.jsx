@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
 import Error from '../components/Error';
+import DateInput from '../components/DateInput';
+import Table from '../components/Table';
 
 function Reports() {
   const defaultFormState = {
@@ -142,31 +144,21 @@ function Reports() {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
-            <div>
-              <label htmlFor="start">Start Date</label>
-              <input
-                type="date"
-                name="start"
-                id="start"
-                value={formState.start}
-                onChange={handleDateChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="end">End Date</label>
-              <input
-                type="date"
-                name="end"
-                id="end"
-                value={formState.end}
-                onChange={handleDateChange}
-              />
-            </div>
+            <DateInput
+              label="Start"
+              value={formState.start}
+              handleChange={handleDateChange}
+            />
+            <DateInput
+              label="End"
+              value={formState.end}
+              handleChange={handleDateChange}
+            />
             <SelectInput
               label="Location"
               options={options.locations}
               handleChange={handleSelectChange}
-              formState={formState}
+              value={formState.location}
             />
           </div>
         </Form>
@@ -175,9 +167,14 @@ function Reports() {
         <p>Complete the form above</p>
       ) : (
         <>
-          <p>{formState.start ? formState.start : 'null'}</p>
-          <p>{formState.end ? formState.end : 'null'}</p>
-          <p>{formState.location ? formState.location : 'null'}</p>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <p>{formState.start ? 'Start: ' + formState.start : 'null'}</p>
+            <p>{formState.end ? 'End: ' + formState.end : 'null'}</p>
+            <p>
+              {formState.location ? 'Location: ' + formState.location : 'null'}
+            </p>
+          </div>
+          <Table rows={report.rows} />
         </>
       )}
     </>
