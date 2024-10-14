@@ -1,0 +1,16 @@
+@import '../index.css';
+
+.report {
+  padding: 0.75rem;
+  width: 25dvw;
+  border-radius: 10px;
+  /* background-color: white; */
+  /* box-shadow: var(--drop-shadow); */
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}

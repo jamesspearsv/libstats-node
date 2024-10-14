@@ -4,7 +4,7 @@ import styles from './Form.module.css';
 function Form({ onSubmit, title, style, children }) {
   return (
     <form onSubmit={onSubmit} className={styles.form} style={style}>
-      <h3 className={styles.title}>{title}</h3>
+      {title && <h3 className={styles.title}>{title}</h3>}
       {children}
     </form>
   );
@@ -13,7 +13,7 @@ function Form({ onSubmit, title, style, children }) {
 Form.propTypes = {
   onSubmit: PropTypes.func,
   children: PropTypes.element,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   // style: PropTypes.obj,
 };
 

@@ -86,13 +86,25 @@ async function selectInteractionsInRange(start, end, location_id) {
 async function countInteractionsInRange(start, end, location_id, category) {
   try {
     // count interaction and group by category
-    const rows = await db('interactions')
+    // const rows = await db('interactions')
+    //   .select(`${category}s.id`, `${category}s.value`)
+    //   .count('interactions.id as number_of_interactions')
+    //   .join(`${category}s`, `interactions.${category}_id`, `${category}s.id`)
+    //   .whereBetween('interactions.date', [start, end])
+    //   .andWhere('interactions.location_id', location_id)
+    //   .groupBy(`${category}s.id`);
+
+    // return rows;
+
+    const rows = await db(`${category}s`)
       .select(`${category}s.id`, `${category}s.value`)
       .count('interactions.id as number_of_interactions')
-      .join(`${category}s`, `interactions.${category}_id`, `${category}s.id`)
-      .whereBetween('interactions.date', [start, end])
-      .andWhere('interactions.location_id', location_id)
-      .groupBy(`${category}s.value`);
+      .leftJoin('interactions', function () {
+        this.on(`interactions.${category}_id`, '=', `${category}s.id`)
+          .andOn('interactions.location_id', '=', db.raw('?', [location_id]))
+          .andOnBetween('interactions.date', [start, end]);
+      })
+      .groupBy(`${category}s.id`);
 
     return rows;
   } catch (error) {

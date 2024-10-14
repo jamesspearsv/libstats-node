@@ -6,6 +6,7 @@ import SelectInput from '../components/SelectInput';
 import Error from '../components/Error';
 import DateInput from '../components/DateInput';
 import Table from '../components/Table';
+import CountReport from '../components/CountReport';
 
 function Reports() {
   const defaultFormState = {
@@ -135,7 +136,6 @@ function Reports() {
     <>
       {!formLoading && (
         <Form
-          title="Build Report"
           style={{
             gap: '0.5rem',
             width: 'fit-content',
@@ -167,12 +167,16 @@ function Reports() {
         <p>Complete the form above</p>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <p>{formState.start ? 'Start: ' + formState.start : 'null'}</p>
-            <p>{formState.end ? 'End: ' + formState.end : 'null'}</p>
-            <p>
-              {formState.location ? 'Location: ' + formState.location : 'null'}
-            </p>
+          <div
+            style={{
+              display: 'flex',
+              gap: '5rem',
+              margin: 'auto',
+              width: 'fit-content',
+            }}
+          >
+            <CountReport title="Types" count={report.count_type} />
+            <CountReport title="Formats" count={report.count_format} />
           </div>
           <Table rows={report.rows} />
         </>
