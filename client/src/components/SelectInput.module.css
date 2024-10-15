@@ -29,3 +29,7 @@
   border-top: var(--size) solid black;
   top: 65%;
 }
+
+.label {
+  font-weight: 700;
+}

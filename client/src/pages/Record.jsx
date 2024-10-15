@@ -6,6 +6,7 @@ import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
 import Modal from '../components/Modal';
 import Error from '../components/Error';
+import CardWrapper from '../components/CardWrapper';
 
 const defaultFormState = {
   type: '',
@@ -35,6 +36,7 @@ function Record() {
         if (!res.ok) throw json.error;
 
         setFormOptions(json);
+        console.log(json);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -110,9 +112,6 @@ function Record() {
 
   return (
     <>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <p>this is a dialog box</p>
-      </Modal>
       <Form
         onSubmit={handleFormSubmit}
         title={'Add New Interaction'}
@@ -152,6 +151,34 @@ function Record() {
           action={handleModalOpen}
         />
       </div>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <h3>Interaction Type Definitions</h3>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            justifyContent: 'start',
+          }}
+        >
+          {formOptions.types.map((type) => (
+            <CardWrapper
+              key={type.id}
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}
+            >
+              <div style={{ fontWeight: 'bold' }}>{type.value}</div>
+              <hr />
+              <p>{type.desc}</p>
+            </CardWrapper>
+          ))}
+        </div>
+      </Modal>
     </>
   );
 }

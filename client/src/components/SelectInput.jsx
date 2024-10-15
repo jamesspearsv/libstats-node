@@ -11,7 +11,9 @@ function SelectInput({ label, options, handleChange, value }) {
 
   return (
     <div style={style} className={styles.customSelect}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className={styles.label}>
+        {label}
+      </label>
       <select name={id} id={id} value={value} onChange={handleChange}>
         <option value="" disabled>{`Select ${label}`}</option>
         {options.map((option, index) => (

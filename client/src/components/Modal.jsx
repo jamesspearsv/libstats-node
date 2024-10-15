@@ -18,9 +18,9 @@ function Modal({ isOpen, setIsOpen, children }) {
     <dialog className={styles.modal} ref={modalRef}>
       <div>
         <Button
-          text='Close'
-          type='button'
-          variant='danger'
+          text="Close"
+          type="button"
+          variant="danger"
           action={handleModalClose}
         />
       </div>
