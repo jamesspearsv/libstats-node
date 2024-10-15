@@ -1,0 +1,27 @@
+.reports {
+  margin: 2rem 0;
+  display: flex;
+  gap: 3rem;
+}
+
+.counts {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: fit-content;
+}
+
+.table {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.header + hr {
+  margin: 1rem;
+}

@@ -1,11 +1,8 @@
 @import '../index.css';
 
 .report {
-  padding: 0.75rem;
-  width: 25dvw;
+  width: 20dvw;
   border-radius: 10px;
-  /* background-color: white; */
-  /* box-shadow: var(--drop-shadow); */
 }
 
 .row {
@@ -13,4 +10,15 @@
   gap: 1rem;
   justify-content: space-between;
   margin-bottom: 0.25rem;
+  padding: 0.375rem;
+  border-radius: 5px;
+  cursor: default;
+}
+
+.row {
+  transition: background-color 150ms ease-in-out;
+}
+
+.row:hover {
+  background-color: white;
 }

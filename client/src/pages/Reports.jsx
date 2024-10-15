@@ -1,12 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import {
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  Tooltip,
+  BarChart,
+  Bar,
+} from 'recharts';
+import styles from './Reports.module.css';
+
+//  ** COMPONENTS ** //
 import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
 import Error from '../components/Error';
 import DateInput from '../components/DateInput';
 import Table from '../components/Table';
 import CountReport from '../components/CountReport';
+import CardWrapper from '../components/CardWrapper';
 
 function Reports() {
   const defaultFormState = {
@@ -24,7 +37,7 @@ function Reports() {
   const [dataLoading, setDataLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // TODO -- add state for storing fetch results
+  // Report state
   const [report, setReport] = useState({});
 
   // ** FETCH FORM OPTIONS ON COMPONENT MOUNT ** //
@@ -166,20 +179,33 @@ function Reports() {
       {dataLoading ? (
         <p>Complete the form above</p>
       ) : (
-        <>
-          <div
-            style={{
-              display: 'flex',
-              gap: '5rem',
-              margin: 'auto',
-              width: 'fit-content',
-            }}
-          >
-            <CountReport title="Types" count={report.count_type} />
-            <CountReport title="Formats" count={report.count_format} />
+        <div style={{ marginTop: '1rem', width: '80%', margin: 'auto' }}>
+          <div className={styles.reports}>
+            <div className={styles.counts}>
+              <CountReport title="Types" count={report.count_type} />
+              <CountReport title="Formats" count={report.count_format} />
+            </div>
+            <CardWrapper style={{ width: '100%' }}>
+              <h3 className={styles.header}>Daily Interactions</h3>
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={report.count_days}>
+                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                  <XAxis dataKey="date" height={50} />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey={'number_of_interactions'} fill="#185c36" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardWrapper>
           </div>
-          <Table rows={report.rows} />
-        </>
+          <div className={styles.table}>
+            <CardWrapper>
+              <h3 className={styles.header}>All Interactions In Period</h3>
+              <hr />
+              <Table rows={report.rows} />
+            </CardWrapper>
+          </div>
+        </div>
       )}
     </>
   );

@@ -1,0 +1,9 @@
+@import '../index.css';
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: var(--drop-shadow);
+  width: fit-content;
+  padding: 1rem;
+}
