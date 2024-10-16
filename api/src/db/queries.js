@@ -1,7 +1,8 @@
 const db = require('./connection');
+const { getDateToday } = require('../helpers.js');
 
 async function selectInteractions() {
-  const rows = await db
+  const rows = await db('interactions')
     .select(
       'interactions.id',
       'types.value as type',
@@ -9,7 +10,6 @@ async function selectInteractions() {
       'formats.value as format',
       'date'
     )
-    .from('interactions')
     .join('types', 'interactions.type_id', '=', 'types.id')
     .join('locations', 'interactions.location_id', '=', 'locations.id')
     .join('formats', 'interactions.format_id', '=', 'formats.id');
@@ -26,23 +26,15 @@ async function selectAllFromTable(table) {
 // Insert interaction into interactions table
 async function insertInteraction({ type, location, format }) {
   try {
-    const date = new Date();
+    const today = getDateToday();
 
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
+    await db('interactions').insert({
+      type_id: type,
+      location_id: location,
+      format_id: format,
+      date: today,
+    });
 
-    const today = `${year}-${month}-${day}`;
-    // console.log('today:', today);
-
-    await db
-      .insert({
-        type_id: type,
-        location_id: location,
-        format_id: format,
-        date: today,
-      })
-      .into('interactions');
     return true;
   } catch (error) {
     console.error(error);
@@ -74,7 +66,7 @@ async function selectInteractionsInRange(start, end, location_id) {
       .join('locations', 'interactions.location_id', '=', 'locations.id')
       .join('formats', 'interactions.format_id', '=', 'formats.id')
       .whereBetween('date', [start, end])
-      .andWhere('location_id', location_id);
+      .andWhere('interactions.location_id', location_id);
 
     return rows;
   } catch (error) {
@@ -83,19 +75,26 @@ async function selectInteractionsInRange(start, end, location_id) {
   }
 }
 
-async function countInteractionsInRange(start, end, location_id, category) {
+async function countAllInteractionsInRange(start, end, location_id) {
+  // Count total number of interactions in a given date range at a given location
   try {
-    // count interaction and group by category
-    // const rows = await db('interactions')
-    //   .select(`${category}s.id`, `${category}s.value`)
-    //   .count('interactions.id as number_of_interactions')
-    //   .join(`${category}s`, `interactions.${category}_id`, `${category}s.id`)
-    //   .whereBetween('interactions.date', [start, end])
-    //   .andWhere('interactions.location_id', location_id)
-    //   .groupBy(`${category}s.id`);
+    const count = await db('interactions')
+      .count('interactions.id as number_of_interactions')
+      .join('locations', 'interactions.location_id', '=', 'locations.id')
+      .whereBetween('date', [start, end])
+      .andWhere('interactions.location_id', location_id)
+      .first();
 
-    // return rows;
+    return count.number_of_interactions;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
 
+async function countInteractionsInRange(start, end, location_id, category) {
+  // Count number of interaction in a given date range grouped by category (i.e. type or format)
+  try {
     const rows = await db(`${category}s`)
       .select(`${category}s.id`, `${category}s.value`)
       .count('interactions.id as number_of_interactions')
@@ -149,12 +148,29 @@ async function countByDay(start, end, location) {
   }
 }
 
+async function countInteractionsThisMonth() {
+  // count total interaction in the current month
+  try {
+    const row = await db('interactions')
+      .count('interactions.id as number_of_interactions')
+      .whereRaw("strftime('%Y-%m', date) = strftime('%Y-%m', 'now')")
+      .first();
+
+    return row.number_of_interactions;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
 module.exports = {
   selectInteractions,
   selectAllFromTable,
   insertInteraction,
   checkIfExists,
   selectInteractionsInRange,
+  countAllInteractionsInRange,
   countInteractionsInRange,
   countByDay,
+  countInteractionsThisMonth,
 };

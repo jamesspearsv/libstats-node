@@ -81,15 +81,22 @@ async function reportGet(req, res) {
       'format'
     );
 
+    const count_total = await queries.countAllInteractionsInRange(
+      start,
+      end,
+      location
+    );
+
     // throw error is unable to complete any queries
-    if (!rows || !count_days || !count_format || !count_type)
+    if (!rows || !count_days || !count_format || !count_type || !count_total)
       throw 'Error building report';
 
     res.json({
       message: 'ok',
       rows,
-      count_type,
+      count_total,
       count_format,
+      count_type,
       count_days,
     });
   } catch (error) {
@@ -98,14 +105,16 @@ async function reportGet(req, res) {
   }
 }
 
-async function countGet(req, res) {
-  const { start, end, location } = req.query;
+async function dashboardGet(req, res) {
+  try {
+    const count_month = await queries.countInteractionsThisMonth();
 
-  console.log(
-    await queries.countInteractionsInRange(start, end, location, 'type')
-  );
+    if (!count_month) throw 'Error searching database';
 
-  res.send('wip');
+    res.json({ count_month });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 }
 
 module.exports = {
@@ -113,5 +122,5 @@ module.exports = {
   optionsGet,
   addPost,
   reportGet,
-  countGet,
+  dashboardGet,
 };

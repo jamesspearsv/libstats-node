@@ -3,13 +3,17 @@
  * @returns { Promise<void> }
  */
 
-const date = new Date();
+const { getDateToday } = require('../../helpers.js');
 
-const year = date.getFullYear();
-const month = ('0' + (date.getMonth() + 1)).slice(-2);
-const day = ('0' + date.getDate()).slice(-2);
+// const date = new Date();
 
-const today = `${year}-${month}-${day}`;
+// const year = date.getFullYear();
+// const month = ('0' + (date.getMonth() + 1)).slice(-2);
+// const day = ('0' + date.getDate()).slice(-2);
+
+// const today = `${year}-${month}-${day}`;
+
+const today = getDateToday();
 
 exports.seed = async function (knex) {
   // Deletes ALL existing entries

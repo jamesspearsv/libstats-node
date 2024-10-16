@@ -9,6 +9,8 @@ import {
   Tooltip,
   BarChart,
   Bar,
+  LineChart,
+  Line,
 } from 'recharts';
 import styles from './Reports.module.css';
 
@@ -177,30 +179,41 @@ function Reports() {
         </Form>
       )}
       {dataLoading ? (
-        <p>Complete the form above</p>
+        <div className={styles.loading}>
+          <h4>Complete the form above to build a report</h4>
+          <p>Select a start date, end date, and location</p>
+        </div>
       ) : (
         <div style={{ marginTop: '1rem', width: '80%', margin: 'auto' }}>
           <div className={styles.reports}>
             <div className={styles.counts}>
+              <h4>Total Interactions: {report.count_total}</h4>
               <CountReport title="Types" count={report.count_type} />
               <CountReport title="Formats" count={report.count_format} />
             </div>
             <CardWrapper style={{ width: '100%' }}>
               <h3 className={styles.header}>Daily Interactions</h3>
               <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={report.count_days}>
+                <LineChart data={report.count_days}>
                   <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                   <XAxis dataKey="date" height={50} />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey={'number_of_interactions'} fill="#185c36" />
-                </BarChart>
+                  <Line
+                    type="monotone"
+                    dataKey={'number_of_interactions'}
+                    stroke="#185c36"
+                    strokeWidth={2}
+                  />
+                </LineChart>
               </ResponsiveContainer>
             </CardWrapper>
           </div>
           <div className={styles.table}>
             <CardWrapper>
-              <h3 className={styles.header}>All Interactions In Period</h3>
+              <h3 className={styles.header}>
+                All Interactions Between {formState.start} and {formState.end}
+              </h3>
               <hr />
               <Table rows={report.rows} />
             </CardWrapper>

@@ -25,3 +25,8 @@
 .header + hr {
   margin: 1rem;
 }
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+}

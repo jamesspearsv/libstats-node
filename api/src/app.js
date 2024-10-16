@@ -5,7 +5,7 @@ const router = require('./routes/router');
 const app = express();
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const PORT = process.env.NODE_PORT || 8080;
+const PORT = process.env.NODE_PORT || 3001;
 
 const origins = process.env.ORIGINS
   ? process.env.ORIGINS.split(',')
