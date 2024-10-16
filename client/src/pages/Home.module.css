@@ -1,0 +1,15 @@
+.heading {
+  text-align: center;
+}
+
+.monthly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.monthly_label {
+  font-weight: 700;
+}

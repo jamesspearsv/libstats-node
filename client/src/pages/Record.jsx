@@ -117,7 +117,7 @@ function Record() {
       <Form
         onSubmit={handleFormSubmit}
         title={'Add New Interaction'}
-        style={{ margin: 'auto ', width: 'max(30%, 350px)' }}
+        style={{ margin: 'auto ', width: 'max(20%, 350px)' }}
       >
         <SelectInput
           label="Type"

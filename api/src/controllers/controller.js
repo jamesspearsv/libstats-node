@@ -111,7 +111,7 @@ async function dashboardGet(req, res) {
 
     if (!count_month) throw 'Error searching database';
 
-    res.json({ count_month });
+    res.json({ message: 'ok', count_month });
   } catch (error) {
     res.status(500).json({ error });
   }
