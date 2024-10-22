@@ -2,14 +2,51 @@
   text-align: center;
 }
 
+.divider {
+  margin: 1rem 0;
+}
+
+.container {
+  width: 60%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
 .monthly {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 0.5rem;
+  width: 200px;
 }
 
 .monthly_label {
   font-weight: 700;
+}
+
+.quickstart {
+  width: 50%;
+}
+
+.quickstart > p {
+  text-align: center;
+}
+
+.quickstart span {
+  font-weight: bold;
+}
+
+.types {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 60%;
+  margin: auto;
+}
+
+.types > div {
+  width: 25%;
 }
