@@ -10,7 +10,8 @@
   gap: 1rem;
   justify-content: space-between;
   margin-bottom: 0.25rem;
-  padding: 0.375rem;
+  padding: 0.5rem;
+  padding-left: 1rem;
   border-radius: 5px;
   cursor: default;
 }

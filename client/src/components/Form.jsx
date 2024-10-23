@@ -12,7 +12,7 @@ function Form({ onSubmit, title, style, children }) {
 
 Form.propTypes = {
   onSubmit: PropTypes.func,
-  children: PropTypes.element,
+  // children: PropTypes.array,
   title: PropTypes.string,
   // style: PropTypes.obj,
 };

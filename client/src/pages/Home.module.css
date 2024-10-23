@@ -7,7 +7,7 @@
 }
 
 .container {
-  width: 60%;
+  width: max(50%, 1000px);
   margin: auto;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .types > div {
-  width: 25%;
+  width: 31%;
   transition: transform 250ms ease-in-out;
 }
 

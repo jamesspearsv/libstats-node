@@ -9,10 +9,9 @@ import styles from './Home.module.css';
 
 function Home() {
   const { apiurl, options } = useOutletContext();
-  const [data, setData] = useState({});
   const [effectTrigger, setEffectTrigger] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     async function fetchDashboard() {
@@ -20,17 +19,13 @@ function Home() {
         const url = `${apiurl}/dashboard`;
         const data = await fetch(url);
 
-        // if (!data.ok) throw 'data error';
+        if (!data.ok) throw 'data error';
         const json = await data.json();
-        setData(json);
 
-        console.log(json);
-
-        setLoading(false);
+        setCounter(json.count_month);
       } catch (error) {
         console.error(error);
         setError(error);
-        setLoading(false);
       }
     }
 
@@ -38,16 +33,18 @@ function Home() {
 
     return () => {
       setError(false);
-      setLoading(true);
     };
   }, [apiurl, effectTrigger]);
 
   function handleRefresh() {
-    setLoading(true);
-    setEffectTrigger((effectTrigger) => !effectTrigger);
+    const delay = 1000;
     toast.loading('Refreshing', {
-      duration: 1000,
+      duration: delay,
     });
+
+    setTimeout(() => {
+      setEffectTrigger((effectTrigger) => !effectTrigger);
+    }, delay);
   }
 
   if (error) return <Error />;
@@ -67,13 +64,13 @@ function Home() {
               questions speak to your supervisor.
             </p>
           </div>
-          <CardWrapper>
+          <CardWrapper style={{ height: 'fit-content', padding: '1.3rem' }}>
             <div className={styles.monthly}>
               <div className={styles.monthly_label}>
                 Interactions This Month
               </div>
               <div style={{ minHeight: '25px' }}>
-                <div>{loading ? '0' : data.count_month}</div>
+                <div>{counter}</div>
               </div>
               <Button
                 text="Refresh"

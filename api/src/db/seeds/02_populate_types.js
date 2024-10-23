@@ -19,7 +19,7 @@ exports.seed = async function (knex) {
     {
       id: 3,
       value: 'Known-Item Requests',
-      desc: 'Patron questions about specific items (known-items).',
+      desc: 'Patron questions about how to access specific items (known-items).',
     },
     {
       id: 4,

@@ -24,7 +24,7 @@ app.use(express.json());
 
 // request logger
 app.use((req, res, next) => {
-  console.log(`${new Date()} -- URL: ${req.url}`);
+  console.log(`${new Date().toDateString()} -- ${req.method} : ${req.url}`);
   next();
 });
 

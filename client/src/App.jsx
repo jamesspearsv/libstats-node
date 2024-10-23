@@ -24,7 +24,6 @@ function App() {
 
       // check that res is okay or throw error
       if (!res.ok) throw json.error;
-      console.log(json);
 
       setOptions(json);
       setLoading(false);
@@ -36,8 +35,6 @@ function App() {
       setOptions({});
     };
   }, [apiurl]);
-
-  console.log(options);
 
   return (
     <>

@@ -57,7 +57,6 @@ function Reports() {
 
         if (!res.ok) throw json.error;
 
-        console.log(json);
         setReport(json);
         setLoading(false);
       } catch (error) {
@@ -182,7 +181,9 @@ function Reports() {
               </h3>
               <hr />
               {!report.rows[0] ? (
-                <p style={{ textAlign: 'center' }}>There is nothing here...</p>
+                <p style={{ textAlign: 'center' }}>
+                  There is nothing to see here...
+                </p>
               ) : (
                 <Table rows={report.rows} />
               )}
