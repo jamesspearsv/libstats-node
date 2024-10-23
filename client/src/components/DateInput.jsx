@@ -6,7 +6,7 @@ function DateInput({ label, value, handleChange }) {
 
   return (
     <div className={styles.date}>
-      <label htmlFor={id}>{`${label} Date`}</label>
+      <label htmlFor={id} className={styles.label}>{`${label} Date`}</label>
       <input
         type="date"
         name={id}
