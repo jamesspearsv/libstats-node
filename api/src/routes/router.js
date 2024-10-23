@@ -11,4 +11,10 @@ router.post('/add', controller.addPost);
 router.get('/report', controller.reportGet);
 router.get('/dashboard', controller.dashboardGet);
 
+// ** ERROR HANDLING ** //
+router.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send({ error: err });
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const queries = require('../db/queries');
 
-// ** TODO -- ADD ERROR HANDLING CONTROLLER ** //
+// ** TODO -- ADD ERROR HANDLING FOR QUERY RESULTS ** //
 
 // Select all interactions from db
 // CURRENTLY NOT USED FOR ANYTHING. JUST DEBUGGING
@@ -11,7 +11,7 @@ async function interactionsGet(req, res) {
 
 // get all options from types, locations, and formats tables
 // used to populate form options in client
-async function optionsGet(req, res) {
+async function optionsGet(req, res, next) {
   try {
     const types = await queries.selectAllFromTable('types');
     const locations = await queries.selectAllFromTable('locations');
@@ -26,11 +26,11 @@ async function optionsGet(req, res) {
 
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error });
+    next(error);
   }
 }
 
-async function addPost(req, res) {
+async function addPost(req, res, next) {
   const data = req.body;
 
   // Introduce timeout so client animation can play
@@ -51,12 +51,12 @@ async function addPost(req, res) {
 
       res.json({ message: 'data added' });
     } catch (error) {
-      res.status(500).json({ error });
+      next(error);
     }
-  }, 1000);
+  }, 500);
 }
 
-async function reportGet(req, res) {
+async function reportGet(req, res, next) {
   // get interactions from db between date range
   try {
     // parse incoming query
@@ -87,10 +87,6 @@ async function reportGet(req, res) {
       location
     );
 
-    // throw error is unable to complete any queries
-    if (!rows || !count_days || !count_format || !count_type || !count_total)
-      throw 'Error building report';
-
     res.json({
       message: 'ok',
       rows,
@@ -100,20 +96,17 @@ async function reportGet(req, res) {
       count_days,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error });
+    next(error);
   }
 }
 
-async function dashboardGet(req, res) {
+async function dashboardGet(req, res, next) {
   try {
     const count_month = await queries.countInteractionsThisMonth();
 
-    if (!count_month) throw 'Error searching database';
-
     res.json({ message: 'ok', count_month });
   } catch (error) {
-    res.status(500).json({ error });
+    next(error);
   }
 }
 

@@ -215,7 +215,11 @@ function Reports() {
                 All Interactions Between {formState.start} and {formState.end}
               </h3>
               <hr />
-              <Table rows={report.rows} />
+              {!report.rows[0] ? (
+                <p style={{ textAlign: 'center' }}>There is nothing here...</p>
+              ) : (
+                <Table rows={report.rows} />
+              )}
             </CardWrapper>
           </div>
         </div>

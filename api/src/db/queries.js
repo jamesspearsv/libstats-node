@@ -1,6 +1,8 @@
 const db = require('./connection');
 const { getDateToday } = require('../helpers.js');
 
+// ** ADD ERROR HANDLING FUNCTION TO QUERIES ** //
+
 async function selectInteractions() {
   const rows = await db('interactions')
     .select(

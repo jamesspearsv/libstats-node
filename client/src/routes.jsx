@@ -1,4 +1,5 @@
 import App from './App';
+import Error from './components/Error';
 import Home from './pages/Home';
 import Record from './pages/Record';
 import Reports from './pages/Reports';
