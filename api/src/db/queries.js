@@ -1,8 +1,6 @@
 const db = require('./connection');
 const { getDateToday } = require('../helpers.js');
 
-// ** ADD ERROR HANDLING FUNCTION TO QUERIES ** //
-
 async function selectInteractions() {
   const rows = await db('interactions')
     .select(
@@ -28,19 +26,16 @@ async function selectAllFromTable(table) {
 // Insert interaction into interactions table
 async function insertInteraction({ type, location, format }) {
   try {
-    const today = getDateToday();
-
     await db('interactions').insert({
       type_id: type,
       location_id: location,
       format_id: format,
-      date: today,
+      date: getDateToday(),
     });
 
     return true;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error(error);
   }
 }
 
@@ -72,8 +67,7 @@ async function selectInteractionsInRange(start, end, location_id) {
 
     return rows;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 }
 
@@ -89,8 +83,7 @@ async function countAllInteractionsInRange(start, end, location_id) {
 
     return count.number_of_interactions;
   } catch (error) {
-    console.log(error);
-    return false;
+    return error;
   }
 }
 
@@ -109,8 +102,7 @@ async function countInteractionsInRange(start, end, location_id, category) {
 
     return rows;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 }
 
@@ -145,8 +137,7 @@ async function countByDay(start, end, location) {
     // console.log(rows);
     return rows;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 }
 
@@ -160,8 +151,7 @@ async function countInteractionsThisMonth() {
 
     return row.number_of_interactions;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 }
 

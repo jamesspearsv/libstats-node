@@ -8,32 +8,23 @@ import Error from '../components/Error';
 import styles from './Home.module.css';
 
 function Home() {
-  // eslint-disable-next-line no-unused-vars
-  const [apiurl, setApiurl] = useOutletContext();
-  const [types, setTypes] = useState([]);
+  const { apiurl, options } = useOutletContext();
   const [data, setData] = useState({});
   const [effectTrigger, setEffectTrigger] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    async function fetchOptions() {
+    async function fetchDashboard() {
       try {
         const url = `${apiurl}/dashboard`;
         const data = await fetch(url);
 
-        if (!data.ok) throw 'data error';
+        // if (!data.ok) throw 'data error';
         const json = await data.json();
         setData(json);
 
         console.log(json);
-
-        const options = `${apiurl}/options`;
-        const optionsData = await fetch(options);
-
-        if (!optionsData.ok) throw 'option error';
-        const optionsJson = await optionsData.json();
-        setTypes(optionsJson.types);
 
         setLoading(false);
       } catch (error) {
@@ -43,7 +34,7 @@ function Home() {
       }
     }
 
-    fetchOptions();
+    fetchDashboard();
 
     return () => {
       setError(false);
@@ -95,7 +86,7 @@ function Home() {
           </CardWrapper>
         </div>
         <div className={styles.types}>
-          {types.map((type) => (
+          {options.types.map((type) => (
             <CardWrapper
               key={type.id}
               style={{

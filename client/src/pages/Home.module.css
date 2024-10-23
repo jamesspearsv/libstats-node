@@ -7,7 +7,7 @@
 }
 
 .container {
-  width: 70%;
+  width: 60%;
   margin: auto;
 }
 
@@ -26,8 +26,9 @@
 
 .quickstartContainer {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 2rem;
+  justify-content: center;
+  gap: 3rem;
+  margin: 4rem 0;
 }
 
 .quickstart {
@@ -47,7 +48,7 @@
 }
 
 .types > div {
-  width: 30%;
+  width: 25%;
   transition: transform 250ms ease-in-out;
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -7,7 +7,6 @@ import Button from '../components/Button';
 import Form from '../components/Form';
 import SelectInput from '../components/SelectInput';
 import Modal from '../components/Modal';
-import Error from '../components/Error';
 import CardWrapper from '../components/CardWrapper';
 
 const defaultFormState = {
@@ -18,40 +17,10 @@ const defaultFormState = {
 
 function Record() {
   // Component state
-  // eslint-disable-next-line no-unused-vars
-  const [apiurl, setApiurl] = useOutletContext();
+  const { apiurl, options } = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
-  const [formOptions, setFormOptions] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  // ** FETCH FORM OPTIONS ON MOUNT ** //
-  useEffect(() => {
-    async function fetchOptions() {
-      const url = `${apiurl}/options`;
-      try {
-        const res = await fetch(url);
-        const json = await res.json();
-
-        // check that res is okay or throw error
-        if (!res.ok) throw json.error;
-
-        setFormOptions(json);
-        console.log(json);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setError(true);
-      }
-    }
-    fetchOptions();
-
-    return () => {
-      setLoading(true);
-      setError(false);
-    };
-  }, [apiurl]);
 
   // ** HANDLE FORM SUBMISSION ** //
   function handleFormSubmit(e) {
@@ -108,10 +77,6 @@ function Record() {
     setIsOpen(true);
   }
 
-  // // Render component based on loading and error state
-  if (error) return <Error />;
-  if (loading) return;
-
   return (
     <>
       <Form
@@ -121,19 +86,19 @@ function Record() {
       >
         <SelectInput
           label="Type"
-          options={formOptions.types}
+          options={options.types}
           handleChange={handleSelectChange}
           value={formState.type}
         />
         <SelectInput
           label="Location"
-          options={formOptions.locations}
+          options={options.locations}
           handleChange={handleSelectChange}
           value={formState.location}
         />
         <SelectInput
           label="Format"
-          options={formOptions.formats}
+          options={options.formats}
           handleChange={handleSelectChange}
           value={formState.format}
         />
@@ -164,7 +129,7 @@ function Record() {
             justifyContent: 'start',
           }}
         >
-          {formOptions.types.map((type) => (
+          {options.types.map((type) => (
             <CardWrapper
               key={type.id}
               style={{

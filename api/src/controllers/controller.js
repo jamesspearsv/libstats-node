@@ -1,7 +1,5 @@
 const queries = require('../db/queries');
 
-// ** TODO -- ADD ERROR HANDLING FOR QUERY RESULTS ** //
-
 // Select all interactions from db
 // CURRENTLY NOT USED FOR ANYTHING. JUST DEBUGGING
 async function interactionsGet(req, res) {

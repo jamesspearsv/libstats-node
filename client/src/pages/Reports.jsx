@@ -7,8 +7,6 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip,
-  BarChart,
-  Bar,
   LineChart,
   Line,
 } from 'recharts';
@@ -30,50 +28,20 @@ function Reports() {
     location: '',
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const [apiurl, setApiurl] = useOutletContext();
+  const { apiurl, options } = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
-  const [options, setOptions] = useState({});
-
-  const [formLoading, setFormLoading] = useState(true);
-  const [dataLoading, setDataLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   // Report state
   const [report, setReport] = useState({});
-
-  // ** FETCH FORM OPTIONS ON COMPONENT MOUNT ** //
-  useEffect(() => {
-    async function fetchOptions() {
-      const url = `${apiurl}/options`;
-      try {
-        const res = await fetch(url);
-        const json = await res.json();
-
-        // check that res is okay or throw error
-        if (!res.ok) throw json.error;
-
-        setOptions(json);
-        setFormLoading(false);
-      } catch (error) {
-        console.error(error);
-        setError(true);
-      }
-    }
-    fetchOptions();
-
-    return () => {
-      setFormLoading(true);
-      setError(false);
-    };
-  }, [apiurl]);
 
   // ** FETCH DATA WHEN SELECTION FORM IS COMPLETE ** //
   useEffect(() => {
     for (const key in formState) {
       // return if form is incomplete
       if (!formState[key]) {
-        setDataLoading(true);
+        setLoading(true);
         return;
       }
     }
@@ -89,10 +57,9 @@ function Reports() {
 
         if (!res.ok) throw json.error;
 
-        // TODO -- parse and store data
         console.log(json);
         setReport(json);
-        setDataLoading(false);
+        setLoading(false);
       } catch (error) {
         console.error(error);
         setError(true);
@@ -102,7 +69,7 @@ function Reports() {
     fetchInteractions();
 
     return () => {
-      setDataLoading(true);
+      setLoading(true);
       setError(false);
     };
   }, [formState, apiurl]);
@@ -112,7 +79,7 @@ function Reports() {
     toast.dismiss();
     if (formState.end != '' && formState.start != '') {
       if (formState.end < formState.start) {
-        setDataLoading(true);
+        setLoading(true);
         toast.error('Start date cannot be after end date', {
           duration: Infinity,
           position: 'top-center',
@@ -149,36 +116,35 @@ function Reports() {
 
   return (
     <>
-      {!formLoading && (
-        <Form
-          style={{
-            gap: '0.5rem',
-            width: 'fit-content',
-            margin: 'auto',
-            height: 'fit-content',
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
-            <DateInput
-              label="Start"
-              value={formState.start}
-              handleChange={handleDateChange}
-            />
-            <DateInput
-              label="End"
-              value={formState.end}
-              handleChange={handleDateChange}
-            />
-            <SelectInput
-              label="Location"
-              options={options.locations}
-              handleChange={handleSelectChange}
-              value={formState.location}
-            />
-          </div>
-        </Form>
-      )}
-      {dataLoading ? (
+      <Form
+        style={{
+          gap: '0.5rem',
+          width: 'fit-content',
+          margin: 'auto',
+          height: 'fit-content',
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
+          <DateInput
+            label="Start"
+            value={formState.start}
+            handleChange={handleDateChange}
+          />
+          <DateInput
+            label="End"
+            value={formState.end}
+            handleChange={handleDateChange}
+          />
+          <SelectInput
+            label="Location"
+            options={options.locations}
+            handleChange={handleSelectChange}
+            value={formState.location}
+          />
+        </div>
+      </Form>
+
+      {loading ? (
         <div className={styles.loading}>
           <h4>Complete the form above to build a report</h4>
           <p>Select a start date, end date, and location</p>

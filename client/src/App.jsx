@@ -1,16 +1,43 @@
 import { Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './App.module.css';
 import Nav from './components/Nav';
 
 function App() {
   // Set api url based on env
-  const [apiurl, setApiurl] = useState(
+  const [apiurl] = useState(
     import.meta.env.VITE_API_URL || 'http://localhost:3001'
   );
+  const [options, setOptions] = useState({});
+  const [loading, setLoading] = useState(true);
 
   console.log('api url:', apiurl);
+
+  // ** FETCH FORM OPTIONS ON MOUNT ** //
+  useEffect(() => {
+    async function fetchOptions() {
+      const url = `${apiurl}/options`;
+
+      const res = await fetch(url);
+      const json = await res.json();
+
+      // check that res is okay or throw error
+      if (!res.ok) throw json.error;
+      console.log(json);
+
+      setOptions(json);
+      setLoading(false);
+    }
+    fetchOptions();
+
+    return () => {
+      setLoading(true);
+      setOptions({});
+    };
+  }, [apiurl]);
+
+  console.log(options);
 
   return (
     <>
@@ -39,7 +66,7 @@ function App() {
       />
       <Nav />
       <main className={styles.main}>
-        <Outlet context={[apiurl, setApiurl]} />
+        {!loading && <Outlet context={{ apiurl, options }} />}
       </main>
     </>
   );
