@@ -29,20 +29,22 @@ async function optionsGet(req, res, next) {
 }
 
 async function addPost(req, res, next) {
-  const data = req.body;
+  const { type, location, format } = req.body;
 
   // Introduce timeout so client animation can play
   setTimeout(async () => {
     try {
       // Check that body contains only valid keys
-      for (const key in data) {
-        const check = await queries.checkIfExists(key + 's', data[key]);
+      for (const key in req.body) {
+        const check = await queries.checkIfExists(key + 's', req.body[key]);
         // If not throw error
         if (!check) throw 'Invalid option id';
       }
 
+      console.log(req.body);
+
       // If valid body insert interaction into db
-      const result = await queries.insertInteraction(data);
+      const result = await queries.insertInteraction(type, location, format);
 
       // Verify that interaction was inserted successfully
       if (!result) throw 'Error adding interaction';

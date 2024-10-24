@@ -24,7 +24,7 @@ async function selectAllFromTable(table) {
 }
 
 // Insert interaction into interactions table
-async function insertInteraction({ type, location, format }) {
+async function insertInteraction(type, location, format) {
   try {
     await db('interactions').insert({
       type_id: type,

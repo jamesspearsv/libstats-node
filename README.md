@@ -2,29 +2,30 @@
 
 - [Table of Contents](#table-of-contents)
 - [Overview](#overview)
-- [Technolgies Used](#technolgies-used)
+- [Technologies Used](#technologies-used)
   - [Client](#client)
   - [API](#api)
   - [Database](#database)
 - [Project Structure](#project-structure)
 - [Installation \& Configuration](#installation--configuration)
-- [Datebase Setup](#datebase-setup)
+- [Database Setup](#database-setup)
 - [Usage](#usage)
   - [Running Locally](#running-locally)
   - [Running in Production with Docker](#running-in-production-with-docker)
 - [API Documentation](#api-documentation)
   - [Endpoints](#endpoints)
-    - [Reports](#reports)
+    - [Report](#report)
     - [Options](#options)
     - [Add](#add)
     - [Dashboard](#dashboard)
     - [Interactions](#interactions)
+    - [Failed Responses](#failed-responses)
 - [Contributing](#contributing)
 - [License](#license)
 
 # Overview
 
-LibStats is a full-stack web app designed to track and report reference interaction, types, locations, and formats in a public library setting. The app features a React client and a ExpressJS backend API that interactions with a SQLite3 datebase to store and retrieve interaction data.
+LibStats is a full-stack web app designed to track and report reference interaction, types, locations, and formats in a public library setting. The app features a React client and a ExpressJS backend API that interacts with a SQLite3 database to store and retrieve interaction data.
 
 This app manages reference interactions in a library setting between different types, in different formats, and at different locations.
 
@@ -32,14 +33,14 @@ Key functionality includes:
 
 - CRUD operations to manage reference interactions
 - Linking interactions to pre-defined types, locations, and formats
-- Reporting functions to retrive interation data from database
+- Reporting functions to retrieve interaction data from database
 - Data visualization elements
 
-# Technolgies Used
+# Technologies Used
 
 - **Docker**
 - **Docker Compose**
-- **Caddy**:
+- **Caddy**
 
 ## Client
 
@@ -47,12 +48,12 @@ Key functionality includes:
 - **Vite**: Frontend tooling and build tool
 - **React Router**: Client-side routing for React
 - **React Hot Toast**: Notifications library for React
-- **Recharts**: Data visualization library for Reach
+- **Recharts**: Data visualization library for React
 
 ## API
 
 - **Express**: Web framework for building the backend API
-- **Knex**: SQL query builder for migrations and database queries
+- **Knex**: SQL query builder and migrations tool
 - **better-sqlite3**: SQLite database driver
 
 ## Database
@@ -111,19 +112,27 @@ cd api
 npm install
 ```
 
-**3. Set up environment variables**: Create an `.env` file in the project root with the follow contents:
+**3. Set up environment variables**: Create an `.env` file in the project root with the following contents:
 
 ```
 NODE_ENV=production
-NODE_PORT=[API_PORT]
-ORIGINS=COMMA SEPERATED LIST OF CLIENT ORIGINS, EX: HTTP://client,HTTP://clientTwo
-VITE_API_URL=http://[SERVER_IP]:${NODE_PORT}
+NODE_PORT=[...]
+ORIGINS=[...]
+VITE_API_URL=http://[...]:${NODE_PORT}
 TZ=America/New_York
 ```
 
 These variables in this `.env` are used by the app in production.
 
-**4. Create databases**: Create the necessary Sqlite3 database files with the following command from the project root:
+- `NODE_ENV`: Defines which envirionment the API is running in in the API container
+- `NODE_PORT`: Defines which port is exposed by the API container in Docker. Defaults to `3001` if not provided
+- `ORIGINS`: Comma separated list of client origina. Allowed origins in the CORS configuration for the API
+- `VITE_API_URL`: Variable to pass the API url to the client frontend
+- `TZ`: Sets the timezone of the API container and impacts the default timezone for timestamps during database insertions and request logging
+
+**4. Create databases**: Create the necessary SQLite3 database files with the following command from the project root:
+
+The below commands create an empty SQLite3 file that is populated in the set below.
 
 ```bash
 touch ./api/data/dev.sqlite
@@ -135,7 +144,9 @@ or
 touch ./api/data/production.sqlite
 ```
 
-# Datebase Setup
+The production database is mounted to `/app/data/production.sqlite` in the API Docker container
+
+# Database Setup
 
 **1. Run migrations**: In the `api` directory, run the Knex migrations to set up the database. The following command will apply the latest migrations.
 
@@ -150,13 +161,13 @@ npx knex migrate:latest
 - `locations`: Defines available location at which interactions can occur
 - `formats`: Defines types of formats in which interaction can take place
 
-**3. Database seeds**: Seed the `types`, `locations`, and `formats` tables with the following command:
+**3. Database seeds**: Seed the `types`, `locations`, and `formats` tables with predefined values
 
 ```bash
 npx knex seed:run
 ```
 
-Use the `--env production` flag to seed a production database
+Use the `--env production` flag to seed a production database. **Only seed a production database once to avoid data lose**
 
 # Usage
 
@@ -164,7 +175,7 @@ LibStats is designed to be run locally in development and run in production usin
 
 ## Running Locally
 
-Run any of the following commands from the project root
+Run any of the following commands from the project root. Both the frontend and backend can be run independly or as a fullstack app
 
 **Run the frontend independently**
 
@@ -182,9 +193,9 @@ cd api
 npm run dev
 ```
 
-Visit `http://localhost:3001` to access the api locally
+Visit `http://localhost:3001` to access the API locally
 
-**Run the app fullstack**
+**Run the fullstack app**
 
 ```bash
 cd api
@@ -211,21 +222,166 @@ From the project root run the following command:
 sudo docker compose up -d --build
 ```
 
-Once started, the app's client should be available at your machine's local IP address on port 80 while the app's backend will be available at the port number set in the app's `.env`
+Once started, the app's client should be available at your machine's local IP address on port 80 while the app's backend will be available the value defined using `NODE_PORT` in the app's `.env`. If this is not set the API will be available on port 3001
 
 # API Documentation
 
 ## Endpoints
 
-### Reports
+All example endpoint responses are abbreviated for this README
+
+### Report
+
+GET /report
+
+Returns a report of interactions between a range of given dates and at a given location.
+
+**Query Parameters**
+
+- `start` and `end` (required): Filter interactions by date range (e.g. `2024-01-01` to `2024-01-03`)
+- `location` (required): Filter interaction by a given location id (e.g. `1`)
+
+**Response**
+
+```json
+{
+  "message": "ok",
+  "rows": [],
+  "count_total": 0,
+  "count_format": [
+    {
+      "id": 1,
+      "value": "In-Person",
+      "number_of_interactions": 0
+    }
+  ],
+  "count_type": [
+    {
+      "id": 1,
+      "value": "Directional",
+      "number_of_interactions": 0
+    }
+  ],
+  "count_days": [
+    {
+      "date": "2024-01-01",
+      "number_of_interactions": 0
+    }
+  ]
+}
+```
 
 ### Options
 
+GET /options
+
+Returns the defined rows in `types`, `locations`, and `formats` tables. Used in build forms for client UI
+
+**Response**
+
+```json
+{
+  "message": "ok",
+  "types": [
+    {
+      "id": 1,
+      "value": "Directional",
+      "desc": "Simple questions about facilities, hours, etc."
+    }
+  ],
+  "locations": [
+    {
+      "id": 1,
+      "value": "Circulation"
+    }
+  ],
+  "formats": [
+    {
+      "id": 1,
+      "value": "In-Person"
+    }
+  ]
+}
+```
+
 ### Add
+
+POST /add
+
+Inserts a new row into the `interactions` table
+
+**Body Parameters**
+
+This endpoint expects the following request body:
+
+```json
+{
+  "type": 1,
+  "location": 2,
+  "format": 1
+}
+```
+
+Each parameter represents the unique id of a row in the respective database table
+
+- `type`: Integer (required)
+- `location`: Integer (required)
+- `format`: Integer (required)
+
+**Response**
+
+```json
+{ "message": "data added" }
+```
 
 ### Dashboard
 
+GET /dashboard
+
+Returns data for the app homepage
+
+**Response**
+
+```json
+{ "message": "ok", "count_month": 10 }
+```
+
 ### Interactions
+
+GET /interactions
+
+Returns all rows in the `interactions` table
+
+**Response**
+
+```json
+[
+  {
+    "id": 52,
+    "type": "Directional",
+    "location": "Reference",
+    "format": "In-Person",
+    "date": "2024-10-23"
+  },
+  {
+    "id": 53,
+    "type": "Directional",
+    "location": "Reference",
+    "format": "In-Person",
+    "date": "2024-10-23"
+  }
+]
+```
+
+### Failed Responses
+
+Any endpoint that encounters an error will respond with the following:
+
+```json
+{ "error": "Some error message" }
+```
+
+The response will contain any errors returned from the API.
 
 # Contributing
 
