@@ -126,8 +126,8 @@ These variables in this `.env` are used by the app in production.
 
 - `NODE_ENV`: Defines which envirionment the API is running in in the API container
 - `NODE_PORT`: Defines which port is exposed by the API container in Docker. Defaults to `3001` if not provided
-- `ORIGINS`: Comma separated list of client origina. Allowed origins in the CORS configuration for the API
-- `VITE_API_URL`: Variable to pass the API url to the client frontend
+- `ORIGINS`: Comma separated list of client origins (`http://localhost,http://localhost:3000`). Allowed origins in the CORS configuration for the API
+- `VITE_API_URL`: Variable to pass the API url to the client frontend. Replace placeholder with host server IP or hostname (`localhost`)
 - `TZ`: Sets the timezone of the API container and impacts the default timezone for timestamps during database insertions and request logging
 
 **4. Create databases**: Create the necessary SQLite3 database files with the following command from the project root:
