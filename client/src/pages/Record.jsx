@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import toast from "react-hot-toast";
 
 // ** COMPONENT IMPORTS ** //
-import Button from '../components/Button';
-import Form from '../components/Form';
-import SelectInput from '../components/SelectInput';
-import Modal from '../components/Modal';
-import CardWrapper from '../components/CardWrapper';
+import Button from "../components/Button";
+import Form from "../components/Form";
+import SelectInput from "../components/SelectInput";
+import Modal from "../components/Modal";
+import CardWrapper from "../components/CardWrapper";
 
 const defaultFormState = {
-  type: '',
-  location: '',
-  format: '',
+  type: "",
+  location: "",
+  format: "",
 };
 
 function Record() {
@@ -28,21 +28,21 @@ function Record() {
     // return early if any form selects are invalid
     for (const value in formState) {
       if (!formState[value]) {
-        toast.error('Please complete the form');
+        toast.error("Please complete the form");
         return;
       }
     }
 
-    // handle post with fetch api
-    async function postInteraction() {
+    // post interaction using fetch api and /add endpoint
+    (async () => {
       // prepare for fetch call
-      const currentToast = toast.loading('Adding interaction...');
+      const currentToast = toast.loading("Adding interaction...");
       const url = `${apiurl}/add`;
       const options = {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(formState),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
 
@@ -53,14 +53,14 @@ function Record() {
         // check that res is okay or throw error
         if (!res.ok) throw json.error;
 
-        toast.success('Success!', { id: currentToast });
+        toast.success("Success!", { id: currentToast });
       } catch (error) {
         console.error(error);
         toast.error(error, { id: currentToast });
       }
-    }
-    postInteraction();
+    })();
 
+    // reset form to default state
     setFormState(defaultFormState);
   }
 
@@ -81,8 +81,8 @@ function Record() {
     <>
       <Form
         onSubmit={handleFormSubmit}
-        title={'Add New Interaction'}
-        style={{ margin: 'auto ', width: 'max(20%, 350px)' }}
+        title={"Add New Interaction"}
+        style={{ margin: "auto ", width: "max(20%, 350px)" }}
       >
         <SelectInput
           label="Type"
@@ -106,9 +106,9 @@ function Record() {
       </Form>
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '1rem',
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "1rem",
         }}
       >
         <Button
@@ -122,24 +122,24 @@ function Record() {
         <h3>Interaction Type Definitions</h3>
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            flexWrap: 'wrap',
-            justifyContent: 'start',
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            flexWrap: "wrap",
+            justifyContent: "start",
           }}
         >
           {options.types.map((type) => (
             <CardWrapper
               key={type.id}
               style={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
               }}
             >
-              <div style={{ fontWeight: 'bold' }}>{type.value}</div>
+              <div style={{ fontWeight: "bold" }}>{type.value}</div>
               <hr />
               <p>{type.desc}</p>
             </CardWrapper>

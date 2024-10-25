@@ -1,10 +1,20 @@
-function Error() {
+import { PropTypes } from "prop-types";
+
+function Error({ status }) {
   return (
     <div>
-      <h1>Error!</h1>
-      <p>Something went wrong. Please try again later.</p>
+      <h1>{status} Error!</h1>
+      {status === "404" ? (
+        <p>That page isn&apos;t here</p>
+      ) : (
+        <p>Something went wrong. Please try again.</p>
+      )}
     </div>
   );
 }
+
+Error.propTypes = {
+  status: PropTypes.string.isRequired,
+};
 
 export default Error;

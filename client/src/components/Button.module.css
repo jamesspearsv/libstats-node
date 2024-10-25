@@ -18,3 +18,20 @@
 .danger {
   background-color: var(--color-danger);
 }
+
+.tab {
+  --border-radius: 15px;
+  color: black;
+  margin: 0;
+  border-radius: 0;
+  padding: .5rem;
+  flex-grow: 1;
+}
+
+.tab[id='bar'] {
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.tab[id='line'] {
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}

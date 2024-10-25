@@ -45,10 +45,11 @@
   gap: 1rem;
   flex-wrap: wrap;
   width: 100%;
+  margin: auto;
 }
 
 .types > div {
-  width: 31%;
+  width: 29%;
   transition: transform 250ms ease-in-out;
 }
 

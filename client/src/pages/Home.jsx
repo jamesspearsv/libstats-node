@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
-import CardWrapper from '../components/CardWrapper';
-import Button from '../components/Button';
-import Error from '../components/Error';
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import CardWrapper from "../components/CardWrapper";
+import Button from "../components/Button";
+import Error from "../components/Error";
 
-import styles from './Home.module.css';
+import styles from "./Home.module.css";
 
 function Home() {
   const { apiurl, options } = useOutletContext();
@@ -14,12 +14,13 @@ function Home() {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    async function fetchDashboard() {
+    // fetch data from /dashboard endpoint
+    (async () => {
       try {
         const url = `${apiurl}/dashboard`;
         const data = await fetch(url);
 
-        if (!data.ok) throw 'data error';
+        if (!data.ok) throw "data error";
         const json = await data.json();
 
         setCounter(json.count_month);
@@ -27,9 +28,7 @@ function Home() {
         console.error(error);
         setError(error);
       }
-    }
-
-    fetchDashboard();
+    })();
 
     return () => {
       setError(false);
@@ -38,7 +37,7 @@ function Home() {
 
   function handleRefresh() {
     const delay = 1000;
-    toast.loading('Refreshing', {
+    toast.loading("Refreshing", {
       duration: delay,
     });
 
@@ -47,7 +46,7 @@ function Home() {
     }, delay);
   }
 
-  if (error) return <Error />;
+  if (error) return <Error status={"500"} />;
 
   return (
     <>
@@ -57,19 +56,19 @@ function Home() {
         <div className={styles.quickstartContainer}>
           <div className={styles.quickstart}>
             <h2>Quickstart</h2>
-            <p style={{ lineHeight: '1.5' }}>
+            <p style={{ lineHeight: "1.5" }}>
               LibStats is a simple app that allows you to record, and build
               reports about reference interactions that are completed in the
               library. Click record in the menu to get started. If you have any
               questions speak to your supervisor.
             </p>
           </div>
-          <CardWrapper style={{ height: 'fit-content', padding: '1.3rem' }}>
+          <CardWrapper style={{ height: "fit-content", padding: "1.3rem" }}>
             <div className={styles.monthly}>
               <div className={styles.monthly_label}>
                 Interactions This Month
               </div>
-              <div style={{ minHeight: '25px' }}>
+              <div style={{ minHeight: "25px" }}>
                 <div>{counter}</div>
               </div>
               <Button
@@ -77,22 +76,25 @@ function Home() {
                 type="button"
                 variant="primary"
                 action={handleRefresh}
-                style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
+                style={{ paddingLeft: "2rem", paddingRight: "2rem" }}
               />
             </div>
           </CardWrapper>
         </div>
+        <h3 style={{ textAlign: "center", marginBottom: "1rem" }}>
+          Interaction Types
+        </h3>
         <div className={styles.types}>
           {options.types.map((type) => (
             <CardWrapper
               key={type.id}
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
               }}
             >
-              <div style={{ fontWeight: 'bold' }}>{type.value}</div>
+              <div style={{ fontWeight: "bold" }}>{type.value}</div>
               <hr />
               <div>{type.desc}</div>
             </CardWrapper>
