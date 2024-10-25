@@ -48,14 +48,14 @@ function App() {
           success: {
             iconTheme: {
               primary: '#185c36',
-              secondary: 'white',
+              secondary: '#ffffff',
             },
           },
           error: {
             style: {
               iconTheme: {
                 primary: '#dc3545',
-                secondary: 'white',
+                secondary: '#ffffff',
               },
             },
           },

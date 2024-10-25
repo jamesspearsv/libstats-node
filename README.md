@@ -25,7 +25,7 @@
 
 # Overview
 
-LibStats is a full-stack web app designed to track and report reference interaction, types, locations, and formats in a public library setting. The app features a React client and a ExpressJS backend API that interacts with a SQLite3 database to store and retrieve interaction data.
+LibStats is a full-stack web app designed to track and report reference interaction, types, locations, and formats in a public library setting. The app features a React client and an Express.js backend API that interacts with a SQLite3 database to store and retrieve interaction data.
 
 This app manages reference interactions in a library setting between different types, in different formats, and at different locations.
 
@@ -124,7 +124,7 @@ TZ=America/New_York
 
 These variables in this `.env` are used by the app in production.
 
-- `NODE_ENV`: Defines which envirionment the API is running in in the API container
+- `NODE_ENV`: Defines which environment the API is running in the API container
 - `NODE_PORT`: Defines which port is exposed by the API container in Docker. Defaults to `3001` if not provided
 - `ORIGINS`: Comma separated list of client origins (`http://localhost,http://localhost:3000`). Allowed origins in the CORS configuration for the API
 - `VITE_API_URL`: Variable to pass the API url to the client frontend. Replace placeholder with host server IP or hostname (`localhost`)
@@ -175,7 +175,7 @@ LibStats is designed to be run locally in development and run in production usin
 
 ## Running Locally
 
-Run any of the following commands from the project root. Both the frontend and backend can be run independly or as a fullstack app
+Run any of the following commands from the project root. Both the frontend and backend can be run independently or as a fullstack app
 
 **Run the frontend independently**
 
