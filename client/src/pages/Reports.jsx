@@ -116,7 +116,6 @@ function Reports() {
   }
 
   function handleChartChange(e) {
-    console.log(e.target);
     setChartType(e.target.id);
   }
 
