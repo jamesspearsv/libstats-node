@@ -200,6 +200,7 @@ function Reports() {
                   </BarChart>
                 )}
               </ResponsiveContainer>
+              {/* TODO : Extract this block into tab selector component */}
               <div
                 style={{
                   width: "100%",

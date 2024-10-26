@@ -12,9 +12,8 @@ function Form({ onSubmit, title, style, children }) {
 
 Form.propTypes = {
   onSubmit: PropTypes.func,
-  // children: PropTypes.array,
   title: PropTypes.string,
-  // style: PropTypes.obj,
+  style: PropTypes.obj,
 };
 
 export default Form;

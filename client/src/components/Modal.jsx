@@ -32,7 +32,6 @@ function Modal({ isOpen, setIsOpen, children }) {
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  chldren: PropTypes.node,
 };
 
 export default Modal;

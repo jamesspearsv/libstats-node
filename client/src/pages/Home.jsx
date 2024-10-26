@@ -48,6 +48,7 @@ function Home() {
 
   if (error) return <Error status={"500"} />;
 
+  // TODO : Build out dashboard with additional metrics
   return (
     <>
       <h1 className={styles.heading}>LibStats</h1>
