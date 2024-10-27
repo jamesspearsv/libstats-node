@@ -24,7 +24,7 @@ import DateInput from "../components/DateInput";
 import Table from "../components/Table";
 import CountReport from "../components/CountReport";
 import CardWrapper from "../components/CardWrapper";
-import Button from "../components/Button.jsx";
+import TabSelector from "../components/TabSelector.jsx";
 
 function Reports() {
   const defaultFormState = {
@@ -119,11 +119,6 @@ function Reports() {
     setChartType(e.target.id);
   }
 
-  const activeStyle = {
-    backgroundColor: "#007bff",
-    color: "#ffffff",
-  };
-
   // early return if any errors
   if (error) return <Error status={"500"} />;
 
@@ -200,32 +195,14 @@ function Reports() {
                   </BarChart>
                 )}
               </ResponsiveContainer>
-              {/* TODO : Extract this block into tab selector component */}
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  gap: "0",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  text={"Bar Chart"}
-                  variant={"tab"}
-                  type={"button"}
-                  action={handleChartChange}
-                  style={chartType === "bar" ? activeStyle : {}}
-                  id={"bar"}
-                />
-                <Button
-                  text={"Line Chart"}
-                  variant={"tab"}
-                  type={"button"}
-                  action={handleChartChange}
-                  style={chartType === "line" ? activeStyle : {}}
-                  id={"line"}
-                />
-              </div>
+              <TabSelector
+                tabs={[
+                  { id: "bar", label: "Bar Chart" },
+                  { id: "line", label: "Line Chart" },
+                ]}
+                handleClick={handleChartChange}
+                activeTab={chartType}
+              />
             </CardWrapper>
           </div>
           <div className={styles.table}>

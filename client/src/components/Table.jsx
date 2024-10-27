@@ -39,5 +39,13 @@ function Table({ rows }) {
 export default Table;
 
 Table.propTypes = {
-  rows: PropTypes.array.isRequired,
+  rows: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      format: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
