@@ -150,6 +150,7 @@ The production database is mounted to `/app/data/production.sqlite` in the API D
 
 **1. Run migrations**: In the `api` directory, run the Knex migrations to set up the database. The following command will apply the latest migrations.
 
+
 ```bash
 npx knex migrate:latest
 ```
@@ -166,6 +167,8 @@ npx knex migrate:latest
 ```bash
 npx knex seed:run
 ```
+
+Migration and seeds files can be found in `./api/src/db/migrations` and `./api/src/db/seeds` respectively
 
 Use the `--env production` flag to seed a production database. **Only seed a production database once to avoid data lose**
 

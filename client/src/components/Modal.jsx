@@ -1,7 +1,9 @@
-import { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import styles from './Modal.module.css';
-import Button from './Button';
+import { useRef, useEffect } from "react";
+import PropTypes from "prop-types";
+import styles from "./Modal.module.css";
+import Button from "./Button";
+
+/* Utility modal component */
 
 function Modal({ isOpen, setIsOpen, children }) {
   const modalRef = useRef(null);
@@ -32,6 +34,7 @@ function Modal({ isOpen, setIsOpen, children }) {
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Modal;

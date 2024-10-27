@@ -1,6 +1,11 @@
 import PropTypes from "prop-types";
 import styles from "./Button.module.css";
 
+/*
+ * Custom button component
+ * Variant corresponds to styles in Button.module.css
+ */
+
 function Button({ text, action, variant, type, style, id }) {
   return (
     <button

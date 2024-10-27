@@ -1,5 +1,7 @@
-import PropTypes from 'prop-types';
-import styles from './DateInput.module.css';
+import PropTypes from "prop-types";
+import styles from "./DateInput.module.css";
+
+/* Custom date input with label and callback */
 
 function DateInput({ label, value, handleChange }) {
   const id = label.toLowerCase();

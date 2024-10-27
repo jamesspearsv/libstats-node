@@ -1,5 +1,7 @@
-import { NavLink } from 'react-router-dom';
-import styles from './Nav.module.css';
+import { NavLink } from "react-router-dom";
+import styles from "./Nav.module.css";
+
+/* App navigation menu */
 
 function Nav() {
   return (

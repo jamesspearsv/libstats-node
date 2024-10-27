@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import styles from "./Table.module.css";
 
 /*
- * Component to parse and render a list of interactions.
- * Rows prop is required and expected to be an array of objects representing interactions.
- * Each row in rows should contain the following properties: id, type, format, locations, and date
+ * Component to parse and render a table of interactions:
+ *     Rows prop is required and expected to be an array of objects representing interactions.
+ *     Each row in rows should contain the following properties: id, type, format, locations, and date
  */
 
 function Table({ rows }) {

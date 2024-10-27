@@ -2,7 +2,7 @@ const db = require("./connection");
 const { getDateToday } = require("../helpers.js");
 
 async function selectInteractions() {
-  const rows = await db("interactions")
+  return db("interactions")
     .select(
       "interactions.id",
       "types.value as type",
@@ -13,14 +13,11 @@ async function selectInteractions() {
     .join("types", "interactions.type_id", "=", "types.id")
     .join("locations", "interactions.location_id", "=", "locations.id")
     .join("formats", "interactions.format_id", "=", "formats.id");
-
-  return rows;
 }
 
-// utility query to select all columns from specified table
+// Select all columns from given table
 async function selectAllFromTable(table) {
-  const rows = db.select("*").from(table);
-  return rows;
+  return db.select("*").from(table);
 }
 
 // Insert interaction into interactions table
@@ -39,19 +36,15 @@ async function insertInteraction(type, location, format) {
   }
 }
 
-// return boolean value if id exists in table
+// Return boolean value if id exists in a given table
 async function checkIfExists(table, id) {
   const row = await db(table).where("id", id).first();
   return !!row;
 }
 
 async function selectInteractionsInRange(start, end, location_id) {
-  // console.log('start:', start);
-  // console.log('end: ', end);
-  // console.log('location_id', location_id);
-
   try {
-    const rows = await db("interactions")
+    return await db("interactions")
       .select(
         "interactions.id",
         "types.value as type",
@@ -64,15 +57,13 @@ async function selectInteractionsInRange(start, end, location_id) {
       .join("formats", "interactions.format_id", "=", "formats.id")
       .whereBetween("date", [start, end])
       .andWhere("interactions.location_id", location_id);
-
-    return rows;
   } catch (error) {
     return error;
   }
 }
 
+// Count total number of interactions in a given date range at a given location
 async function countAllInteractionsInRange(start, end, location_id) {
-  // Count total number of interactions in a given date range at a given location
   try {
     const count = await db("interactions")
       .count("interactions.id as number_of_interactions")
@@ -87,10 +78,10 @@ async function countAllInteractionsInRange(start, end, location_id) {
   }
 }
 
+// Count number of interaction in a given date range grouped by category (i.e. type or format)
 async function countInteractionsInRange(start, end, location_id, category) {
-  // Count number of interaction in a given date range grouped by category (i.e. type or format)
   try {
-    const rows = await db(`${category}s`)
+    return await db(`${category}s`)
       .select(`${category}s.id`, `${category}s.value`)
       .count("interactions.id as number_of_interactions")
       .leftJoin("interactions", function () {
@@ -99,22 +90,15 @@ async function countInteractionsInRange(start, end, location_id, category) {
           .andOnBetween("interactions.date", [start, end]);
       })
       .groupBy(`${category}s.id`);
-
-    return rows;
   } catch (error) {
     return error;
   }
 }
 
+// Count number of interaction per day in a given date range and at a given location
 async function countByDay(start, end, location) {
   try {
-    const startDate = start; //'2024-10-01'; // Example start date
-    const endDate = end; //'2024-10-07'; // Example end date
-    const locationId = location;
-
-    // Query the datebase for the total number of interactions per day
-    // in a given date range and at a given location.
-    const rows = await db.raw(
+    return await db.raw(
       `WITH RECURSIVE date_range AS (
         SELECT DATE(?) AS date
         UNION ALL
@@ -131,18 +115,15 @@ async function countByDay(start, end, location) {
       GROUP BY dr.date
       ORDER BY dr.date ASC;
     `,
-      [startDate, endDate, locationId],
+      [start, end, location],
     );
-
-    // console.log(rows);
-    return rows;
   } catch (error) {
     return error;
   }
 }
 
+// Count total number interaction in the current month
 async function countInteractionsThisMonth() {
-  // count total interaction in the current month
   try {
     const row = await db("interactions")
       .count("interactions.id as number_of_interactions")

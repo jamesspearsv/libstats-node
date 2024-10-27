@@ -1,4 +1,6 @@
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
+
+/* Error message page */
 
 function Error({ status }) {
   return (

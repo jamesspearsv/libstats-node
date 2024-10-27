@@ -1,10 +1,12 @@
-import PropTypes from 'prop-types';
-import styles from './SelectInput.module.css';
+import PropTypes from "prop-types";
+import styles from "./SelectInput.module.css";
+
+/* Custom select input with label, options, and callback */
 
 function SelectInput({ label, options, handleChange, value }) {
   const style = {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
   };
 
   const id = label.toLowerCase();

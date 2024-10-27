@@ -2,11 +2,10 @@ import PropTypes from "prop-types";
 import styles from "./CountReport.module.css";
 
 /*
- * Component to parse and render a count report
- * Component expects a title and count prop
- * Count is expected to be an array of objects
- * Each object having the following properties:
- * id, value, number_of_interactions
+ * Component to parse and render a count report:
+ *     Count is expected to be an array of objects
+ *     Each object having the following properties:
+ *     id, value, number_of_interactions
  */
 
 function CountReport({ title, count }) {
