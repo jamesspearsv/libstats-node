@@ -1,10 +1,6 @@
 const queries = require("../db/queries");
 
-// TODO : replace `throw` calls with `throw new Error()` calls
-// TODO : improve error handling and readability
-
 // Select all interactions from db
-// CURRENTLY NOT USED FOR ANYTHING. JUST DEBUGGING
 async function interactionsGet(req, res) {
   const data = await queries.selectInteractions();
   res.json(data);
@@ -38,20 +34,14 @@ async function addPost(req, res, next) {
   setTimeout(async () => {
     try {
       // Check that body contains only valid keys
-      // TODO : Refactor to use Promise.All rather than awaiting one at a time
-      for (const key in req.body) {
-        const check = await queries.checkIfExists(key + "s", req.body[key]);
-        // If not throw error
-        if (!check) throw "Invalid option id";
-      }
-
-      console.log(req.body);
+      const checks = Object.keys(req.body).map(async (key) => {
+        return await queries.checkIfExists(`${key}s`, req.body[key]);
+      });
+      const results = await Promise.all(checks);
+      if (results.includes(false)) throw new Error("Invalid options");
 
       // If valid body insert interaction into db
-      const result = await queries.insertInteraction(type, location, format);
-
-      // Verify that interaction was inserted successfully
-      if (!result) throw "Error adding interaction";
+      await queries.insertInteraction(type, location, format);
 
       res.json({ message: "data added" });
     } catch (error) {
@@ -68,7 +58,7 @@ async function reportGet(req, res, next) {
 
     // check that location is valid
     const check = await queries.checkIfExists("locations", location);
-    if (!check) throw "Invalid location id"; // if not throw error
+    if (!check) throw new Error(`Invalid location id: ${location}`); // if not throw error
 
     const rows = await queries.selectInteractionsInRange(start, end, location);
     const count_days = await queries.countByDay(start, end, location);

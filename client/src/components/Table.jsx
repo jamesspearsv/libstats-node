@@ -41,7 +41,7 @@ export default Table;
 Table.propTypes = {
   rows: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
       type: PropTypes.string.isRequired,
       format: PropTypes.string.isRequired,
       location: PropTypes.string.isRequired,

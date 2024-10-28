@@ -13,7 +13,7 @@ function Form({ onSubmit, title, style, children }) {
 Form.propTypes = {
   title: PropTypes.string,
   onSubmit: PropTypes.func,
-  style: PropTypes.obj,
+  style: PropTypes.object,
   children: PropTypes.node.isRequired,
 };
 

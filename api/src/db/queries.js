@@ -29,10 +29,8 @@ async function insertInteraction(type, location, format) {
       format_id: format,
       date: getDateToday(),
     });
-
-    return true;
   } catch (error) {
-    return error(error);
+    throw new Error(error);
   }
 }
 
@@ -58,7 +56,7 @@ async function selectInteractionsInRange(start, end, location_id) {
       .whereBetween("date", [start, end])
       .andWhere("interactions.location_id", location_id);
   } catch (error) {
-    return error;
+    throw new Error(error);
   }
 }
 
@@ -74,7 +72,7 @@ async function countAllInteractionsInRange(start, end, location_id) {
 
     return count.number_of_interactions;
   } catch (error) {
-    return error;
+    throw new Error(error);
   }
 }
 
@@ -91,7 +89,7 @@ async function countInteractionsInRange(start, end, location_id, category) {
       })
       .groupBy(`${category}s.id`);
   } catch (error) {
-    return error;
+    throw new Error(error);
   }
 }
 
@@ -118,7 +116,7 @@ async function countByDay(start, end, location) {
       [start, end, location],
     );
   } catch (error) {
-    return error;
+    throw new Error(error);
   }
 }
 
@@ -132,7 +130,7 @@ async function countInteractionsThisMonth() {
 
     return row.number_of_interactions;
   } catch (error) {
-    return error;
+    throw new Error(error);
   }
 }
 
