@@ -1,7 +1,9 @@
+@import '../index.css';
+
 .table {
   margin: auto;
   height: 50dvh;
-  width: fit-content;
+  width: 100%;
   overflow-y: scroll;
 }
 
@@ -11,4 +13,23 @@
 
 .table td {
   padding: 1rem 2rem;
+}
+
+.row {
+  display: flex;
+}
+
+.row:first-child > div {
+  font-weight: bold;
+}
+
+.row:not(:first-child):hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.cell  {
+  text-align: center;
+  padding: 1rem 0;
+  flex: 1;
 }
