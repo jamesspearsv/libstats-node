@@ -130,29 +130,24 @@ These variables in this `.env` are used by the app in production.
 - `VITE_API_URL`: Variable to pass the API url to the client frontend. Replace placeholder with host server IP or hostname (`localhost`)
 - `TZ`: Sets the timezone of the API container and impacts the default timezone for timestamps during database insertions and request logging
 
-**4. Create databases**: Create the necessary SQLite3 database files with the following command from the project root:
-
-The below commands create an empty SQLite3 file that is populated in the set below.
-
-```bash
-touch ./api/data/dev.sqlite
-```
-
-or
-
-```bash
-touch ./api/data/production.sqlite
-```
-
-The production database is mounted to `/app/data/production.sqlite` in the API Docker container
 
 # Database Setup
+
+The app's data is stored using SQLite3 databases in `./api/data`. To create and set up a development or production 
+database follow the below instructions.
+
+Use the `--env production` flag to seed a production database. 
 
 **1. Run migrations**: In the `api` directory, run the Knex migrations to set up the database. The following command will apply the latest migrations.
 
 
 ```bash
 npx knex migrate:latest
+```
+or 
+
+```bash
+npx knex migrate:latest --env production
 ```
 
 **2. Database schema**: The database schema consists of the following tables:
@@ -168,9 +163,16 @@ npx knex migrate:latest
 npx knex seed:run
 ```
 
+or
+
+```bash
+npx knex seed:run --env production
+```
+
 Migration and seeds files can be found in `./api/src/db/migrations` and `./api/src/db/seeds` respectively
 
-Use the `--env production` flag to seed a production database. **Only seed a production database once to avoid data lose**
+
+**Only seed a production database once to avoid data lose**
 
 # Usage
 
