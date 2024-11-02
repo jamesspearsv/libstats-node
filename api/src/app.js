@@ -32,8 +32,8 @@ app.use((req, res, next) => {
 });
 
 // Configure routers
+app.use("/app", appRouter);
 app.use("/auth", authRouter);
-app.use(appRouter);
 
 // ** ERROR MIDDLEWARE ** //
 app.use((err, req, res, next) => {

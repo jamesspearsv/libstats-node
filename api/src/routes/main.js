@@ -9,8 +9,8 @@ router.get("/", (req, res) => {
 });
 router.get("/interactions", controller.interactionsGet);
 router.get("/options", controller.optionsGet);
-router.post("/add", controller.addPost);
+router.post("/record", controller.recordPost);
 router.get("/report", controller.reportGet);
-router.get("/dashboard", controller.dashboardGet);
+router.get("/summary", controller.summaryGet);
 
 module.exports = router;

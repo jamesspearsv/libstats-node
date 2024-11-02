@@ -3,37 +3,48 @@ import { Toaster } from "react-hot-toast";
 import { useState, useEffect } from "react";
 import styles from "./App.module.css";
 import Nav from "./components/Nav";
+import Error from "./components/Error.jsx";
 
 function App() {
   // Set api url based on env
-  const [apiurl] = useState(
-    import.meta.env.VITE_API_URL || "http://localhost:3001",
+  const [apihost] = useState(
+    import.meta.env.VITE_API_HOST || "http://localhost:3001",
   );
   const [options, setOptions] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  console.log("api url:", apiurl);
+  console.log("api host:", apihost);
 
   // ** FETCH FORM OPTIONS ON MOUNT ** //
   useEffect(() => {
-    (async () => {
-      const url = `${apiurl}/options`;
+    try {
+      (async () => {
+        const url = `${apihost}/app/options`;
 
-      const res = await fetch(url);
-      const json = await res.json();
+        const res = await fetch(url);
+        const json = await res.json();
 
-      // check that res is okay or throw error
-      if (!res.ok) throw json.error;
+        // check that res is okay or throw error
+        if (!res.ok) throw new Error(json.error);
 
-      setOptions(json);
-      setLoading(false);
-    })();
+        setOptions(json);
+        setLoading(false);
+      })();
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    }
 
     return () => {
       setLoading(true);
+      setError(false);
       setOptions({});
     };
-  }, [apiurl]);
+  }, [apihost]);
+
+  // Return early if there is an error
+  if (error) return <Error status={"500"} />;
 
   return (
     <>
@@ -62,7 +73,7 @@ function App() {
       />
       <Nav />
       <main className={styles.main}>
-        {!loading && <Outlet context={{ apiurl, options }} />}
+        {!loading && <Outlet context={{ apihost: apihost, options }} />}
       </main>
     </>
   );

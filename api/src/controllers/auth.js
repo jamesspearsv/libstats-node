@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const { verify } = require("jsonwebtoken");
 
-// TODO : Add secret key and admin password to .env for production
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "password";
 const SECRET_KEY = process.env.SECRET_KEY || "secretkey";
 
 function issueToken(req, res, next) {
@@ -25,10 +23,15 @@ function issueToken(req, res, next) {
 }
 
 function verifyToken(req, res, next) {
-  const token = req.headers.authorization.split(" ")[1];
+  // Verify that correct header is present
+  const authorization = req.headers.authorization;
+  if (!authorization) {
+    return next(new Error("No authorization header"));
+  }
 
   // Verify that a token is provided
-  if (!token) return next(new Error("No token provided"));
+  const token = authorization.split(" ")[1];
+  if (token === null) return next(new Error("No token provided"));
 
   // Verify that provided token is valid
   jwt.verify(token, SECRET_KEY, (err, decoded) => {

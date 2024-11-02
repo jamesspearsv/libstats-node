@@ -2,11 +2,12 @@ version: '3'
 services:
   client:
     container_name: client
+    env_file: .env
     build:
       context: ./client
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: ${VITE_API_URL}
+        VITE_API_HOST: ${VITE_API_HOST}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
     ports:

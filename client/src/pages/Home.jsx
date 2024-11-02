@@ -8,7 +8,7 @@ import Error from "../components/Error";
 import styles from "./Home.module.css";
 
 function Home() {
-  const { apiurl, options } = useOutletContext();
+  const { apihost, options } = useOutletContext();
   const [effectTrigger, setEffectTrigger] = useState(true);
   const [error, setError] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -17,7 +17,7 @@ function Home() {
     // fetch data from /dashboard endpoint
     (async () => {
       try {
-        const url = `${apiurl}/dashboard`;
+        const url = `${apihost}/app/summary`;
         const data = await fetch(url);
 
         if (!data.ok) throw "data error";
@@ -33,7 +33,7 @@ function Home() {
     return () => {
       setError(false);
     };
-  }, [apiurl, effectTrigger]);
+  }, [apihost, effectTrigger]);
 
   function handleRefresh() {
     const delay = 1000;

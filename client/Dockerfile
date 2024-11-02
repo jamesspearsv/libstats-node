@@ -11,14 +11,11 @@ RUN npm install
 # Copy the rest of the app's files
 COPY . .
 
-# Set env variables for Vite build process
-# ENV VITE_API_URL=http://localhost:3001
-
 # Set environment variable for Vite at build time
-ARG VITE_API_URL
-ENV VITE_API_URL=${VITE_API_URL}
+ARG VITE_API_HOST
+ENV VITE_API_HOST=${VITE_API_HOST}
 
-RUN echo "VITE_API_URL is set to: ${VITE_API_URL}"
+RUN echo "VITE_API_HOST is set to: ${VITE_API_HOST}"
 
 
 # Build the app for production
