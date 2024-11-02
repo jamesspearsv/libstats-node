@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const router = require("./routes/router");
+const appRouter = require("./routes/router");
+const authRouter = require("./routes/auth");
 
 const app = express();
 
@@ -11,6 +12,7 @@ const origins = process.env.ORIGINS
   ? process.env.ORIGINS.split(",")
   : ["http://localhost:3000"];
 
+// Enable CORS for server
 app.use(
   cors({
     origin: origins,
@@ -19,7 +21,8 @@ app.use(
   }),
 );
 
-app.use(express.urlencoded({ extended: true }));
+// Enable app to parse json and encoded form data
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // request logger
@@ -28,7 +31,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(router);
+app.use("/auth", authRouter);
+
+// TODO : refactor to send app api request to /app/[...]
+app.use(appRouter);
+
+// ** ERROR MIDDLEWARE ** //
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send({ error: "Server error" });
+});
 
 app.listen(PORT, () => {
   console.log("##########################");

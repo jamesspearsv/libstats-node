@@ -13,11 +13,4 @@ router.post("/add", controller.addPost);
 router.get("/report", controller.reportGet);
 router.get("/dashboard", controller.dashboardGet);
 
-// ** ERROR HANDLING ** //
-// TODO : IMPROVE ERROR MESSAGES
-router.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send({ error: "Server error" });
-});
-
 module.exports = router;
