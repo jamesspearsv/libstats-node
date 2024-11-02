@@ -1,0 +1,8 @@
+### Request access token from auth api
+
+POST http://localhost:3001/auth/token
+Content-Type: application/json
+
+{
+"password" : "admin"
+}
