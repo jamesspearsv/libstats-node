@@ -120,6 +120,8 @@ NODE_PORT=[...]
 ORIGINS=[...]
 VITE_API_URL=http://[...]:${NODE_PORT}
 TZ=America/New_York
+SECRET_KEY=[...]
+ADMIN_PASSWORD=[...]
 ```
 
 These variables in this `.env` are used by the app in production.
@@ -129,6 +131,8 @@ These variables in this `.env` are used by the app in production.
 - `ORIGINS`: Comma separated list of client origins (`http://localhost,http://localhost:3000`). Allowed origins in the CORS configuration for the API
 - `VITE_API_URL`: Variable to pass the API url to the client frontend. Replace placeholder with host server IP or hostname (`localhost`)
 - `TZ`: Sets the timezone of the API container and impacts the default timezone for timestamps during database insertions and request logging
+- `SECRET_KEY`: Secret value that is used for signing API access tokens
+- `ADMIN_PASSWORD`: Secret value that is used for accessing protected API routes and client views
 
 
 # Database Setup

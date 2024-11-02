@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const appRouter = require("./routes/router");
+const appRouter = require("./routes/main");
 const authRouter = require("./routes/auth");
 
 const app = express();
@@ -31,15 +31,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// Configure routers
 app.use("/auth", authRouter);
-
-// TODO : refactor to send app api request to /app/[...]
 app.use(appRouter);
 
 // ** ERROR MIDDLEWARE ** //
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).send({ error: "Server error" });
+  res.send({ error: "Server error" });
 });
 
 app.listen(PORT, () => {
