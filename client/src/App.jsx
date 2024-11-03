@@ -23,7 +23,7 @@ function App() {
         const json = await res.json();
 
         // check that res is okay or throw error
-        if (!res.ok) throw new Error(json.error);
+        if (!res.ok) throw new Error(json.message);
 
         setOptions(json);
         setLoading(false);

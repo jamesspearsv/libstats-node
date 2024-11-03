@@ -62,7 +62,7 @@ function Report() {
         const res = await fetch(url);
         const json = await res.json();
 
-        if (!res.ok) throw json.error;
+        if (!res.ok) throw new Error(json.message);
 
         setReport(json);
         setLoading(false);

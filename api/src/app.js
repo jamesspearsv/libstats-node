@@ -38,7 +38,7 @@ app.use("/auth", authRouter);
 // ** ERROR MIDDLEWARE ** //
 app.use((err, req, res, next) => {
   console.error(err);
-  res.send({ error: "Server error" });
+  res.status(500).json({ message: "Server error" });
 });
 
 app.listen(PORT, () => {

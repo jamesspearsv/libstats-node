@@ -388,7 +388,7 @@ Returns all rows in the `interactions` table
 Any endpoint that encounters an error will respond with the following:
 
 ```json
-{ "error": "Server Error" }
+{ "message": "Server Error" }
 ```
 
 # Contributing

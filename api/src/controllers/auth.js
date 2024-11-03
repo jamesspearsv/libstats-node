@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "password";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin";
 const SECRET_KEY = process.env.SECRET_KEY || "secretkey";
 
 function issueToken(req, res, next) {
@@ -11,12 +11,12 @@ function issueToken(req, res, next) {
 
     // Verify that user submitted admin password and actual admin password match
     if (password !== ADMIN_PASSWORD) {
-      return res.status(401).json({ message: "user not authorized" });
+      return res.status(401).json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign(crypto.randomBytes(10).toString("hex"), SECRET_KEY);
+    const token = jwt.sign(crypto.randomBytes(16).toString("hex"), SECRET_KEY);
 
-    return res.json({ message: "user authorized", token });
+    return res.json({ message: "User authorized", token });
   } catch (error) {
     return next(error);
   }
