@@ -1,6 +1,7 @@
-import Nav from "./components/Nav.jsx";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import Nav from "./components/Nav.jsx";
 
 function Admin() {
   // Set api host based on env
@@ -17,9 +18,29 @@ function Admin() {
       : localStorage.removeItem("auth");
   }, [accessToken]);
 
-  // TODO : Verify token expiration
+  // Verify that token is still valid
   useEffect(() => {
-    (async () => {})();
+    (async () => {
+      if (!accessToken) return;
+
+      const url = `${apihost}/auth/verify`;
+      const options = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+
+      const res = await fetch(url, options);
+      const json = await res.json();
+      console.log(json);
+
+      if (!res.ok) {
+        setAccessToken(null);
+        toast.error("Session expired");
+      }
+    })();
   }, []);
 
   return (

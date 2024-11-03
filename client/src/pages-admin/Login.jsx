@@ -1,8 +1,8 @@
 import { Navigate, useOutletContext } from "react-router-dom";
-import Form from "../components/Form.jsx";
 import { useState } from "react";
-import Button from "../components/Button.jsx";
 import { toast } from "react-hot-toast";
+import Form from "../components/Form.jsx";
+import Button from "../components/Button.jsx";
 
 function Login() {
   const { apihost, accessToken, setAccessToken } = useOutletContext();
@@ -55,8 +55,12 @@ function Login() {
             type={"password"}
             value={password}
             onChange={handlePasswordChange}
+            autoFocus={true}
             required
           />
+          <div style={{ fontSize: "0.75rem" }}>
+            Enter the admin password to continue
+          </div>
         </div>
         <Button
           text={"Login"}

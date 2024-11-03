@@ -14,7 +14,11 @@ function issueToken(req, res, next) {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign(crypto.randomBytes(16).toString("hex"), SECRET_KEY);
+    // issue access token that expires in a set duration of time
+    const payload = crypto.randomBytes(16).toString("hex");
+    const token = jwt.sign({ payload }, SECRET_KEY, {
+      expiresIn: "10m",
+    });
 
     return res.json({ message: "User authorized", token });
   } catch (error) {
@@ -35,16 +39,13 @@ function verifyToken(req, res, next) {
 
   // Verify that provided token is valid
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err) return next(err); // if token is invalid pass error to error handler
-
-    res.authorized = true;
-    res.token = token;
+    if (err) res.status(401).json({ message: "Invalid token" });
     next();
   });
 }
 
 function verifyGet(req, res, next) {
-  res.json({ message: "user verified" });
+  res.json({ message: "Token verified" });
 }
 
 module.exports = { issueToken, verifyToken, verifyGet };
