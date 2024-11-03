@@ -50,13 +50,15 @@ function Record() {
         const res = await fetch(url, options);
         const json = await res.json();
 
+        console.log(json);
+
         // check that res is okay or throw error
-        if (!res.ok) throw json.error;
+        if (!res.ok) throw new Error(json.message);
 
         toast.success("Success!", { id: currentToast });
       } catch (error) {
         console.error(error);
-        toast.error(error, { id: currentToast });
+        toast.error(error.message, { id: currentToast });
       }
     })();
 

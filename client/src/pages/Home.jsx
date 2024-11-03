@@ -20,7 +20,7 @@ function Home() {
         const url = `${apihost}/app/summary`;
         const data = await fetch(url);
 
-        if (!data.ok) throw "data error";
+        if (!data.ok) throw new Error("Data error");
         const json = await data.json();
 
         setCounter(json.count_month);
