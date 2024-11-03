@@ -2,7 +2,10 @@ import App from "./App";
 import Error from "./components/Error";
 import Home from "./pages/Home";
 import Record from "./pages/Record";
-import Reports from "./pages/Reports";
+import Report from "./pages/Report.jsx";
+import Admin from "./Admin.jsx";
+import Login from "./admin-pages/Login.jsx";
+import Dashboard from "./admin-pages/Dashboard.jsx";
 
 const routes = [
   {
@@ -12,9 +15,16 @@ const routes = [
     children: [
       { index: true, element: <Home /> },
       { path: "record", element: <Record /> },
-      { path: "reports", element: <Reports /> },
-      { path: "admin", element: "TODO -- Admin Dashboard" },
+      { path: "report", element: <Report /> },
       { path: "*", element: <Error status={"404"} /> },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: "login", element: <Login /> },
     ],
   },
 ];

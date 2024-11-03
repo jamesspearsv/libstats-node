@@ -14,7 +14,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import styles from "./Reports.module.css";
+import styles from "./Report.module.css";
 
 //  ** COMPONENTS ** //
 import Form from "../components/Form";
@@ -26,7 +26,7 @@ import CountReport from "../components/CountReport";
 import CardWrapper from "../components/CardWrapper";
 import TabSelector from "../components/TabSelector.jsx";
 
-function Reports() {
+function Report() {
   const defaultFormState = {
     start: "",
     end: "",
@@ -226,4 +226,4 @@ function Reports() {
   );
 }
 
-export default Reports;
+export default Report;

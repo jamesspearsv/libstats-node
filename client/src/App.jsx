@@ -1,15 +1,12 @@
-import { Outlet } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import { Link, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
-import styles from "./App.module.css";
 import Nav from "./components/Nav";
 import Error from "./components/Error.jsx";
 
 function App() {
-  // Set api url based on env
-  const [apihost] = useState(
-    import.meta.env.VITE_API_HOST || "http://localhost:3001",
-  );
+  // Set api host based on env
+  const apihost = import.meta.env.VITE_API_HOST || "http://localhost:3001";
+
   const [options, setOptions] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -41,40 +38,24 @@ function App() {
       setError(false);
       setOptions({});
     };
-  }, [apihost]);
+  }, []);
 
   // Return early if there is an error
   if (error) return <Error status={"500"} />;
 
   return (
     <>
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          style: {
-            backgroundColor: "#f5f4f4",
-            fontFamily: "Open Sans",
-          },
-          success: {
-            iconTheme: {
-              primary: "#185c36",
-              secondary: "#ffffff",
-            },
-          },
-          error: {
-            style: {
-              iconTheme: {
-                primary: "#dc3545",
-                secondary: "#ffffff",
-              },
-            },
-          },
-        }}
+      <Nav
+        navItems={[
+          { label: "LibStats", route: "/" },
+          { label: "Record", route: "/record" },
+          { label: "Report", route: "/report" },
+        ]}
       />
-      <Nav />
-      <main className={styles.main}>
-        {!loading && <Outlet context={{ apihost: apihost, options }} />}
-      </main>
+      <main>{!loading && <Outlet context={{ apihost, options }} />}</main>
+      <footer>
+        <Link to={"/admin"}>Admin Dashboard</Link>
+      </footer>
     </>
   );
 }
