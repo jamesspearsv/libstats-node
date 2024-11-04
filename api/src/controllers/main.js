@@ -3,7 +3,7 @@ const queries = require("../db/queries");
 // Select all interactions from db
 async function interactionsGet(req, res) {
   const data = await queries.selectInteractions();
-  res.json(data);
+  return res.json(data);
 }
 
 // get all options from types, locations, and formats tables
@@ -21,13 +21,13 @@ async function optionsGet(req, res, next) {
       formats,
     };
 
-    res.json(data);
+    return res.json(data);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
-async function addPost(req, res, next) {
+async function recordPost(req, res, next) {
   const { type, location, format } = req.body;
 
   // Introduce timeout so client animation can play
@@ -43,9 +43,9 @@ async function addPost(req, res, next) {
       // If valid body insert interaction into db
       await queries.insertInteraction(type, location, format);
 
-      res.json({ message: "data added" });
+      return res.json({ message: "data added" });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }, 500);
 }
@@ -81,7 +81,7 @@ async function reportGet(req, res, next) {
       location,
     );
 
-    res.json({
+    return res.json({
       message: "ok",
       rows,
       count_total,
@@ -90,24 +90,24 @@ async function reportGet(req, res, next) {
       count_days,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
-async function dashboardGet(req, res, next) {
+async function summaryGet(req, res, next) {
   try {
     const count_month = await queries.countInteractionsThisMonth();
 
-    res.json({ message: "ok", count_month });
+    return res.json({ message: "ok", count_month });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
 module.exports = {
   interactionsGet,
   optionsGet,
-  addPost,
+  recordPost,
   reportGet,
-  dashboardGet,
+  summaryGet,
 };

@@ -30,7 +30,7 @@ CountReport.propTypes = {
   title: PropTypes.string.isRequired,
   count: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
       value: PropTypes.string.isRequired,
       number_of_interactions: PropTypes.number.isRequired,
     }),

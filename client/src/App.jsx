@@ -1,69 +1,61 @@
-import { Outlet } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import { Link, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
-import styles from "./App.module.css";
 import Nav from "./components/Nav";
+import Error from "./components/Error.jsx";
 
 function App() {
-  // Set api url based on env
-  const [apiurl] = useState(
-    import.meta.env.VITE_API_URL || "http://localhost:3001",
-  );
+  // Set api host based on env
+  const apihost = import.meta.env.VITE_API_HOST || "http://localhost:3001";
+
   const [options, setOptions] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  console.log("api url:", apiurl);
+  console.log("api host:", apihost);
 
   // ** FETCH FORM OPTIONS ON MOUNT ** //
   useEffect(() => {
-    (async () => {
-      const url = `${apiurl}/options`;
+    try {
+      (async () => {
+        const url = `${apihost}/app/options`;
 
-      const res = await fetch(url);
-      const json = await res.json();
+        const res = await fetch(url);
+        const json = await res.json();
 
-      // check that res is okay or throw error
-      if (!res.ok) throw json.error;
+        // check that res is okay or throw error
+        if (!res.ok) throw new Error(json.message);
 
-      setOptions(json);
-      setLoading(false);
-    })();
+        setOptions(json);
+        setLoading(false);
+      })();
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    }
 
     return () => {
       setLoading(true);
+      setError(false);
       setOptions({});
     };
-  }, [apiurl]);
+  }, []);
+
+  // Return early if there is an error
+  if (error) return <Error status={"500"} />;
 
   return (
     <>
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          style: {
-            backgroundColor: "#f5f4f4",
-            fontFamily: "Open Sans",
-          },
-          success: {
-            iconTheme: {
-              primary: "#185c36",
-              secondary: "#ffffff",
-            },
-          },
-          error: {
-            style: {
-              iconTheme: {
-                primary: "#dc3545",
-                secondary: "#ffffff",
-              },
-            },
-          },
-        }}
+      <Nav
+        navItems={[
+          { label: "LibStats", route: "/" },
+          { label: "Record", route: "/record" },
+          { label: "Report", route: "/report" },
+        ]}
       />
-      <Nav />
-      <main className={styles.main}>
-        {!loading && <Outlet context={{ apiurl, options }} />}
-      </main>
+      <main>{!loading && <Outlet context={{ apihost, options }} />}</main>
+      <footer>
+        <Link to={"/admin"}>Admin Dashboard</Link>
+      </footer>
     </>
   );
 }

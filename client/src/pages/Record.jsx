@@ -17,7 +17,7 @@ const defaultFormState = {
 
 function Record() {
   // Component state
-  const { apiurl, options } = useOutletContext();
+  const { apihost, options } = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
   // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +37,7 @@ function Record() {
     (async () => {
       // prepare for fetch call
       const currentToast = toast.loading("Adding interaction...");
-      const url = `${apiurl}/add`;
+      const url = `${apihost}/app/record`;
       const options = {
         method: "POST",
         body: JSON.stringify(formState),
@@ -50,13 +50,15 @@ function Record() {
         const res = await fetch(url, options);
         const json = await res.json();
 
+        console.log(json);
+
         // check that res is okay or throw error
-        if (!res.ok) throw json.error;
+        if (!res.ok) throw new Error(json.message);
 
         toast.success("Success!", { id: currentToast });
       } catch (error) {
         console.error(error);
-        toast.error(error, { id: currentToast });
+        toast.error(error.message, { id: currentToast });
       }
     })();
 

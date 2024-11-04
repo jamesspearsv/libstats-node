@@ -118,8 +118,10 @@ npm install
 NODE_ENV=production
 NODE_PORT=[...]
 ORIGINS=[...]
-VITE_API_URL=http://[...]:${NODE_PORT}
+VITE_API_HOST=http://[...]:${NODE_PORT}
 TZ=America/New_York
+SECRET_KEY=[...]
+ADMIN_PASSWORD=[...]
 ```
 
 These variables in this `.env` are used by the app in production.
@@ -127,8 +129,11 @@ These variables in this `.env` are used by the app in production.
 - `NODE_ENV`: Defines which environment the API is running in the API container
 - `NODE_PORT`: Defines which port is exposed by the API container in Docker. Defaults to `3001` if not provided
 - `ORIGINS`: Comma separated list of client origins (`http://localhost,http://localhost:3000`). Allowed origins in the CORS configuration for the API
-- `VITE_API_URL`: Variable to pass the API url to the client frontend. Replace placeholder with host server IP or hostname (`localhost`)
+- `VITE_API_HOST`: Variable to pass the API host to the client frontend. Replace placeholder with host server IP or 
+  hostname (`localhost`)
 - `TZ`: Sets the timezone of the API container and impacts the default timezone for timestamps during database insertions and request logging
+- `SECRET_KEY`: Secret value that is used for signing API access tokens
+- `ADMIN_PASSWORD`: Secret value that is used for accessing protected API routes and client views
 
 
 # Database Setup
@@ -237,7 +242,7 @@ All example endpoint responses are abbreviated for this README
 
 ### Report
 
-GET /report
+GET /app/report
 
 Returns a report of interactions between a range of given dates and at a given location.
 
@@ -278,7 +283,7 @@ Returns a report of interactions between a range of given dates and at a given l
 
 ### Options
 
-GET /options
+GET /app/options
 
 Returns the defined rows in `types`, `locations`, and `formats` tables. Used in build forms for client UI
 
@@ -309,9 +314,9 @@ Returns the defined rows in `types`, `locations`, and `formats` tables. Used in 
 }
 ```
 
-### Add
+### Record
 
-POST /add
+POST /app/record
 
 Inserts a new row into the `interactions` table
 
@@ -339,9 +344,9 @@ Each parameter represents the unique id of a row in the respective database tabl
 { "message": "data added" }
 ```
 
-### Dashboard
+### Summary
 
-GET /dashboard
+GET /app/summary
 
 Returns data for the app homepage
 
@@ -353,7 +358,7 @@ Returns data for the app homepage
 
 ### Interactions
 
-GET /interactions
+GET /app/interactions
 
 Returns all rows in the `interactions` table
 
@@ -383,10 +388,8 @@ Returns all rows in the `interactions` table
 Any endpoint that encounters an error will respond with the following:
 
 ```json
-{ "error": "Some error message" }
+{ "message": "Server Error" }
 ```
-
-The response will contain any errors returned from the API.
 
 # Contributing
 

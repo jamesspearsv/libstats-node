@@ -14,7 +14,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import styles from "./Reports.module.css";
+import styles from "./Report.module.css";
 
 //  ** COMPONENTS ** //
 import Form from "../components/Form";
@@ -26,14 +26,14 @@ import CountReport from "../components/CountReport";
 import CardWrapper from "../components/CardWrapper";
 import TabSelector from "../components/TabSelector.jsx";
 
-function Reports() {
+function Report() {
   const defaultFormState = {
     start: "",
     end: "",
     location: "",
   };
 
-  const { apiurl, options } = useOutletContext();
+  const { apihost, options } = useOutletContext();
   const [formState, setFormState] = useState(defaultFormState);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -57,12 +57,12 @@ function Reports() {
     // fetch report date using /report endpoint
     (async () => {
       try {
-        const url = `${apiurl}/report?start=${formState.start}&end=${formState.end}&location=${formState.location}`;
+        const url = `${apihost}/app/report?start=${formState.start}&end=${formState.end}&location=${formState.location}`;
 
         const res = await fetch(url);
         const json = await res.json();
 
-        if (!res.ok) throw json.error;
+        if (!res.ok) throw new Error(json.message);
 
         setReport(json);
         setLoading(false);
@@ -76,7 +76,7 @@ function Reports() {
       setLoading(true);
       setError(false);
     };
-  }, [formState, apiurl]);
+  }, [formState, apihost]);
 
   // ** CHECK THAT START AND END DATE ARE VALID ** //
   useEffect(() => {
@@ -226,4 +226,4 @@ function Reports() {
   );
 }
 
-export default Reports;
+export default Report;

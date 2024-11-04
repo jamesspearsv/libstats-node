@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const controller = require("../controllers/controller");
+const controller = require("../controllers/main");
 
 const router = Router();
 
@@ -9,15 +9,8 @@ router.get("/", (req, res) => {
 });
 router.get("/interactions", controller.interactionsGet);
 router.get("/options", controller.optionsGet);
-router.post("/add", controller.addPost);
+router.post("/record", controller.recordPost);
 router.get("/report", controller.reportGet);
-router.get("/dashboard", controller.dashboardGet);
-
-// ** ERROR HANDLING ** //
-// TODO : IMPROVE ERROR MESSAGES
-router.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send({ error: "Server error" });
-});
+router.get("/summary", controller.summaryGet);
 
 module.exports = router;
