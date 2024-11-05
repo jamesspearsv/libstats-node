@@ -1,5 +1,5 @@
 const db = require("./connection");
-const { getDateToday } = require("../helpers.js");
+const { getDateToday } = require("../lib/dates.js");
 
 async function selectInteractions() {
   return db("interactions")
