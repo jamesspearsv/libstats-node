@@ -1,5 +1,7 @@
 const queries = require("../db/queries");
 
+// TODO: Add custom error throws
+
 // Select all interactions from db
 async function interactionsGet(req, res) {
   const data = await queries.selectInteractions();

@@ -41,15 +41,13 @@ function verifyToken(req, res, next) {
 
   // Verify that a token is provided
   const token = authorization.split(" ")[1];
-  if (!token) return next(new UnauthorizedRequestError("No token provided"));
+  if (!token) return next(new BadRequestError("No token provided"));
 
   // Verify that provided token is valid
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err) {
-      return next(new UnauthorizedRequestError(err.message));
-    }
+    if (err) return next(new UnauthorizedRequestError(err.message));
 
-    next();
+    return next();
   });
 }
 

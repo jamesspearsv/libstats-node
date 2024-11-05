@@ -1,5 +1,8 @@
 const db = require("./connection");
-const { getDateToday } = require("../lib/dates.js");
+const { getDateToday } = require("../lib/dates");
+const { DatabaseError } = require("../lib/errorsClasses");
+
+// TODO: Add custom error throws
 
 async function selectInteractions() {
   return db("interactions")
@@ -30,7 +33,7 @@ async function insertInteraction(type, location, format) {
       date: getDateToday(),
     });
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -56,7 +59,7 @@ async function selectInteractionsInRange(start, end, location_id) {
       .whereBetween("date", [start, end])
       .andWhere("interactions.location_id", location_id);
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -72,7 +75,7 @@ async function countAllInteractionsInRange(start, end, location_id) {
 
     return count.number_of_interactions;
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -89,7 +92,7 @@ async function countInteractionsInRange(start, end, location_id, category) {
       })
       .groupBy(`${category}s.id`);
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -116,7 +119,7 @@ async function countByDay(start, end, location) {
       [start, end, location],
     );
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -130,7 +133,7 @@ async function countInteractionsThisMonth() {
 
     return row.number_of_interactions;
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 

@@ -1,23 +1,28 @@
+// Errors involving querying and updating database
 class DatabaseError extends Error {
-  constructor(message) {
-    super(message);
+  constructor(details) {
+    super();
+    this.message = "Database error";
     this.statusCode = 500;
     this.name = "DatabaseError";
+    this.details = details;
   }
 }
 
+// Errors involving malformed and bad requests
 class BadRequestError extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 401;
+    this.statusCode = 400;
     this.name = "BadRequestError";
   }
 }
 
+// Errors involving unauthorized or expired access tokens
 class UnauthorizedRequestError extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 403;
+    this.statusCode = 401;
     this.name = "UnauthorizedRequestError";
   }
 }
