@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const errors = require("../lib/errorsClasses");
 const {
   UnauthorizedRequestError,
   BadRequestError,
