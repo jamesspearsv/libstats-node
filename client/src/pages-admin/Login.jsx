@@ -35,6 +35,8 @@ function Login() {
         console.error(error);
       }
     })();
+
+    setPassword("");
   }
 
   function handlePasswordChange(e) {
