@@ -1,14 +1,17 @@
 import { Navigate, useOutletContext } from "react-router-dom";
 import Button from "../components/Button.jsx";
+import toast from "react-hot-toast";
 
 function Dashboard() {
-  const { apihost, accessToken, setAccessToken } = useOutletContext();
+  const { apihost, auth, setAuth } = useOutletContext();
 
   function handleLogout() {
-    setAccessToken(null);
+    toast.success("Logged out");
+    // reset authorization state in Admin component
+    setAuth(null);
   }
 
-  if (!accessToken) return <Navigate to={"/admin/login"} />;
+  if (!auth) return <Navigate to={"/admin/login"} />;
 
   return (
     <>
