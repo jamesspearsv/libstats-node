@@ -27,7 +27,7 @@ app.use(express.json());
 
 // request logger
 app.use((req, res, next) => {
-  console.log(`${new Date().toDateString()} -- ${req.method} : ${req.url}`);
+  console.log(`${new Date().toDateString()} -- ${req.method} ${req.url}`);
   next();
 });
 
@@ -44,8 +44,8 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log("##########################");
-  console.log(`- Running in ${NODE_ENV} mode`);
-  console.log(`- Server listening on port ${PORT}`);
-  console.log("##########################");
+  console.log();
+  console.log(`>> Running in ${NODE_ENV} mode`);
+  console.log(`>> Server listening on port ${PORT}`);
+  console.log();
 });

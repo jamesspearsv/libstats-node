@@ -2,8 +2,6 @@ const db = require("./connection");
 const { getDateToday } = require("../lib/dates");
 const { DatabaseError } = require("../lib/errorsClasses");
 
-// TODO: Add custom error throws
-
 async function selectInteractions() {
   return db("interactions")
     .select(
@@ -20,7 +18,11 @@ async function selectInteractions() {
 
 // Select all columns from given table
 async function selectAllFromTable(table) {
-  return db.select("*").from(table);
+  try {
+    return await db(table).select("*");
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
 }
 
 // Insert interaction into interactions table

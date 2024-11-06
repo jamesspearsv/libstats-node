@@ -9,7 +9,7 @@ class DatabaseError extends Error {
   }
 }
 
-// Errors involving malformed and bad requests
+// Errors involving malformed or incomplete requests
 class BadRequestError extends Error {
   constructor(message) {
     super(message);

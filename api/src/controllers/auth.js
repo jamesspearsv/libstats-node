@@ -9,26 +9,21 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin";
 const SECRET_KEY = process.env.SECRET_KEY || "secretkey";
 
 function issueToken(req, res, next) {
-  try {
-    // Access user submitted admin password
-    const password = req.body.password;
+  // Access user submitted admin password
+  const password = req.body.password;
+  if (!password) return next(new BadRequestError("No password provided"));
 
-    // Verify that user submitted admin password and actual admin password match
-    if (password !== ADMIN_PASSWORD) {
-      // return res.status(401).json({ message: "Invalid password" });
-      return next(new UnauthorizedRequestError("Invalid password"));
-    }
+  // Verify that user submitted admin password and actual admin password match
+  if (password !== ADMIN_PASSWORD)
+    return next(new UnauthorizedRequestError("Invalid password"));
 
-    // issue access token that expires in a set duration of time
-    const payload = crypto.randomBytes(16).toString("hex");
-    const token = jwt.sign({ payload }, SECRET_KEY, {
-      expiresIn: "10m",
-    });
+  // issue access token that expires after a given amount of time
+  const payload = crypto.randomBytes(16).toString("hex");
+  const token = jwt.sign({ payload }, SECRET_KEY, {
+    expiresIn: "10m",
+  });
 
-    return res.json({ message: "User authorized", token });
-  } catch (error) {
-    return next(error);
-  }
+  return res.json({ message: "User authorized", token });
 }
 
 function verifyToken(req, res, next) {
