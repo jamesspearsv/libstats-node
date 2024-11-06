@@ -1,5 +1,6 @@
 const db = require("./connection");
-const { getDateToday } = require("../helpers.js");
+const { getDateToday } = require("../lib/dates");
+const { DatabaseError } = require("../lib/errorsClasses");
 
 async function selectInteractions() {
   return db("interactions")
@@ -17,7 +18,11 @@ async function selectInteractions() {
 
 // Select all columns from given table
 async function selectAllFromTable(table) {
-  return db.select("*").from(table);
+  try {
+    return await db(table).select("*");
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
 }
 
 // Insert interaction into interactions table
@@ -30,7 +35,7 @@ async function insertInteraction(type, location, format) {
       date: getDateToday(),
     });
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -56,12 +61,12 @@ async function selectInteractionsInRange(start, end, location_id) {
       .whereBetween("date", [start, end])
       .andWhere("interactions.location_id", location_id);
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
 // Count total number of interactions in a given date range at a given location
-async function countAllInteractionsInRange(start, end, location_id) {
+async function countInteractionsInRange(start, end, location_id) {
   try {
     const count = await db("interactions")
       .count("interactions.id as number_of_interactions")
@@ -72,12 +77,12 @@ async function countAllInteractionsInRange(start, end, location_id) {
 
     return count.number_of_interactions;
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
 // Count number of interaction in a given date range grouped by category (i.e. type or format)
-async function countInteractionsInRange(start, end, location_id, category) {
+async function countInteractionsByCategory(start, end, location_id, category) {
   try {
     return await db(`${category}s`)
       .select(`${category}s.id`, `${category}s.value`)
@@ -89,12 +94,12 @@ async function countInteractionsInRange(start, end, location_id, category) {
       })
       .groupBy(`${category}s.id`);
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
 // Count number of interaction per day in a given date range and at a given location
-async function countByDay(start, end, location) {
+async function countInteractionsByDay(start, end, location) {
   try {
     return await db.raw(
       `WITH RECURSIVE date_range AS (
@@ -116,7 +121,7 @@ async function countByDay(start, end, location) {
       [start, end, location],
     );
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -130,7 +135,7 @@ async function countInteractionsThisMonth() {
 
     return row.number_of_interactions;
   } catch (error) {
-    throw new Error(error);
+    throw new DatabaseError(error.message);
   }
 }
 
@@ -140,8 +145,8 @@ module.exports = {
   insertInteraction,
   checkIfExists,
   selectInteractionsInRange,
-  countAllInteractionsInRange,
   countInteractionsInRange,
-  countByDay,
+  countInteractionsByCategory,
+  countInteractionsByDay,
   countInteractionsThisMonth,
 };
