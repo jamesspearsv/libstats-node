@@ -66,7 +66,7 @@ async function selectInteractionsInRange(start, end, location_id) {
 }
 
 // Count total number of interactions in a given date range at a given location
-async function countAllInteractionsInRange(start, end, location_id) {
+async function countInteractionsInRange(start, end, location_id) {
   try {
     const count = await db("interactions")
       .count("interactions.id as number_of_interactions")
@@ -82,7 +82,7 @@ async function countAllInteractionsInRange(start, end, location_id) {
 }
 
 // Count number of interaction in a given date range grouped by category (i.e. type or format)
-async function countInteractionsInRange(start, end, location_id, category) {
+async function countInteractionsByCategory(start, end, location_id, category) {
   try {
     return await db(`${category}s`)
       .select(`${category}s.id`, `${category}s.value`)
@@ -99,7 +99,7 @@ async function countInteractionsInRange(start, end, location_id, category) {
 }
 
 // Count number of interaction per day in a given date range and at a given location
-async function countByDay(start, end, location) {
+async function countInteractionsByDay(start, end, location) {
   try {
     return await db.raw(
       `WITH RECURSIVE date_range AS (
@@ -145,8 +145,8 @@ module.exports = {
   insertInteraction,
   checkIfExists,
   selectInteractionsInRange,
-  countAllInteractionsInRange,
   countInteractionsInRange,
-  countByDay,
+  countInteractionsByCategory,
+  countInteractionsByDay,
   countInteractionsThisMonth,
 };

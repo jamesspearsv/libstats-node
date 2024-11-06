@@ -14,22 +14,18 @@ async function interactionsGet(req, res, next) {
 // get all rows from types, locations, and formats tables
 async function optionsGet(req, res, next) {
   try {
-    const options = [
+    [types, locations, formats] = await Promise.all([
       queries.selectAllFromTable("types"),
       queries.selectAllFromTable("locations"),
       queries.selectAllFromTable("formats"),
-    ];
+    ]);
 
-    [types, locations, formats] = await Promise.all(options);
-
-    const data = {
+    return res.json({
       message: "ok",
       types,
       locations,
       formats,
-    };
-
-    return res.json(data);
+    });
   } catch (error) {
     return next(error);
   }
@@ -69,26 +65,14 @@ async function reportGet(req, res, next) {
     const check = await queries.checkIfExists("locations", location);
     if (!check) return next(new BadRequestError("Invalid location"));
 
-    const rows = await queries.selectInteractionsInRange(start, end, location);
-    const count_days = await queries.countByDay(start, end, location);
-    const count_type = await queries.countInteractionsInRange(
-      start,
-      end,
-      location,
-      "type",
-    );
-    const count_format = await queries.countInteractionsInRange(
-      start,
-      end,
-      location,
-      "format",
-    );
-
-    const count_total = await queries.countAllInteractionsInRange(
-      start,
-      end,
-      location,
-    );
+    const [rows, count_days, count_type, count_format, count_total] =
+      await Promise.all([
+        queries.selectInteractionsInRange(start, end, location),
+        queries.countInteractionsByDay(start, end, location),
+        queries.countInteractionsByCategory(start, end, location, "type"),
+        queries.countInteractionsByCategory(start, end, location, "format"),
+        queries.countInteractionsInRange(start, end, location),
+      ]);
 
     return res.json({
       message: "ok",
