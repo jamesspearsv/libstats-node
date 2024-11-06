@@ -30,7 +30,7 @@ function verifyToken(req, res, next) {
   // Verify that correct header is present
   const authorization = req.headers.authorization;
   if (!authorization) {
-    return next(new BadRequestError("Bad request"));
+    return next(new BadRequestError("No authorization header provided"));
   }
 
   // Verify that a token is provided
