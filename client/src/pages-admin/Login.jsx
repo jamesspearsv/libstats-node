@@ -5,7 +5,7 @@ import Form from "../components/Form.jsx";
 import Button from "../components/Button.jsx";
 
 function Login() {
-  const { apihost, accessToken, setAccessToken } = useOutletContext();
+  const { apihost, auth, setAuth } = useOutletContext();
   const [password, setPassword] = useState("");
 
   function handleLogin(e) {
@@ -14,7 +14,7 @@ function Login() {
 
     (async () => {
       try {
-        // fetch request params
+        // request details
         const url = `${apihost}/auth/token`;
         const options = {
           method: "POST",
@@ -27,21 +27,27 @@ function Login() {
         const res = await fetch(url, options);
         const json = await res.json();
 
+        // throw error if request unsuccessful
         if (!res.ok) throw new Error(json.message);
         console.log(json);
-        setAccessToken(json.token);
+
+        // set authorization state in Admin component
+        setAuth(json);
       } catch (error) {
         toast.error(error.message);
         console.error(error);
       }
     })();
+
+    // reset password field
+    setPassword("");
   }
 
   function handlePasswordChange(e) {
     setPassword(e.target.value);
   }
 
-  if (accessToken) return <Navigate to={"/admin"} />;
+  if (auth) return <Navigate to={"/admin"} />;
 
   return (
     <>

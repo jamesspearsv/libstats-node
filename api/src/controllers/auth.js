@@ -17,13 +17,22 @@ function issueToken(req, res, next) {
   if (password !== ADMIN_PASSWORD)
     return next(new UnauthorizedRequestError("Invalid password"));
 
+  // number of seconds until issued token is expired
+  const token_duration = 600;
+
   // issue access token that expires after a given amount of time
   const payload = crypto.randomBytes(16).toString("hex");
   const token = jwt.sign({ payload }, SECRET_KEY, {
-    expiresIn: "10m",
+    expiresIn: token_duration,
   });
 
-  return res.json({ message: "User authorized", token });
+  return res.json({
+    message: "User authorized",
+    token,
+    token_type: "Bearer",
+    issued_at: Math.floor(Date.now() / 1000),
+    expires_in: token_duration,
+  });
 }
 
 function verifyToken(req, res, next) {

@@ -6,10 +6,9 @@ import styles from "./Button.module.css";
  * Variant corresponds to styles in Button.module.css
  */
 
-function Button({ text, action, variant, type, style, id }) {
+function Button({ text, action, variant, type, style }) {
   return (
     <button
-      id={id}
       onClick={action}
       className={`${styles.button} ${styles[variant]}`}
       type={type}
@@ -26,7 +25,6 @@ Button.propTypes = {
   variant: PropTypes.string.isRequired,
   action: PropTypes.func,
   style: PropTypes.object,
-  id: PropTypes.string,
 };
 
 export default Button;

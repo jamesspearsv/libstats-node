@@ -13,13 +13,16 @@
   - [Running Locally](#running-locally)
   - [Running in Production with Docker](#running-in-production-with-docker)
 - [API Documentation](#api-documentation)
-  - [Endpoints](#endpoints)
+  - [App Endpoints](#app-endpoints)
     - [Report](#report)
     - [Options](#options)
-    - [Add](#add)
-    - [Dashboard](#dashboard)
+    - [Record](#record)
+    - [Summary](#summary)
     - [Interactions](#interactions)
-    - [Failed Responses](#failed-responses)
+  - [Authorization Endpoints](#authorization-endpoints)
+    - [Token](#token)
+    - [Verify](#verify)
+  - [Failed Responses](#failed-responses)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -236,7 +239,7 @@ Once started, the app's client should be available at your machine's local IP ad
 
 # API Documentation
 
-## Endpoints
+## App Endpoints
 
 All example endpoint responses are abbreviated for this README
 
@@ -320,9 +323,9 @@ POST /app/record
 
 Inserts a new row into the `interactions` table
 
-**Body Parameters**
+**Request Parameters**
 
-This endpoint expects the following request body:
+This endpoint expects a json body with a specified type id, location id, and format, id
 
 ```json
 {
@@ -383,7 +386,65 @@ Returns all rows in the `interactions` table
 ]
 ```
 
-### Failed Responses
+## Authorization Endpoints
+
+### Token
+
+POST /auth/token
+
+This endpoint verifies a user based on the app admin password and return an authorization object if the provided 
+password is correct.
+
+**Request Parameters**
+
+This endpoint expects a json body with a supplied password
+
+```json
+{
+  "password": "[...]"
+}
+```
+
+- `password`: string(required)
+
+**Response**
+
+A successful response will take the below format:
+
+```json
+{
+ "message": "ok",
+  "token" : "[...]",
+  "token_type" : "Bearer",
+  "issued_at": "[...]",
+  "expires_in": 600
+}
+```
+
+- `token`: String representing the issued JWT access token
+- `token_type`: String representing the type of token issued
+- `issued_at`: Unix timestamp in seconds representing when the token was issued
+- `expires_in`: Number of seconds since issuance that the token will expire. App defaults to 600 seconds (10 minutes)
+
+### Verify
+
+POST /auth/verify
+
+This verifies that a given token is valid.
+
+**Request Parameters**
+
+This endpoint expects a request with a correctly formed `Authorization` header.
+
+```http request
+POST http://[...]/auth/verify
+Content-Type: application/json
+Authorization: Bearer [...]
+```
+
+Replace the placeholder above with a valid access token
+
+## Failed Responses
 
 Any endpoint that encounters an error will respond with the following:
 
