@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Nav from "./components/Nav.jsx";
+import Button from "./components/Button.jsx";
 
 function Admin() {
   // set api host based on env
@@ -44,9 +45,29 @@ function Admin() {
     })();
   }, []);
 
+  function handleLogout() {
+    toast.success("Logged out");
+    // reset authorization state in Admin component
+    setAuth(null);
+  }
+
   return (
     <>
       <Nav navItems={[{ label: "Back to App", route: "/" }]} />
+      {auth && (
+        <Button
+          text={"Log out"}
+          variant={"primary"}
+          type={"button"}
+          action={handleLogout}
+          style={{
+            position: "absolute",
+            top: "1rem",
+            right: "1rem",
+            zIndex: 1000,
+          }}
+        />
+      )}
       <main>
         <Outlet context={{ apihost, auth, setAuth }} />
       </main>
