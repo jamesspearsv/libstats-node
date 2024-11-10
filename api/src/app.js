@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const appRouter = require("./routes/main");
-const authRouter = require("./routes/auth");
+const appRouter = require("./routes/appRoutes");
+const authRouter = require("./routes/authRoutes");
+const adminRouter = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 // Configure routers
 app.use("/app", appRouter);
 app.use("/auth", authRouter);
+app.use("/admin", adminRouter);
 
 // ** ERROR MIDDLEWARE ** //
 app.use((err, req, res, next) => {

@@ -1,3 +1,7 @@
+/*
+Middleware to handle actions not requiring admin authorization
+ */
+
 const queries = require("../db/queries");
 const { BadRequestError } = require("../lib/errorsClasses");
 

@@ -1,0 +1,3 @@
+/*
+Middleware to handle actions requiring admin authorization
+ */
