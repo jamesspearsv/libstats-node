@@ -53,7 +53,13 @@ function Admin() {
 
   return (
     <>
-      <Nav navItems={[{ label: "Back to App", route: "/" }]} />
+      <Nav
+        navItems={[
+          { label: "Back to App", route: "/" },
+          { label: "Admin Dashboard", route: "/admin" },
+          { label: "Database", route: "/admin/database" },
+        ]}
+      />
       {auth && (
         <Button
           text={"Log out"}

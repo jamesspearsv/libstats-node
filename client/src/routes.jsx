@@ -11,7 +11,6 @@ const routes = [
   {
     path: "/",
     element: <App />,
-    errorBoundary: <Error status={"500"} />,
     children: [
       { index: true, element: <Home /> },
       { path: "record", element: <Record /> },
@@ -25,6 +24,7 @@ const routes = [
     children: [
       { index: true, element: <Dashboard /> },
       { path: "login", element: <Login /> },
+      { path: "database", element: "Database" },
     ],
   },
 ];
