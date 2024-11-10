@@ -24,7 +24,6 @@ const routes = [
     children: [
       { index: true, element: <Dashboard /> },
       { path: "login", element: <Login /> },
-      { path: "database", element: "Database" },
     ],
   },
 ];
