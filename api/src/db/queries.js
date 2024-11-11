@@ -101,7 +101,7 @@ async function countInteractionsByCategory(start, end, location_id, category) {
 // Count number of interaction per day in a given date range and at a given location
 async function countInteractionsByDay(start, end, location) {
   try {
-    return await db.raw(
+    await db.raw(
       `WITH RECURSIVE date_range AS (
         SELECT DATE(?) AS date
         UNION ALL
@@ -128,10 +128,11 @@ async function countInteractionsByDay(start, end, location) {
 // Count total number interaction in the current month
 async function countInteractionsThisMonth() {
   try {
-    return await db("interactions")
+    const row = await db("interactions")
       .count("interactions.id as number_of_interactions")
       .whereRaw("strftime('%Y-%m', date) = strftime('%Y-%m', 'now')")
       .first();
+    return row.number_of_interactions;
   } catch (error) {
     throw new DatabaseError(error.message);
   }
