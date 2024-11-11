@@ -38,11 +38,11 @@ app.use("/auth", authRouter);
 app.use("/admin", adminRouter);
 
 // ** ERROR MIDDLEWARE ** //
-app.use((err, req, res, next) => {
-  console.error(err);
+app.use((error, req, res, next) => {
+  console.error(error);
   res
-    .status(err.statusCode || 500)
-    .json({ message: err.message || "Server Error" });
+    .status(error.statusCode || 500)
+    .json({ message: error.message || "Server Error", details: error.details });
 });
 
 app.listen(PORT, () => {

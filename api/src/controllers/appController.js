@@ -90,26 +90,9 @@ async function summaryGet(req, res, next) {
   }
 }
 
-// Get all rows from a given table
-async function tableGet(req, res, next) {
-  try {
-    const table = req.params.table;
-
-    const rows =
-      table === "interactions"
-        ? await queries.selectInteractions()
-        : await queries.selectAllFromTable(table);
-
-    return res.json({ message: "ok", rows });
-  } catch (error) {
-    return next(error);
-  }
-}
-
 module.exports = {
   optionsGet,
   recordPost,
   reportGet,
   summaryGet,
-  tableGet,
 };

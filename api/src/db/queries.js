@@ -128,12 +128,18 @@ async function countInteractionsByDay(start, end, location) {
 // Count total number interaction in the current month
 async function countInteractionsThisMonth() {
   try {
-    const row = await db("interactions")
+    return await db("interactions")
       .count("interactions.id as number_of_interactions")
       .whereRaw("strftime('%Y-%m', date) = strftime('%Y-%m', 'now')")
       .first();
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
 
-    return row.number_of_interactions;
+async function selectRowFromTable(table, id) {
+  try {
+    return await db(table).where("id", id).first();
   } catch (error) {
     throw new DatabaseError(error.message);
   }
@@ -149,4 +155,5 @@ module.exports = {
   countInteractionsByCategory,
   countInteractionsByDay,
   countInteractionsThisMonth,
+  selectRowFromTable,
 };
