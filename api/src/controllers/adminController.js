@@ -2,31 +2,14 @@
 Middleware to handle actions requiring admin authorization
  */
 const queries = require("../db/queries");
-const { ResourceNotFoundError } = require("../lib/errorsClasses");
+const { BadRequestError } = require("../lib/errorsClasses");
 
 /*
 TODO: Write admin middleware
 - [x] get single row from table
 - [x] get all rows from a table
-- [ ] update single row in table
+- [x] update single row in table
  */
-async function rowGetById(req, res, next) {
-  try {
-    const table = req.table;
-    const { id } = req.params;
-
-    const row = await queries.selectRowFromTable(table, id);
-
-    if (!row)
-      return next(
-        new ResourceNotFoundError(`No row in ${table} with id ${id}`),
-      );
-
-    res.json({ message: "ok", row });
-  } catch (error) {
-    return next(error);
-  }
-}
 
 // Get all rows from a given table
 async function tableGet(req, res, next) {
@@ -43,4 +26,42 @@ async function tableGet(req, res, next) {
   }
 }
 
-module.exports = { rowGetById, tableGet };
+// Access and return row by id
+async function rowGetById(req, res, next) {
+  try {
+    const table = req.table;
+    const { id } = req.params;
+
+    const row = await queries.selectRowFromTable(table, id);
+    console.log(row);
+
+    // throw error if no row found
+    if (!row)
+      return next(new BadRequestError(`No row in ${table} with id ${id}`));
+
+    res.json({ message: "row found", row });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+// Update row by id
+async function updateRowById(req, res, next) {
+  try {
+    const table = req.table;
+    const id = req.params.id;
+    const data = req.body;
+
+    const row = await queries.updateRowFromTable(table, id, data);
+
+    // throw error is no row found
+    if (row.length < 1)
+      return next(new BadRequestError(`No row in ${table} with id ${id}`));
+
+    return res.json({ message: "row updated", row });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = { rowGetById, tableGet, updateRowById };

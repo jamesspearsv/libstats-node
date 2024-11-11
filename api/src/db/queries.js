@@ -137,9 +137,19 @@ async function countInteractionsThisMonth() {
   }
 }
 
+// Select row by id from a given table
 async function selectRowFromTable(table, id) {
   try {
     return await db(table).where("id", id).first();
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
+
+// Update row by id from a given table
+async function updateRowFromTable(table, id, data) {
+  try {
+    return await db(table).where("id", id).update(data, ["*"]);
   } catch (error) {
     throw new DatabaseError(error.message);
   }
@@ -156,4 +166,5 @@ module.exports = {
   countInteractionsByDay,
   countInteractionsThisMonth,
   selectRowFromTable,
+  updateRowFromTable,
 };
