@@ -56,7 +56,8 @@ function Admin() {
       <Nav
         navItems={[
           { label: "Back to App", route: "/" },
-          { label: "Admin Dashboard", route: "/admin" },
+          { label: "Dashboard", route: "/admin" },
+          { label: "Database", route: "/admin/database" },
         ]}
       />
       {auth && (

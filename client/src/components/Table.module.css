@@ -1,4 +1,4 @@
-@import '../index.css';
+@import "../index.css";
 
 .table {
   margin: auto;
@@ -28,8 +28,11 @@
   color: white;
 }
 
-.cell  {
+.cell {
   text-align: center;
   padding: 1rem 0;
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
