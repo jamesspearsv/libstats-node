@@ -1,25 +1,15 @@
 import { Navigate, useOutletContext } from "react-router-dom";
-import TabSelector from "../components/TabSelector.jsx";
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import Table from "../components/Table.jsx";
 import CardWrapper from "../components/CardWrapper.jsx";
-import { toast } from "react-hot-toast";
 import Modal from "../components/Modal.jsx";
 import Form from "../components/Form.jsx";
 import Button from "../components/Button.jsx";
-
-/*
-TODO: Extend edit database page in admin area
-- [x] Add useEffect to fetch and parse table rows
-- [x] Render table rows according to app state
-- [x] Add functionality to view a single row in a form
-- [x] Add ability to update a single row
-- [ ] Add ability to add new rows to tables
-- [ ] Add loading and error state
- */
+import TabSelector from "../components/TabSelector.jsx";
 
 function Database() {
-  const { apihost, auth } = useOutletContext();
+  const { apihost, auth, setAuth } = useOutletContext();
   // state for parsing and displaying full tables
   const [activeTab, setActiveTab] = useState("");
   const [tableRows, setTableRows] = useState([]);
@@ -47,6 +37,7 @@ function Database() {
           },
         };
 
+        // fetch and parse response
         const res = await fetch(url, options);
         const json = await res.json();
 
@@ -54,13 +45,16 @@ function Database() {
         if (!res.ok) throw new Error(json.message);
 
         // set tableRows and tableColumns from fetch data
-        const arr = Object.keys(json.rows[0]); // parse table columns from row in table
+        const arr = Object.keys(json.rows[0]); // parse table columns from rows[0] in table
         const columns = arr.map((column) => ({ key: column, label: column }));
         setTableColumns(columns);
         setTableRows(json.rows);
       } catch (error) {
-        console.log(typeof error);
         console.error(error);
+        if (error.message === "jwt expired") {
+          setAuth(null);
+          return toast.error("Session expired");
+        }
         toast.error(error.message);
       }
     })();
@@ -90,6 +84,10 @@ function Database() {
         setActiveRow(json.row);
       } catch (error) {
         console.error(error);
+        if (error.message === "jwt expired") {
+          setAuth(null);
+          return toast.error("Session expired");
+        }
         toast.error(error.message);
       }
     })();
@@ -113,12 +111,24 @@ function Database() {
   // Open detailed view modal when view button is clicked
   function handleViewClick(e) {
     setMode("updating");
-    console.log(e.target.dataset.id);
     setRowId(e.target.dataset.id);
     setModalOpen(true);
   }
 
-  // update activeRow state when form field is edited
+  // Open modal when add button is clicked
+  function handleAddClick() {
+    setMode("adding");
+    setModalOpen(true);
+
+    let row = {};
+    tableColumns.map((column) => {
+      if (column.key === "id") return;
+      row[column.key] = "";
+    });
+    setActiveRow(row);
+  }
+
+  // update activeRow state when modal form field is edited
   function handleFormChange(e) {
     let updatedRow = { ...activeRow };
     updatedRow[e.target.name] = e.target.value;
@@ -130,17 +140,19 @@ function Database() {
     e.preventDefault();
     const elements = e.target.elements;
     let data = {};
+    // parse table columns into row object with appropriate properties and values
     tableColumns.map((column) => {
-      if (column.key === "id") return;
+      if (column.key === "id") return; // skip id column
       data[column.key] = elements[column.key].value;
     });
 
-    console.log(data);
-
+    // submit for and ping appropriate endpoints based on mode
     try {
       (async () => {
         const url =
-          mode === "updating" ? `${apihost}/admin/${activeTab}/${rowId}` : ``;
+          mode === "updating"
+            ? `${apihost}/admin/${activeTab}/${rowId}`
+            : `${apihost}/admin/${activeTab}`;
 
         const options = {
           method: "POST",
@@ -162,20 +174,12 @@ function Database() {
       })();
     } catch (error) {
       console.error(error);
+      if (error.message === "jwt expired") {
+        setAuth(null);
+        return toast.error("Session expired");
+      }
       toast.error(error.message);
     }
-  }
-
-  function handleAddClick() {
-    setMode("adding");
-    setModalOpen(true);
-
-    let row = {};
-    tableColumns.map((column) => {
-      if (column.key === "id") return;
-      row[column.key] = "";
-    });
-    setActiveRow(row);
   }
 
   if (!auth) return <Navigate to={"/admin/login"} />;
@@ -227,8 +231,8 @@ function Database() {
           <Form
             title={
               mode === "updating"
-                ? `Update Row In ${activeTab}`
-                : `Add Row To ${activeTab}`
+                ? `Update row in ${activeTab}`
+                : `Add row to ${activeTab}`
             }
             onSubmit={handleFormSubmit}
             style={{ width: "100%" }}

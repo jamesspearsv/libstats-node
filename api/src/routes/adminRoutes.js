@@ -15,14 +15,17 @@ router.use((req, res, next) => {
 // Admin routes
 router.get("/types/:id", adminController.rowGetById);
 router.post("/types/:id", adminController.updateRowById);
+router.post("/types", adminController.addNewRow);
 router.get("/types", adminController.tableGet);
 
 router.get("/locations/:id", adminController.rowGetById);
 router.post("/locations/:id", adminController.updateRowById);
+router.post("/locations", adminController.addNewRow);
 router.get("/locations", adminController.tableGet);
 
 router.get("/formats/:id", adminController.rowGetById);
 router.get("/formats/:id", adminController.updateRowById);
+router.post("/formats", adminController.addNewRow);
 router.get("/formats", adminController.tableGet);
 
 module.exports = router;

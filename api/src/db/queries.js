@@ -156,6 +156,14 @@ async function updateRowFromTable(table, id, data) {
   }
 }
 
+async function insertRow(table, row) {
+  try {
+    return await db(table).insert(row);
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
+
 module.exports = {
   selectInteractions,
   selectAllFromTable,
@@ -168,4 +176,5 @@ module.exports = {
   countInteractionsThisMonth,
   selectRowFromTable,
   updateRowFromTable,
+  insertRow,
 };

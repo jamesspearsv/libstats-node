@@ -64,4 +64,19 @@ async function updateRowById(req, res, next) {
   }
 }
 
-module.exports = { rowGetById, tableGet, updateRowById };
+async function addNewRow(req, res, next) {
+  try {
+    const table = req.table;
+    const newRow = req.body;
+
+    if (!newRow) return next(new BadRequestError("Malformed request"));
+
+    await queries.insertRow(table, newRow);
+
+    return res.json({ message: "New row added" });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = { rowGetById, tableGet, updateRowById, addNewRow };
