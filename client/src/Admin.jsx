@@ -24,22 +24,26 @@ function Admin() {
     (async () => {
       if (!auth) return;
 
-      const url = `${apihost}/auth/verify`;
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${auth.token_type} ${auth.token}`,
-        },
-      };
+      try {
+        const url = `${apihost}/auth/verify`;
+        const options = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${auth.token_type} ${auth.token}`,
+          },
+        };
 
-      // validate token
-      const res = await fetch(url, options);
-      console.log(await res.json());
+        // validate token
+        const res = await fetch(url, options);
+        const json = await res.json();
+        console.log(json);
 
-      // if token is invalid
-      if (!res.ok) {
+        // if token is invalid
+        if (!res.ok) throw new Error(json.message);
+      } catch (error) {
         setAuth(null);
+        console.error(error);
         toast.error("Session expired");
       }
     })();

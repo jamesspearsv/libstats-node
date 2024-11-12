@@ -33,7 +33,7 @@ function Table({ rows, columns, style, readonly, button }) {
           {!readonly && (
             <div className={styles.cell}>
               <Button
-                id={row.id}
+                id={row.id.toString()}
                 text={button.text}
                 type={"button"}
                 variant={"primary"}
