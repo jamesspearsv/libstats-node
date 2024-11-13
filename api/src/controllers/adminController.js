@@ -58,7 +58,7 @@ async function updateRowById(req, res, next) {
     if (row.length < 1)
       return next(new BadRequestError(`No row in ${table} with id ${id}`));
 
-    return res.json({ message: "row updated", row });
+    return res.json({ message: "Row updated", row });
   } catch (error) {
     return next(error);
   }
