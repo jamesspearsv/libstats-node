@@ -1,7 +1,3 @@
-/*
-Middleware to handle admin authorization and verification
- */
-
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const {

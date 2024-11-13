@@ -5,7 +5,7 @@ import Button from "./Button";
 
 /* Utility modal component */
 
-function Modal({ isOpen, setIsOpen, children, style }) {
+function Modal({ isOpen, setIsOpen, children }) {
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function Modal({ isOpen, setIsOpen, children, style }) {
   }
 
   return (
-    <dialog className={styles.modal} ref={modalRef} style={style}>
+    <dialog className={styles.modal} ref={modalRef}>
       <div>
         <Button
           text="Close"
@@ -35,7 +35,6 @@ Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-  style: PropTypes.object,
 };
 
 export default Modal;

@@ -23,7 +23,7 @@
 }
 
 .form input,
-.form select, .form textarea {
+.form select {
   width: 100%;
   padding: 0.675em 1rem 0.675em 1em;
   background-color: #fff;

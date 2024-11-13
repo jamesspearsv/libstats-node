@@ -6,12 +6,12 @@ import Report from "./pages/Report.jsx";
 import Admin from "./Admin.jsx";
 import Login from "./pages-admin/Login.jsx";
 import Dashboard from "./pages-admin/Dashboard.jsx";
-import Database from "./pages-admin/Database/Database.jsx";
 
 const routes = [
   {
     path: "/",
     element: <App />,
+    errorBoundary: <Error status={"500"} />,
     children: [
       { index: true, element: <Home /> },
       { path: "record", element: <Record /> },
@@ -25,7 +25,6 @@ const routes = [
     children: [
       { index: true, element: <Dashboard /> },
       { path: "login", element: <Login /> },
-      { path: "database", element: <Database /> },
     ],
   },
 ];
