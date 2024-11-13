@@ -101,7 +101,7 @@ async function countInteractionsByCategory(start, end, location_id, category) {
 // Count number of interaction per day in a given date range and at a given location
 async function countInteractionsByDay(start, end, location) {
   try {
-    await db.raw(
+    return await db.raw(
       `WITH RECURSIVE date_range AS (
         SELECT DATE(?) AS date
         UNION ALL
