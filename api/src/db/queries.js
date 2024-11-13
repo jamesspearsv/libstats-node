@@ -101,7 +101,7 @@ async function countInteractionsByCategory(start, end, location_id, category) {
 // Count number of interaction per day in a given date range and at a given location
 async function countInteractionsByDay(start, end, location) {
   try {
-    return await db.raw(
+    await db.raw(
       `WITH RECURSIVE date_range AS (
         SELECT DATE(?) AS date
         UNION ALL
@@ -132,8 +132,33 @@ async function countInteractionsThisMonth() {
       .count("interactions.id as number_of_interactions")
       .whereRaw("strftime('%Y-%m', date) = strftime('%Y-%m', 'now')")
       .first();
-
     return row.number_of_interactions;
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
+
+// Select row by id from a given table
+async function selectRowFromTable(table, id) {
+  try {
+    return await db(table).where("id", id).first();
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
+
+// Update row by id from a given table
+async function updateRowFromTable(table, id, data) {
+  try {
+    return await db(table).where("id", id).update(data, ["*"]);
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
+
+async function insertRow(table, row) {
+  try {
+    return await db(table).insert(row);
   } catch (error) {
     throw new DatabaseError(error.message);
   }
@@ -149,4 +174,7 @@ module.exports = {
   countInteractionsByCategory,
   countInteractionsByDay,
   countInteractionsThisMonth,
+  selectRowFromTable,
+  updateRowFromTable,
+  insertRow,
 };

@@ -225,6 +225,7 @@ function Report() {
                     { key: "location", label: "Location" },
                     { key: "date", label: "Date" },
                   ]}
+                  readonly
                 />
               )}
             </CardWrapper>
