@@ -1,15 +1,9 @@
+/*
+Middleware to handle actions not requiring admin authorization
+ */
+
 const queries = require("../db/queries");
 const { BadRequestError } = require("../lib/errorsClasses");
-
-// Select all interactions from db
-async function interactionsGet(req, res, next) {
-  try {
-    const data = await queries.selectInteractions();
-    return res.json(data);
-  } catch (error) {
-    return next(error);
-  }
-}
 
 // get all rows from types, locations, and formats tables
 async function optionsGet(req, res, next) {
@@ -97,7 +91,6 @@ async function summaryGet(req, res, next) {
 }
 
 module.exports = {
-  interactionsGet,
   optionsGet,
   recordPost,
   reportGet,

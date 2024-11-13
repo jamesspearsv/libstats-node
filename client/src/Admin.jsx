@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Nav from "./components/Nav.jsx";
+import Button from "./components/Button.jsx";
 
 function Admin() {
   // set api host based on env
@@ -23,30 +24,60 @@ function Admin() {
     (async () => {
       if (!auth) return;
 
-      const url = `${apihost}/auth/verify`;
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${auth.token_type} ${auth.token}`,
-        },
-      };
+      try {
+        const url = `${apihost}/auth/verify`;
+        const options = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${auth.token_type} ${auth.token}`,
+          },
+        };
 
-      // validate token
-      const res = await fetch(url, options);
-      console.log(await res.json());
+        // validate token
+        const res = await fetch(url, options);
+        const json = await res.json();
+        console.log(json);
 
-      // if token is invalid
-      if (!res.ok) {
+        // if token is invalid
+        if (!res.ok) throw new Error(json.message);
+      } catch (error) {
         setAuth(null);
+        console.error(error);
         toast.error("Session expired");
       }
     })();
   }, []);
 
+  function handleLogout() {
+    toast.success("Logged out");
+    // reset authorization state in Admin component
+    setAuth(null);
+  }
+
   return (
     <>
-      <Nav navItems={[{ label: "Back to App", route: "/" }]} />
+      <Nav
+        navItems={[
+          { label: "Back to App", route: "/" },
+          { label: "Dashboard", route: "/admin" },
+          { label: "Database", route: "/admin/database" },
+        ]}
+      />
+      {auth && (
+        <Button
+          text={"Log out"}
+          variant={"primary"}
+          type={"button"}
+          action={handleLogout}
+          style={{
+            position: "absolute",
+            top: "1rem",
+            right: "1rem",
+            zIndex: 1000,
+          }}
+        />
+      )}
       <main>
         <Outlet context={{ apihost, auth, setAuth }} />
       </main>

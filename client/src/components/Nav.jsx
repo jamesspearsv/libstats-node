@@ -9,7 +9,7 @@ function Nav({ navItems }) {
     <nav className={styles.nav}>
       <ul className={styles.list} id="list">
         {navItems.map((item, index) => (
-          <NavLink key={index} to={item.route}>
+          <NavLink key={index} to={item.route} end>
             {item.label}
           </NavLink>
         ))}

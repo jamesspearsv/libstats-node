@@ -216,7 +216,17 @@ function Report() {
                   There is nothing to see here...
                 </p>
               ) : (
-                <Table rows={report.rows} />
+                <Table
+                  rows={report.rows}
+                  columns={[
+                    { key: "id", label: "id" },
+                    { key: "type", label: "Type" },
+                    { key: "format", label: "Format" },
+                    { key: "location", label: "Location" },
+                    { key: "date", label: "Date" },
+                  ]}
+                  readonly
+                />
               )}
             </CardWrapper>
           </div>
