@@ -58,6 +58,7 @@ Key functionality includes:
 - **Express**: Web framework for building the backend API
 - **Knex**: SQL query builder and migrations tool
 - **better-sqlite3**: SQLite database driver
+- **jsonwebtoken**: Authorization using JWT
 
 ## Database
 
@@ -160,10 +161,10 @@ npx knex migrate:latest --env production
 
 **2. Database schema**: The database schema consists of the following tables:
 
-- `interactions`: Stores details about each interaction (e.g. id, type, location, format, date)
-- `types`: Defines available types of interactions
-- `locations`: Defines available location at which interactions can occur
-- `formats`: Defines types of formats in which interaction can take place
+- `interactions`: Stores details about each interaction (columns: id, type_id, location_id, format_id, date)
+- `types`: Defines available types of interactions (columns: id, value, desc)
+- `locations`: Defines available location at which interactions can occur (columns: id, value)
+- `formats`: Defines types of formats in which interaction can take place (columns: id, value)
 
 **3. Database seeds**: Seed the `types`, `locations`, and `formats` tables with predefined values
 
@@ -444,12 +445,166 @@ Authorization: Bearer [...]
 
 Replace the placeholder above with a valid access token
 
-## Failed Responses
+## Admin Endpoints
 
-Any endpoint that encounters an error will respond with the following:
+All endpoints in this category require a valid access token requested using `/auth/token`. Tokens should be included 
+in the request `Authorization` header in the following format `Authorization: Bearer [token]`.
+
+Admin endpoints query a select set of tables including:
+
+- `types`
+- `locations`
+- `formats`
+
+### Get All Rows
+
+GET /admin/:table
+
+Gets all rows from a given table
+
+**Request Parameters**
+
+This expect a valid table from the above choices and a valid access token.
+
+The request below will return all rows from the `types` table.
+
+```http request
+GET http://[...]/admin/types
+Authroization: Bearer [...]
+```
+
+**Response**
+
+Returns a json response containing a response message in the selected rows
 
 ```json
-{ "message": "Server Error" }
+{
+  "message": "ok",
+  "rows": [
+    {
+    "id": 1,
+    "value": "Directional",
+    "desc": "Simple questions about facilities, hours, etc."
+    },
+    {
+    "id": 2,
+    "value": "Digital Resources",
+    "desc": "Questions about accessing and using MPL digital resources."
+    }
+  ]
+}
+```
+### Select Rows By ID
+
+GET /admin/:table/:id
+
+Requests a single row by ID from a given table.
+
+**Request Parameters**
+
+This endpoints expects a valid table name, row ID, and access token. The below request will select a row with an ID 
+1 from the `types` table
+
+```http request
+GET http://[...]/admin/types/1
+Authorization: Bearer [...]
+```
+
+**Response**
+
+Returns a json response with a response message and row if found.
+
+```json
+{
+  "message": "row found",
+  "row": {
+    "id": 1,
+    "value": "Directional",
+    "desc": "Simple questions about facilities, hours, etc."
+  }
+}
+```
+
+### Add New Row
+
+POST /admin/:table
+
+Add a new row to a given table.
+
+**Request Parameters**
+
+This endpoint expects a valid table name and a correctly formed json body representing the columns and values to be 
+inserted into the database excluding an ID.
+
+```http request
+POST http://[...]/admin/types
+Content-Type: application/json
+Authorization: Bearer [...]
+
+{
+  "value": "Informational",
+  "desc": "Simple questions about hours, directions, etc."
+}
+```
+
+**Response**
+
+Returns a json response with a successful message
+
+```json
+{ "message": "New row added", 
+  "row": {
+        "id": 5,
+        "value": "Directional",
+        "desc": "Simple questions about hours, directions, etc."
+  }
+}
+```
+
+### Update Row By ID
+
+POST /admin/:table/:id
+
+Update a single row in a given table by ID
+
+**Request Parameters**
+
+Expects a valid table, row ID, authorization header with access token, and json body representing the new values for 
+to update the row with excluding the row ID
+
+```http request
+POST http://[...]/admin/types/1
+Content-Type: application/json
+Authorization: Bearer [...]
+
+{
+    "value": "Directional",
+    "desc": "Simple questions about facilities, hours, etc."
+}
+```
+
+**Response**
+
+Returns a json response with a successful message and the updated row
+
+```json
+{
+  "message": "Row updated",
+  "row": {
+      "id": 1,
+      "value": "Directional",
+      "desc": "Simple questions about hours, directions, etc."
+    }
+}
+```
+
+## Failed Responses
+
+Any endpoint that response unsuccessfully or encounters an error will respond with a json like 
+the following and an appropriate http status code.
+
+```json
+{ "message": "No row found" }
 ```
 
 # Contributing
