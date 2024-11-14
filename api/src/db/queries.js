@@ -148,9 +148,11 @@ async function selectRowFromTable(table, id) {
 }
 
 // Update row by id from a given table
-async function updateRowFromTable(table, id, data) {
+async function updateRowFromTable(table, id, values) {
   try {
-    return await db(table).where("id", id).update(data, ["*"]);
+    // todo: return only first row object, not row array
+    const rows = await db(table).where("id", id).update(values, ["*"]);
+    return rows[0];
   } catch (error) {
     throw new DatabaseError(error.message);
   }
@@ -158,7 +160,9 @@ async function updateRowFromTable(table, id, data) {
 
 async function insertRow(table, row) {
   try {
-    return await db(table).insert(row);
+    // todo: add returning statement
+    const rows = await db(table).insert(row, ["*"]);
+    return rows[0];
   } catch (error) {
     throw new DatabaseError(error.message);
   }

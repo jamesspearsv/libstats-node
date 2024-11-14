@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Nav from "./components/Nav.jsx";
