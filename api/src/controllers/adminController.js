@@ -1,15 +1,6 @@
-/*
-Middleware to handle actions requiring admin authorization
- */
+/* Middleware to handle actions requiring admin authorization */
 const queries = require("../db/queries");
 const { BadRequestError } = require("../lib/errorsClasses");
-
-/*
-TODO: Write admin middleware
-- [x] get single row from table
-- [x] get all rows from a table
-- [x] update single row in table
- */
 
 // Get all rows from a given table
 async function tableGet(req, res, next) {
@@ -64,16 +55,17 @@ async function updateRowById(req, res, next) {
   }
 }
 
+// Add new row to given table
 async function addNewRow(req, res, next) {
   try {
     const table = req.table;
     const newRow = req.body;
 
-    if (!newRow) return next(new BadRequestError("Malformed request"));
+    if (!newRow) return next(new BadRequestError("No data provided"));
 
-    await queries.insertRow(table, newRow);
+    const row = await queries.insertRow(table, newRow);
 
-    return res.json({ message: "New row added" });
+    return res.json({ message: "New row added", row });
   } catch (error) {
     return next(error);
   }
