@@ -5,7 +5,7 @@ import Record from "./pages/Record";
 import Report from "./pages/Report.jsx";
 import Admin from "./Admin.jsx";
 import Login from "./pages-admin/Login.jsx";
-import Dashboard from "./pages-admin/Dashboard.jsx";
+import Dashboard from "./pages-admin/Dashboard/Dashboard.jsx";
 import Database from "./pages-admin/Database/Database.jsx";
 
 const routes = [
