@@ -605,6 +605,54 @@ Returns a json response with a successful message and the updated row
 }
 ```
 
+### Admin Stats
+
+GET /admin/stats
+
+This endpoint return all time statistics from the interaction table including total number of interactions and count 
+of interaction grouped by category (types, formats, interactions)
+
+**Request Parameters**
+
+Expects a valid access token and `Authorization` header
+
+```http request
+GET http://[...]/admin/stats
+Authorization: Bearer [...]
+```
+
+**Response**
+
+Returns a json response with counts from the interactions table and respective response message
+
+```json
+{
+  "message": "ok",
+  "count_total": 157,
+  "count_type": [
+    {
+      "id": 1,
+      "value": "Directional",
+      "total_interactions": 30
+    }
+  ],
+  "count_location": [
+    {
+      "id": 1,
+      "value": "Circulation",
+      "total_interactions": 48
+    }
+  ],
+  "count_format": [
+    {
+      "id": 1,
+      "value": "In-Person",
+      "total_interactions": 88
+    }
+  ]
+}
+```
+
 ## Failed Responses
 
 Any endpoint that response unsuccessfully or encounters an error will respond with a json like 

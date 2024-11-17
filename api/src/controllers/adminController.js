@@ -70,13 +70,8 @@ async function addNewRow(req, res, next) {
   }
 }
 
+// Get all time counts of interactions
 async function statsGet(req, res, next) {
-  /*
-  TODO:
-  - [ ] count all interaction rows
-  - [ ] count interaction rows grouped by type, format, location
-   */
-
   try {
     const [count_total, count_type, count_location, count_format] =
       await Promise.all([

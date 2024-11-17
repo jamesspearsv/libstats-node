@@ -158,9 +158,9 @@ async function updateRowFromTable(table, id, values) {
   }
 }
 
+// Insert new row into specificed table
 async function insertRow(table, row) {
   try {
-    // todo: add returning statement
     const rows = await db(table).insert(row, ["*"]);
     return rows[0];
   } catch (error) {
@@ -168,14 +168,20 @@ async function insertRow(table, row) {
   }
 }
 
+// Count all rows in interactions table
 async function countAllInteractions() {
-  const count = await db("interactions")
-    .count("interactions.id as total")
-    .first();
+  try {
+    const count = await db("interactions")
+      .count("interactions.id as total")
+      .first();
 
-  return count.total;
+    return count.total;
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
 }
 
+// Count rows in interaction grouped by a given group
 async function countAllInteractionByGroup(group) {
   try {
     return await db(`${group}s`)
