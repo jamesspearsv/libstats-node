@@ -29,7 +29,7 @@ async function rowGetById(req, res, next) {
     if (!row)
       return next(new BadRequestError(`No row in ${table} with id ${id}`));
 
-    res.json({ message: "row found", row });
+    res.json({ message: "Row found", row });
   } catch (error) {
     return next(error);
   }
@@ -70,4 +70,32 @@ async function addNewRow(req, res, next) {
   }
 }
 
-module.exports = { rowGetById, tableGet, updateRowById, addNewRow };
+async function statsGet(req, res, next) {
+  /*
+  TODO:
+  - [ ] count all interaction rows
+  - [ ] count interaction rows grouped by type, format, location
+   */
+
+  try {
+    const [count_total, count_type, count_location, count_format] =
+      await Promise.all([
+        await queries.countAllInteractions(),
+        await queries.countAllInteractionByGroup("type"),
+        await queries.countAllInteractionByGroup("location"),
+        await queries.countAllInteractionByGroup("format"),
+      ]);
+
+    return res.json({
+      message: "ok",
+      count_total,
+      count_type,
+      count_location,
+      count_format,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = { rowGetById, tableGet, updateRowById, addNewRow, statsGet };

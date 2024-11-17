@@ -168,6 +168,26 @@ async function insertRow(table, row) {
   }
 }
 
+async function countAllInteractions() {
+  const count = await db("interactions")
+    .count("interactions.id as total")
+    .first();
+
+  return count.total;
+}
+
+async function countAllInteractionByGroup(group) {
+  try {
+    return await db(`${group}s`)
+      .select(`${group}s.id`, `${group}s.value`)
+      .count("interactions.id as total_interactions")
+      .leftJoin("interactions", `${group}s.id`, "=", `interactions.${group}_id`)
+      .groupBy(`${group}s.id`);
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
+
 module.exports = {
   selectInteractions,
   selectAllFromTable,
@@ -181,4 +201,6 @@ module.exports = {
   selectRowFromTable,
   updateRowFromTable,
   insertRow,
+  countAllInteractions,
+  countAllInteractionByGroup,
 };
