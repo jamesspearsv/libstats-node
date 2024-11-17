@@ -24,7 +24,6 @@ async function rowGetById(req, res, next) {
     const { id } = req.params;
 
     const row = await queries.selectRowFromTable(table, id);
-    console.log(row);
 
     // throw error if no row found
     if (!row)
