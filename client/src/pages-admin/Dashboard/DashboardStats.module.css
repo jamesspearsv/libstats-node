@@ -4,6 +4,8 @@
   display: flex;
   gap: 1rem;
   padding: 1rem;
+  width: fit-content;
+  margin: auto;
 }
 
 .views {
@@ -26,21 +28,33 @@
 }
 
 .stats {
-  flex: 1;
+ /*flex: 1;*/
   display: flex;
   gap: 1rem;
 }
 
+.stats > div {
+  width: 35rem;
+
+}
+
 .stats > div:first-child {
-  flex: 0.5;
+  height: 100%;
 }
 
-.stats > div:nth-child(2) {
-  flex: 1;
+.stats > div:first-child > hr {
+  margin: 0.75rem 0;
 }
 
-.stats > div:last-child {
-  flex: 2;
+.total {
+  align-items: center;
+  font-weight: bold;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1.375rem;
 }
 
 .row {

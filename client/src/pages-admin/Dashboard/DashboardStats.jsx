@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import styles from "./DashboardStats.module.css";
 import CardWrapper from "../../components/CardWrapper.jsx";
+import { ResponsiveContainer, PieChart, Pie, Tooltip, Cell } from "recharts";
 
 function DashboardStats() {
   const { apihost, auth, setAuth } = useOutletContext();
   const [stats, setStats] = useState({});
   const [view, setView] = useState("type");
   const [loading, setLoading] = useState(true);
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
 
   useEffect(() => {
     //
@@ -83,11 +85,9 @@ function DashboardStats() {
           <>
             <CardWrapper>
               <div className={styles.total}>
-                <div>Total Interactions</div>
-                <p>{stats.count_total}</p>
+                Total Interactions: <span>{stats.count_total}</span>
               </div>
-            </CardWrapper>
-            <CardWrapper>
+              <hr />
               <div className={styles.rows}>
                 {stats[`count_${view}`].map((row, index) => (
                   <div key={index} className={styles.row}>
@@ -95,13 +95,41 @@ function DashboardStats() {
                       <span>{row.id}: </span>
                       <span>{row.value}</span>
                     </div>
-                    <div>{row.total_interactions}</div>
+                    <div>
+                      {row.total_interactions} (
+                      {(
+                        (parseFloat(row.total_interactions) /
+                          parseInt(stats.count_total)) *
+                        100
+                      ).toFixed()}
+                      %)
+                    </div>
                   </div>
                 ))}
               </div>
             </CardWrapper>
             <CardWrapper>
-              <div className={styles.chart}></div>
+              <div className={styles.chart}>
+                <ResponsiveContainer width="100%" height={275}>
+                  <PieChart>
+                    <Pie
+                      data={stats[`count_${view}`]}
+                      dataKey={"total_interactions"}
+                      nameKey={"value"}
+                      innerRadius={0}
+                      label={true}
+                    >
+                      {stats[`count_${view}`].map((row, index) => (
+                        <Cell
+                          key={index}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </CardWrapper>
           </>
         )}
