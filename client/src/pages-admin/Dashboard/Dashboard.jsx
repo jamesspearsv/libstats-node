@@ -3,6 +3,7 @@ import styles from "./Dashboard.module.css";
 import Button from "../../components/Button.jsx";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import DashboardStats from "./DashboardStats.jsx";
 
 function Dashboard() {
   const { apihost, auth, setAuth } = useOutletContext();
@@ -18,6 +19,7 @@ function Dashboard() {
   return (
     <>
       <h1>Admin Dashboard</h1>
+      <DashboardStats />
       <div className={styles.statsContainer}>
         <div className={styles.filters}>
           <h4>Filters</h4>
