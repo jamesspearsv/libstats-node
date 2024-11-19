@@ -9,6 +9,12 @@
   --drop-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -26,6 +32,7 @@ main {
 }
 
 footer {
+  margin-top: auto;
   width: 100%;
   padding: 2rem;
   text-align: center;

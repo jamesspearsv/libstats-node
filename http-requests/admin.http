@@ -1,7 +1,12 @@
+### GET /admin/:table/
+GET http://localhost:3001/admin/interactions
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew
+
+### GET /admin/:table/:id
 GET http://localhost:3001/admin/types/7
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew
 
-### Update row
+### POST /admin/:table/:id
 POST http://localhost:3001/admin/types/7
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew
 Content-Type: application/json
@@ -10,3 +15,7 @@ Content-Type: application/json
   "value": "Directional",
   "desc": "Simple questions about hours, directions, etc."
 }
+
+### Get /admin/stats
+GET http://localhost:3001/admin/stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew

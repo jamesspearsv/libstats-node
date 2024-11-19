@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import CardWrapper from "../components/CardWrapper";
 import Button from "../components/Button";
-import Error from "../components/Error";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 
 import styles from "./Home.module.css";
 
@@ -18,10 +18,10 @@ function Home() {
     (async () => {
       try {
         const url = `${apihost}/app/summary`;
-        const data = await fetch(url);
+        const res = await fetch(url);
 
-        if (!data.ok) throw new Error("Data error");
-        const json = await data.json();
+        if (!res.ok) throw new Error("Data error");
+        const json = await res.json();
 
         setCounter(json.count_month);
       } catch (error) {
@@ -46,7 +46,7 @@ function Home() {
     }, delay);
   }
 
-  if (error) return <Error status={"500"} />;
+  if (error) return <ErrorComponent status={"500"} />;
 
   // TODO : Build out dashboard with additional metrics
   return (

@@ -24,13 +24,12 @@ async function rowGetById(req, res, next) {
     const { id } = req.params;
 
     const row = await queries.selectRowFromTable(table, id);
-    console.log(row);
 
     // throw error if no row found
     if (!row)
       return next(new BadRequestError(`No row in ${table} with id ${id}`));
 
-    res.json({ message: "row found", row });
+    res.json({ message: "Row found", row });
   } catch (error) {
     return next(error);
   }
@@ -71,4 +70,27 @@ async function addNewRow(req, res, next) {
   }
 }
 
-module.exports = { rowGetById, tableGet, updateRowById, addNewRow };
+// Get all time counts of interactions
+async function statsGet(req, res, next) {
+  try {
+    const [count_total, count_type, count_location, count_format] =
+      await Promise.all([
+        await queries.countAllInteractions(),
+        await queries.countAllInteractionByGroup("type"),
+        await queries.countAllInteractionByGroup("location"),
+        await queries.countAllInteractionByGroup("format"),
+      ]);
+
+    return res.json({
+      message: "ok",
+      count_total,
+      count_type,
+      count_location,
+      count_format,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = { rowGetById, tableGet, updateRowById, addNewRow, statsGet };

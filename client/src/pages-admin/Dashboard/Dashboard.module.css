@@ -1,0 +1,47 @@
+.statsContainer {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    border: solid crimson 1px;
+}
+
+.statsContainer > div {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #5856d6;
+    width: 25%;
+    aspect-ratio: 2/1.25;
+}
+
+select {
+    width: 100%;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: .25rem;
+}
+
+.filters > button {
+    flex: 1;
+    cursor: pointer;
+    padding: .5rem 3rem;
+    border: none;
+}
+
+.active {
+    background-color: #185c36;
+}
+
+
+.table {
+    width: 100%;
+    margin: auto;
+    height: 50dvh;
+    background-color: #5856d6;
+    border: solid crimson 1px;
+}
