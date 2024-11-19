@@ -7,13 +7,7 @@ import DashboardStats from "./DashboardStats.jsx";
 import DashboardTable from "./DashboardTable.jsx";
 
 function Dashboard() {
-  const { apihost, auth, setAuth } = useOutletContext();
-  const [state, setState] = useState("state");
-
-  function handleClick(e) {
-    console.log(e.target.dataset.value);
-    setState(e.target.dataset.value);
-  }
+  const { auth } = useOutletContext();
 
   if (!auth) return <Navigate to={"/admin/login"} />;
 
