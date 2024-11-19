@@ -19,7 +19,7 @@ import styles from "./Report.module.css";
 //  ** COMPONENTS ** //
 import Form from "../components/Form";
 import SelectInput from "../components/SelectInput";
-import Error from "../components/Error";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 import DateInput from "../components/DateInput";
 import Table from "../components/Table";
 import CountReport from "../components/CountReport";
@@ -120,7 +120,7 @@ function Report() {
   }
 
   // early return if any errors
-  if (error) return <Error status={"500"} />;
+  if (error) return <ErrorComponent status={"500"} />;
 
   return (
     <>

@@ -23,10 +23,10 @@
   font-weight: bold;
 }
 
-.row:not(:first-child):hover {
-  background-color: var(--color-primary);
-  color: white;
-}
+/*.row:not(:first-child):hover {*/
+/*  background-color: var(--color-primary);*/
+/*  color: white;*/
+/*}*/
 
 .cell {
   text-align: center;

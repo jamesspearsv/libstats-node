@@ -39,22 +39,26 @@ function DatabaseModal({ table, rowId, modalOpen, setModalOpen, setRefresh }) {
         };
 
         const res = await fetch(url, options);
-        const { message, row } = await res.json();
+        const json = await res.json();
 
         // evaluate response status
-        if (!res.ok) throw new Error(message);
+        // todo: extract logic into utility function
+        if (res.status === 401) {
+          toast.error("Session expired");
+          return setAuth(null);
+        } else if (!res.ok) throw new Error(json.message);
 
         // set activeRow to row fetched by id
-        const fields = Object.keys(row);
+        const fields = Object.keys(json.row);
         setFormFields(fields);
 
         if (mode === "adding") {
           fields.forEach((field) => {
-            row[field] = "";
+            json.row[field] = "";
           });
         }
 
-        setActiveRow(row);
+        setActiveRow(json.row);
         setLoading(false);
       } catch (error) {
         console.error(error);

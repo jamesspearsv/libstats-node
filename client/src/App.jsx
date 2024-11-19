@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Nav from "./components/Nav";
-import Error from "./components/Error.jsx";
+import ErrorComponent from "./components/ErrorComponent.jsx";
 
 function App() {
   // Set api host based on env
@@ -41,7 +41,7 @@ function App() {
   }, []);
 
   // Return early if there is an error
-  if (error) return <Error status={"500"} />;
+  if (error) return <ErrorComponent status={"500"} />;
 
   return (
     <>

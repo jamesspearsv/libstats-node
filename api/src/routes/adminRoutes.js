@@ -28,4 +28,7 @@ router.get("/formats/:id", adminController.updateRowById);
 router.post("/formats", adminController.addNewRow);
 router.get("/formats", adminController.tableGet);
 
+router.get("/stats", adminController.statsGet);
+router.get("/interactions", adminController.tableGet);
+
 module.exports = router;
