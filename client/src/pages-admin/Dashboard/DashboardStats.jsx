@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import styles from "./DashboardStats.module.css";
 import CardWrapper from "../../components/CardWrapper.jsx";
-import { ResponsiveContainer, PieChart, Pie, Tooltip, Cell } from "recharts";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Tooltip,
+  Cell,
+  Legend,
+} from "recharts";
 
 function DashboardStats() {
   const { apihost, auth, setAuth } = useOutletContext();
@@ -58,6 +65,7 @@ function DashboardStats() {
   return (
     <div className={styles.container}>
       <div className={styles.views}>
+        <h4>All Time Stats</h4>
         <button
           data-view={"type"}
           onClick={handleViewChange}
@@ -91,7 +99,7 @@ function DashboardStats() {
               <div className={styles.rows}>
                 {stats[`count_${view}`].map((row, index) => (
                   <div key={index} className={styles.row}>
-                    <div className={styles.count_value}>
+                    <div>
                       <span>{row.id}: </span>
                       <span>{row.value}</span>
                     </div>
@@ -116,8 +124,10 @@ function DashboardStats() {
                       data={stats[`count_${view}`]}
                       dataKey={"total_interactions"}
                       nameKey={"value"}
-                      innerRadius={0}
-                      label={true}
+                      label={false}
+                      labelLine={false}
+                      animationBegin={0}
+                      animationDuration={1000}
                     >
                       {stats[`count_${view}`].map((row, index) => (
                         <Cell
@@ -127,6 +137,11 @@ function DashboardStats() {
                       ))}
                     </Pie>
                     <Tooltip />
+                    <Legend
+                      layout={"vertical"}
+                      verticalAlign={"middle"}
+                      align={"right"}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
