@@ -3,6 +3,13 @@ import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import CardWrapper from "../../components/CardWrapper.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
+
+// TODO: ADD PAGINATION TO TABLE
+// const page = 0;
+// const pageLen = 25;
+// console.log("startingIndex: ", page * pageLen);
+// console.log("endingIndex: ", page * pageLen + pageLen - 1);
 
 function DashboardTable() {
   const { apihost, auth, setAuth } = useOutletContext();
@@ -35,11 +42,27 @@ function DashboardTable() {
         setRows(json.rows);
         setLoading(false);
       } catch (error) {
+        setError(true);
+        console.log("ERROR");
         console.error(error);
         toast.error(error.message);
       }
     })();
+
+    return () => {
+      setLoading(true);
+      setError(false);
+      setRows([]);
+    };
   }, []);
+
+  if (error) {
+    return (
+      <div style={{ alignContent: "center", textAlign: "center" }}>
+        <ErrorComponent status={500} />
+      </div>
+    );
+  }
 
   if (loading)
     return (
@@ -49,7 +72,7 @@ function DashboardTable() {
     );
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div style={{ padding: "1rem" }}>
       <CardWrapper style={{ width: "100%" }}>
         <h4 style={{ textAlign: "center" }}>All Interactions</h4>
         <Table

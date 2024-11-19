@@ -1,5 +1,5 @@
 import App from "./App";
-import Error from "./components/Error";
+import ErrorComponent from "./components/ErrorComponent.jsx";
 import Home from "./pages/Home";
 import Record from "./pages/Record";
 import Report from "./pages/Report.jsx";
@@ -16,7 +16,7 @@ const routes = [
       { index: true, element: <Home /> },
       { path: "record", element: <Record /> },
       { path: "report", element: <Report /> },
-      { path: "*", element: <Error status={"404"} /> },
+      { path: "*", element: <ErrorComponent status={"404"} /> },
     ],
   },
   {
