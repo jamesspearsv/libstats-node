@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Nav from "./components/Nav.jsx";
@@ -71,7 +71,7 @@ function Admin() {
           type={"button"}
           action={handleLogout}
           style={{
-            position: "absolute",
+            position: "fixed",
             top: "1rem",
             right: "1rem",
             zIndex: 1000,
