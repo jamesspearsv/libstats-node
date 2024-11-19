@@ -37,14 +37,12 @@ function Admin() {
         // validate token
         const res = await fetch(url, options);
         const json = await res.json();
-        console.log(json);
 
         // if token is invalid
         if (!res.ok) throw new Error(json.message);
       } catch (error) {
         setAuth(null);
         console.error(error);
-        toast.error("Session expired");
       }
     })();
   }, []);

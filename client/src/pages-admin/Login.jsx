@@ -29,7 +29,6 @@ function Login() {
 
         // throw error if request unsuccessful
         if (!res.ok) throw new Error(json.message);
-        console.log(json);
 
         // set authorization state in Admin component
         setAuth(json);

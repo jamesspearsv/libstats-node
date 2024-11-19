@@ -21,7 +21,6 @@ function DashboardStats() {
   // todo: add error state and UI
 
   useEffect(() => {
-    //
     (async () => {
       try {
         const url = `${apihost}/admin/stats`;
@@ -37,13 +36,11 @@ function DashboardStats() {
 
         // evaluate response status
         if (res.status === 401) {
-          toast.error("Session expired");
-          setAuth(null);
+          return setAuth(null);
         } else if (!res.ok) {
           throw new Error(json.message);
         }
 
-        console.log(json);
         setStats(json);
         setLoading(false);
       } catch (error) {

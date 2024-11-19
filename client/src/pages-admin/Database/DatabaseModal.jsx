@@ -44,7 +44,6 @@ function DatabaseModal({ table, rowId, modalOpen, setModalOpen, setRefresh }) {
         // evaluate response status
         // todo: extract logic into utility function
         if (res.status === 401) {
-          toast.error("Session expired");
           return setAuth(null);
         } else if (!res.ok) throw new Error(json.message);
 
@@ -62,13 +61,8 @@ function DatabaseModal({ table, rowId, modalOpen, setModalOpen, setRefresh }) {
         setLoading(false);
       } catch (error) {
         console.error(error);
-        if (error.message === "jwt expired") {
-          setAuth(null);
-          return toast.error("Session expired");
-        } else {
-          setError(true);
-          toast.error(error.message);
-        }
+        setError(true);
+        toast.error(error.message);
       }
     })();
 

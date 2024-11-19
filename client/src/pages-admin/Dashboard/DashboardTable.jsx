@@ -32,18 +32,15 @@ function DashboardTable() {
         const json = await res.json();
 
         if (res.status === 401) {
-          toast.error("Session expired");
-          setAuth(null);
+          return setAuth(null);
         } else if (!res.ok) {
           throw new Error(json.message);
         }
 
-        console.log(json);
         setRows(json.rows);
         setLoading(false);
       } catch (error) {
         setError(true);
-        console.log("ERROR");
         console.error(error);
         toast.error(error.message);
       }

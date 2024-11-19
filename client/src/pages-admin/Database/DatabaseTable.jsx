@@ -38,7 +38,9 @@ function DatabaseTable({ table, setRowId, setModalOpen, refresh }) {
         const json = await res.json();
 
         // Evaluate response status
-        if (!res.ok) throw new Error(json.message);
+        if (res.status === 401) {
+          return setAuth(null);
+        } else if (!res.ok) throw new Error(json.message);
 
         // set table rows and table columns from fetch data
         const arr = Object.keys(json.rows[0]); // parse table columns from rows[0] in table
@@ -48,13 +50,8 @@ function DatabaseTable({ table, setRowId, setModalOpen, refresh }) {
         setLoading(false);
       } catch (error) {
         console.error(error);
-        if (error.message === "jwt expired") {
-          setAuth(null);
-          toast.error("Session expired");
-        } else {
-          setError(true);
-          toast.error(error.message);
-        }
+        setError(true);
+        toast.error(error.message);
       }
     })();
 
