@@ -18,10 +18,10 @@ function Dashboard() {
   if (!auth) return <Navigate to={"/admin/login"} />;
 
   return (
-    <>
+    <div>
       <DashboardStats />
       <DashboardTable />
-    </>
+    </div>
   );
 }
 

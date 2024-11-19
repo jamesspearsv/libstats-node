@@ -18,6 +18,7 @@ function DashboardStats() {
   const [view, setView] = useState("type");
   const [loading, setLoading] = useState(true);
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
+  // todo: add error state and UI
 
   useEffect(() => {
     //
@@ -35,13 +36,12 @@ function DashboardStats() {
         const json = await res.json();
 
         // evaluate response status
-        // unauthorized request
         if (res.status === 401) {
           toast.error("Session expired");
-          return setAuth(null);
+          setAuth(null);
+        } else if (!res.ok) {
+          throw new Error(json.message);
         }
-        // other bad requests
-        if (!res.ok) throw new Error(json.message);
 
         console.log(json);
         setStats(json);
@@ -65,7 +65,7 @@ function DashboardStats() {
   return (
     <div className={styles.container}>
       <div className={styles.views}>
-        <h4>All Time Stats</h4>
+        <h4 style={{ textAlign: "center" }}>All Time Stats</h4>
         <button
           data-view={"type"}
           onClick={handleViewChange}
@@ -89,7 +89,11 @@ function DashboardStats() {
         </button>
       </div>
       <div className={styles.stats}>
-        {!loading && (
+        {loading ? (
+          <div style={{ alignContent: "center", textAlign: "center" }}>
+            <p>Loading...</p>
+          </div>
+        ) : (
           <>
             <CardWrapper>
               <div className={styles.total}>
