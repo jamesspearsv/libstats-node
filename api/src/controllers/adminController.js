@@ -6,6 +6,7 @@ const { BadRequestError } = require("../lib/errorsClasses");
 async function tableGet(req, res, next) {
   try {
     table = req.table;
+    // todo: remove interactions query [deprecated]
     const rows =
       table === "interactions"
         ? await queries.selectInteractions()
@@ -93,4 +94,33 @@ async function statsGet(req, res, next) {
   }
 }
 
-module.exports = { rowGetById, tableGet, updateRowById, addNewRow, statsGet };
+async function interactionsGet(req, res, next) {
+  //   todo: do something
+  try {
+    const { page, limit } = req.query;
+
+    if (!limit || !page) {
+      throw new BadRequestError("No page or limit provided");
+    } else if (isNaN(parseInt(page)) || isNaN(parseInt(limit))) {
+      throw new BadRequestError("Limit and page must be integers");
+    }
+
+    const offset = parseInt(page) * parseInt(limit);
+
+    const total_rows = await queries.countAllInteractions();
+    const rows = await queries.selectInteractions(limit, offset);
+
+    res.json({ message: "ok", total_rows, rows });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = {
+  rowGetById,
+  tableGet,
+  updateRowById,
+  addNewRow,
+  statsGet,
+  interactionsGet,
+};

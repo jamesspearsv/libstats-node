@@ -2,18 +2,24 @@ const db = require("./connection");
 const { getDateToday } = require("../lib/dates");
 const { DatabaseError } = require("../lib/errorsClasses");
 
-async function selectInteractions() {
-  return db("interactions")
-    .select(
-      "interactions.id",
-      "types.value as type",
-      "locations.value as location",
-      "formats.value as format",
-      "date",
-    )
-    .join("types", "interactions.type_id", "=", "types.id")
-    .join("locations", "interactions.location_id", "=", "locations.id")
-    .join("formats", "interactions.format_id", "=", "formats.id");
+async function selectInteractions(limit, offset) {
+  try {
+    return await db("interactions")
+      .select(
+        "interactions.id",
+        "types.value as type",
+        "locations.value as location",
+        "formats.value as format",
+        "date",
+      )
+      .join("types", "interactions.type_id", "=", "types.id")
+      .join("locations", "interactions.location_id", "=", "locations.id")
+      .join("formats", "interactions.format_id", "=", "formats.id")
+      .limit(limit)
+      .offset(offset);
+  } catch (error) {
+    throw DatabaseError(error.message);
+  }
 }
 
 // Select all columns from given table
@@ -45,6 +51,7 @@ async function checkIfExists(table, id) {
   return !!row;
 }
 
+// select interaction filterd by a given date range and location id
 async function selectInteractionsInRange(start, end, location_id) {
   try {
     return await db("interactions")
@@ -69,6 +76,7 @@ async function selectInteractionsInRange(start, end, location_id) {
 async function countInteractionsInRange(start, end, location_id) {
   try {
     const count = await db("interactions")
+      .select("*")
       .count("interactions.id as number_of_interactions")
       .join("locations", "interactions.location_id", "=", "locations.id")
       .whereBetween("date", [start, end])
@@ -129,6 +137,7 @@ async function countInteractionsByDay(start, end, location) {
 async function countInteractionsThisMonth() {
   try {
     const row = await db("interactions")
+      .select("*")
       .count("interactions.id as number_of_interactions")
       .whereRaw("strftime('%Y-%m', date) = strftime('%Y-%m', 'now')")
       .first();
@@ -141,7 +150,7 @@ async function countInteractionsThisMonth() {
 // Select row by id from a given table
 async function selectRowFromTable(table, id) {
   try {
-    return await db(table).where("id", id).first();
+    return await db(table).select("*").where("id", id).first();
   } catch (error) {
     throw new DatabaseError(error.message);
   }
