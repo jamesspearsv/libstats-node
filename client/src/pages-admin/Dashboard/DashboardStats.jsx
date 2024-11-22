@@ -12,14 +12,15 @@ import {
   Legend,
 } from "recharts";
 import { validateAdminResponse } from "../../lib/response.js";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
 
-// todo: add error state and UI
 function DashboardStats() {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
   const { apihost, auth, setAuth } = useOutletContext();
   const [stats, setStats] = useState({});
   const [view, setView] = useState("type");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -40,6 +41,8 @@ function DashboardStats() {
         setStats(json);
         setLoading(false);
       } catch (error) {
+        setLoading(false);
+        setError(true);
         toast.error(error.message);
       }
     })();
@@ -47,6 +50,7 @@ function DashboardStats() {
     return () => {
       setView("type");
       setLoading(true);
+      setError(false);
     };
   }, []);
 
@@ -85,6 +89,16 @@ function DashboardStats() {
         {loading ? (
           <div style={{ alignContent: "center", textAlign: "center" }}>
             <p>Loading...</p>
+          </div>
+        ) : error ? (
+          <div
+            style={{
+              width: "100%",
+              alignContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <ErrorComponent status={"500"} />
           </div>
         ) : (
           <>
