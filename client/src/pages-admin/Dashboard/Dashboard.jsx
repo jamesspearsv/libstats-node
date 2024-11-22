@@ -1,8 +1,4 @@
 import { Navigate, useOutletContext } from "react-router-dom";
-import styles from "./Dashboard.module.css";
-import Button from "../../components/Button.jsx";
-import toast from "react-hot-toast";
-import { useState } from "react";
 import DashboardStats from "./DashboardStats.jsx";
 import DashboardTable from "./DashboardTable.jsx";
 

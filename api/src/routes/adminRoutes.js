@@ -6,6 +6,7 @@ const router = Router();
 
 // Use token verification for all admin routes
 router.use(verifyToken);
+
 // Parse table name from url and assign req.table property
 router.use((req, res, next) => {
   req.table = req.url.split("/")[1];
@@ -29,6 +30,7 @@ router.post("/formats", adminController.addNewRow);
 router.get("/formats", adminController.tableGet);
 
 router.get("/stats", adminController.statsGet);
-router.get("/interactions", adminController.tableGet);
+router.get("/interactions", adminController.interactionsGet);
+router.get("/count/:table", adminController.countTable);
 
 module.exports = router;

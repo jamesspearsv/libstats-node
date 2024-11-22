@@ -6,10 +6,7 @@ const { BadRequestError } = require("../lib/errorsClasses");
 async function tableGet(req, res, next) {
   try {
     table = req.table;
-    const rows =
-      table === "interactions"
-        ? await queries.selectInteractions()
-        : await queries.selectAllFromTable(table);
+    const rows = await queries.selectAllFromTable(table);
 
     return res.json({ message: "ok", rows });
   } catch (error) {
@@ -75,7 +72,7 @@ async function statsGet(req, res, next) {
   try {
     const [count_total, count_type, count_location, count_format] =
       await Promise.all([
-        await queries.countAllInteractions(),
+        await queries.countRowsInTable("interactions"),
         await queries.countAllInteractionByGroup("type"),
         await queries.countAllInteractionByGroup("location"),
         await queries.countAllInteractionByGroup("format"),
@@ -93,4 +90,46 @@ async function statsGet(req, res, next) {
   }
 }
 
-module.exports = { rowGetById, tableGet, updateRowById, addNewRow, statsGet };
+async function interactionsGet(req, res, next) {
+  //   todo: do something
+  try {
+    const { page, limit } = req.query;
+
+    if (!limit || !page) {
+      throw new BadRequestError("No page or limit provided");
+    } else if (isNaN(parseInt(page)) || isNaN(parseInt(limit))) {
+      throw new BadRequestError("Limit and page must be integers");
+    }
+
+    const offset = parseInt(page) * parseInt(limit);
+
+    const [total_rows, rows] = await Promise.all([
+      queries.countRowsInTable("interactions"),
+      queries.selectInteractions(limit, offset),
+    ]);
+
+    res.json({ message: "ok", total_rows, rows });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function countTable(req, res, next) {
+  try {
+    const table = req.url.split("/")[2];
+    const total_rows = await queries.countRowsInTable(table);
+    res.json({ message: "ok", total_rows });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = {
+  rowGetById,
+  tableGet,
+  updateRowById,
+  addNewRow,
+  statsGet,
+  interactionsGet,
+  countTable,
+};

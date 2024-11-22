@@ -12,13 +12,13 @@ import {
   Legend,
 } from "recharts";
 
+// todo: add error state and UI
 function DashboardStats() {
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
   const { apihost, auth, setAuth } = useOutletContext();
   const [stats, setStats] = useState({});
   const [view, setView] = useState("type");
   const [loading, setLoading] = useState(true);
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
-  // todo: add error state and UI
 
   useEffect(() => {
     (async () => {
