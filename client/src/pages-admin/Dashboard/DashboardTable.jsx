@@ -1,4 +1,5 @@
 import Table from "../../components/Table.jsx";
+import Button from "../../components/Button.jsx";
 import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -19,15 +20,37 @@ function DashboardTable() {
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(0);
   const limit = 25;
+  const pageButtonStyle = { borderRadius: "50rem", fontSize: ".875rem" };
 
   // calculate number of pages
   useEffect(() => {
-    try {
-      //   do something
-    } catch (error) {
-      console.error(error);
-      setError(true);
-    }
+    (async () => {
+      try {
+        const url = `${apihost}/admin/count/interactions`;
+        const options = {
+          method: "GET",
+          headers: {
+            Authorization: `${auth.token_type} ${auth.token}`,
+          },
+        };
+
+        const res = await fetch(url, options);
+        const json = await res.json();
+
+        if (res.status === 401) {
+          return setAuth(null);
+        } else if (!res.ok) {
+          throw new Error(json.message);
+        }
+
+        const total = Math.ceil(json.total_rows / limit);
+        console.log(total);
+        setTotalPages(total);
+      } catch (error) {
+        console.error(error);
+        setError(true);
+      }
+    })();
 
     return () => {
       setLoading(true);
@@ -35,7 +58,7 @@ function DashboardTable() {
       setTotalPages(0);
       setPage(0);
     };
-  }, {});
+  }, []);
 
   // fetch rows from database on page change
   useEffect(() => {
@@ -74,6 +97,20 @@ function DashboardTable() {
     };
   }, [page]);
 
+  function handlePageChange(event) {
+    const action = event.target.dataset.id;
+
+    if (action === "next") {
+      //
+      if (page + 1 === totalPages) return;
+      setPage((page) => page + 1);
+    } else if (action === "back") {
+      //
+      if (page === 0) return;
+      setPage((page) => page - 1);
+    } else return;
+  }
+
   if (error) {
     return (
       <div style={{ alignContent: "center", textAlign: "center" }}>
@@ -84,7 +121,7 @@ function DashboardTable() {
 
   return (
     <div style={{ padding: "1rem" }}>
-      <CardWrapper style={{ width: "100%" }}>
+      <CardWrapper style={{ width: "100%", minHeight: "60dvh" }}>
         <h4 style={{ textAlign: "center" }}>All Interactions</h4>
         {loading ? (
           <div style={{ alignContent: "center", textAlign: "center" }}>
@@ -104,23 +141,33 @@ function DashboardTable() {
           />
         )}
         <div
-          style={{ display: "flex", width: "100%", justifyContent: "center" }}
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "1rem",
+          }}
         >
-          <button
-            onClick={() => {
-              setPage((page) => page - 1);
-            }}
-          >
-            -
-          </button>
-          <div>{page + 1}</div>
-          <button
-            onClick={() => {
-              setPage((page) => page + 1);
-            }}
-          >
-            +
-          </button>
+          <Button
+            id={"back"}
+            text={"Back"}
+            type={"button"}
+            variant={"primary"}
+            style={pageButtonStyle}
+            action={handlePageChange}
+          />
+          <div>
+            {page + 1} of {totalPages} pages
+          </div>
+          <Button
+            id={"next"}
+            text={"Next"}
+            type={"button"}
+            variant={"primary"}
+            style={pageButtonStyle}
+            action={handlePageChange}
+          />
         </div>
       </CardWrapper>
     </div>
