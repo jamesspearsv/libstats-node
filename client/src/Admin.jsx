@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Nav from "./components/Nav.jsx";
@@ -14,6 +14,8 @@ function Admin() {
 
   // store and update auth object in localstorage when auth state is changed
   useEffect(() => {
+    if (!auth) toast.success("Logged out!");
+
     auth
       ? localStorage.setItem("libstats_auth", JSON.stringify(auth))
       : localStorage.removeItem("libstats_auth");
@@ -37,20 +39,17 @@ function Admin() {
         // validate token
         const res = await fetch(url, options);
         const json = await res.json();
-        console.log(json);
 
         // if token is invalid
         if (!res.ok) throw new Error(json.message);
       } catch (error) {
         setAuth(null);
         console.error(error);
-        toast.error("Session expired");
       }
     })();
   }, []);
 
   function handleLogout() {
-    toast.success("Logged out");
     // reset authorization state in Admin component
     setAuth(null);
   }
@@ -71,7 +70,7 @@ function Admin() {
           type={"button"}
           action={handleLogout}
           style={{
-            position: "absolute",
+            position: "fixed",
             top: "1rem",
             right: "1rem",
             zIndex: 1000,
