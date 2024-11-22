@@ -14,8 +14,6 @@ function Admin() {
 
   // store and update auth object in localstorage when auth state is changed
   useEffect(() => {
-    if (!auth) toast.success("Logged out!");
-
     auth
       ? localStorage.setItem("libstats_auth", JSON.stringify(auth))
       : localStorage.removeItem("libstats_auth");
@@ -51,6 +49,7 @@ function Admin() {
 
   function handleLogout() {
     // reset authorization state in Admin component
+    toast.success("Logged out!");
     setAuth(null);
   }
 
