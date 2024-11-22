@@ -11,6 +11,7 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import { validateAdminResponse } from "../../lib/response.js";
 
 // todo: add error state and UI
 function DashboardStats() {
@@ -34,12 +35,7 @@ function DashboardStats() {
         const res = await fetch(url, options);
         const json = await res.json();
 
-        // evaluate response status
-        if (res.status === 401) {
-          return setAuth(null);
-        } else if (!res.ok) {
-          throw new Error(json.message);
-        }
+        validateAdminResponse(res, json, setAuth);
 
         setStats(json);
         setLoading(false);

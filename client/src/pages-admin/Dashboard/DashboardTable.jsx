@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import CardWrapper from "../../components/CardWrapper.jsx";
 import ErrorComponent from "../../components/ErrorComponent.jsx";
+import { validateAdminResponse } from "../../lib/response.js";
 
 function DashboardTable() {
   const { apihost, auth, setAuth } = useOutletContext();
@@ -31,11 +32,7 @@ function DashboardTable() {
         const res = await fetch(url, options);
         const json = await res.json();
 
-        if (res.status === 401) {
-          return setAuth(null);
-        } else if (!res.ok) {
-          throw new Error(json.message);
-        }
+        validateAdminResponse(res, json, setAuth);
 
         const total = Math.ceil(json.total_rows / limit);
         console.log(total);
@@ -69,11 +66,7 @@ function DashboardTable() {
         const res = await fetch(url, options);
         const json = await res.json();
 
-        if (res.status === 401) {
-          return setAuth(null);
-        } else if (!res.ok) {
-          throw new Error(json.message);
-        }
+        validateAdminResponse(res, json, setAuth);
 
         setRows(json.rows);
         setLoading(false);

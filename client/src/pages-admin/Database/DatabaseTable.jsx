@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import CardWrapper from "../../components/CardWrapper.jsx";
 import Table from "../../components/Table.jsx";
 import Button from "../../components/Button.jsx";
+import { validateAdminResponse } from "../../lib/response.js";
 
 function DatabaseTable({ table, setRowId, setModalOpen, refresh }) {
   const { apihost, auth, setAuth } = useOutletContext();
@@ -38,9 +39,7 @@ function DatabaseTable({ table, setRowId, setModalOpen, refresh }) {
         const json = await res.json();
 
         // Evaluate response status
-        if (res.status === 401) {
-          return setAuth(null);
-        } else if (!res.ok) throw new Error(json.message);
+        validateAdminResponse(res, json, setAuth);
 
         // set table rows and table columns from fetch data
         const arr = Object.keys(json.rows[0]); // parse table columns from rows[0] in table

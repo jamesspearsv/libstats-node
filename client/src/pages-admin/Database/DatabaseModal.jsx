@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 import Modal from "../../components/Modal.jsx";
 import Form from "../../components/Form.jsx";
 import Button from "../../components/Button.jsx";
+import { validateAdminResponse } from "../../lib/response.js";
 
 function DatabaseModal({ table, rowId, modalOpen, setModalOpen, setRefresh }) {
   /* Component State */
@@ -42,10 +43,7 @@ function DatabaseModal({ table, rowId, modalOpen, setModalOpen, setRefresh }) {
         const json = await res.json();
 
         // evaluate response status
-        // todo: extract logic into utility function
-        if (res.status === 401) {
-          return setAuth(null);
-        } else if (!res.ok) throw new Error(json.message);
+        validateAdminResponse(res, json, setAuth);
 
         // set activeRow to row fetched by id
         const fields = Object.keys(json.row);
