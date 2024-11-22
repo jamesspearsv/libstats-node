@@ -95,7 +95,7 @@ function DashboardTable() {
       //
       if (page === 0) return;
       setPage((page) => page - 1);
-    } else return;
+    }
   }
 
   if (error) {
@@ -108,10 +108,16 @@ function DashboardTable() {
 
   return (
     <div style={{ padding: "1rem" }}>
-      <CardWrapper style={{ width: "100%", minHeight: "60dvh" }}>
+      <CardWrapper style={{ width: "100%" }}>
         <h4 style={{ textAlign: "center" }}>All Interactions</h4>
         {loading ? (
-          <div style={{ alignContent: "center", textAlign: "center" }}>
+          <div
+            style={{
+              alignContent: "center",
+              textAlign: "center",
+              height: "50dvh",
+            }}
+          >
             <p>Loading...</p>
           </div>
         ) : (
