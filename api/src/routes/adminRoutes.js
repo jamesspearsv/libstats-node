@@ -30,5 +30,6 @@ router.get("/formats", adminController.tableGet);
 
 router.get("/stats", adminController.statsGet);
 router.get("/interactions", adminController.interactionsGet);
+router.get("/count/:table", adminController.countTable);
 
 module.exports = router;

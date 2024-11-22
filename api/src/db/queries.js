@@ -51,7 +51,7 @@ async function checkIfExists(table, id) {
   return !!row;
 }
 
-// select interaction filterd by a given date range and location id
+// select interaction filtered by a given date range and location id
 async function selectInteractionsInRange(start, end, location_id) {
   try {
     return await db("interactions")
@@ -97,7 +97,11 @@ async function countInteractionsByCategory(start, end, location_id, category) {
       .count("interactions.id as number_of_interactions")
       .leftJoin("interactions", function () {
         this.on(`interactions.${category}_id`, "=", `${category}s.id`)
-          .andOn("interactions.location_id", "=", db.raw("?", [location_id]))
+          .andOn(
+            "interactions.location_id",
+            "=",
+            db.raw(":location_id", { location_id }),
+          )
           .andOnBetween("interactions.date", [start, end]);
       })
       .groupBy(`${category}s.id`);
@@ -111,22 +115,22 @@ async function countInteractionsByDay(start, end, location) {
   try {
     return await db.raw(
       `WITH RECURSIVE date_range AS (
-        SELECT DATE(?) AS date
+        SELECT DATE(:start) AS date
         UNION ALL
         SELECT DATE(date, '+1 day')
         FROM date_range
-        WHERE date < DATE(?)
+        WHERE date < DATE(:end)
       )
       SELECT dr.date, 
              COUNT(i.id) AS number_of_interactions
       FROM date_range dr
       LEFT JOIN interactions i 
         ON dr.date = i.date 
-        AND i.location_id = ?
+        AND i.location_id = :location
       GROUP BY dr.date
       ORDER BY dr.date ASC;
     `,
-      [start, end, location],
+      { start, end, location },
     );
   } catch (error) {
     throw new DatabaseError(error.message);
@@ -167,7 +171,7 @@ async function updateRowFromTable(table, id, values) {
   }
 }
 
-// Insert new row into specificed table
+// Insert new row into specified table
 async function insertRow(table, row) {
   try {
     const rows = await db(table).insert(row, ["*"]);
@@ -203,6 +207,18 @@ async function countAllInteractionByGroup(group) {
   }
 }
 
+async function countRowsInTable(table) {
+  try {
+    const rows = await db.raw(`SELECT COUNT(id) AS total_rows FROM  :table:`, {
+      table,
+    });
+
+    return rows[0].total_rows;
+  } catch (error) {
+    throw new DatabaseError(error.message);
+  }
+}
+
 module.exports = {
   selectInteractions,
   selectAllFromTable,
@@ -216,6 +232,7 @@ module.exports = {
   selectRowFromTable,
   updateRowFromTable,
   insertRow,
-  countAllInteractions,
   countAllInteractionByGroup,
+  countRowsInTable,
+  // countAllInteractions,
 };

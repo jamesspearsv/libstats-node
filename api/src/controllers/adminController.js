@@ -6,11 +6,7 @@ const { BadRequestError } = require("../lib/errorsClasses");
 async function tableGet(req, res, next) {
   try {
     table = req.table;
-    // todo: remove interactions query [deprecated]
-    const rows =
-      table === "interactions"
-        ? await queries.selectInteractions()
-        : await queries.selectAllFromTable(table);
+    const rows = await queries.selectAllFromTable(table);
 
     return res.json({ message: "ok", rows });
   } catch (error) {
@@ -107,10 +103,22 @@ async function interactionsGet(req, res, next) {
 
     const offset = parseInt(page) * parseInt(limit);
 
-    const total_rows = await queries.countAllInteractions();
-    const rows = await queries.selectInteractions(limit, offset);
+    const [total_rows, rows] = await Promise.all([
+      queries.countRowsInTable("interactions"),
+      queries.selectInteractions(limit, offset),
+    ]);
 
     res.json({ message: "ok", total_rows, rows });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function countTable(req, res, next) {
+  try {
+    const table = req.url.split("/")[2];
+    const total_rows = await queries.countRowsInTable(table);
+    res.json({ message: "ok", total_rows });
   } catch (error) {
     return next(error);
   }
@@ -123,4 +131,5 @@ module.exports = {
   addNewRow,
   statsGet,
   interactionsGet,
+  countTable,
 };
