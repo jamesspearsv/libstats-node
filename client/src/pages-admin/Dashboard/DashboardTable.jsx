@@ -6,12 +6,6 @@ import { toast } from "react-hot-toast";
 import CardWrapper from "../../components/CardWrapper.jsx";
 import ErrorComponent from "../../components/ErrorComponent.jsx";
 
-// TODO: ADD PAGINATION TO TABLE
-// const page = 0;
-// const pageLen = 25;
-// console.log("startingIndex: ", page * pageLen);
-// console.log("endingIndex: ", page * pageLen + pageLen - 1);
-
 function DashboardTable() {
   const { apihost, auth, setAuth } = useOutletContext();
   const [rows, setRows] = useState([]);

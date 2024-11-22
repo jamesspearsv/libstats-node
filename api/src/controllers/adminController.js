@@ -91,7 +91,6 @@ async function statsGet(req, res, next) {
 }
 
 async function interactionsGet(req, res, next) {
-  //   todo: do something
   try {
     const { page, limit } = req.query;
 

@@ -163,7 +163,6 @@ async function selectRowFromTable(table, id) {
 // Update row by id from a given table
 async function updateRowFromTable(table, id, values) {
   try {
-    // todo: return only first row object, not row array
     const rows = await db(table).where("id", id).update(values, ["*"]);
     return rows[0];
   } catch (error) {
