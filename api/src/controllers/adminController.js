@@ -72,7 +72,7 @@ async function statsGet(req, res, next) {
   try {
     const [count_total, count_type, count_location, count_format] =
       await Promise.all([
-        await queries.countAllInteractions(),
+        await queries.countRowsInTable("interactions"),
         await queries.countAllInteractionByGroup("type"),
         await queries.countAllInteractionByGroup("location"),
         await queries.countAllInteractionByGroup("format"),

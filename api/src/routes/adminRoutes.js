@@ -6,6 +6,7 @@ const router = Router();
 
 // Use token verification for all admin routes
 router.use(verifyToken);
+
 // Parse table name from url and assign req.table property
 router.use((req, res, next) => {
   req.table = req.url.split("/")[1];

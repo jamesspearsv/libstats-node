@@ -16,11 +16,32 @@ function DashboardTable() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(0);
+  const limit = 25;
 
+  // calculate number of pages
+  useEffect(() => {
+    try {
+      //   do something
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    }
+
+    return () => {
+      setLoading(true);
+      setError(false);
+      setTotalPages(0);
+      setPage(0);
+    };
+  }, {});
+
+  // fetch rows from database on page change
   useEffect(() => {
     (async () => {
       try {
-        const url = `${apihost}/admin/interactions`;
+        const url = `${apihost}/admin/interactions?page=${page}&limit=${limit}`;
         const options = {
           method: "GET",
           headers: {
@@ -51,7 +72,7 @@ function DashboardTable() {
       setError(false);
       setRows([]);
     };
-  }, []);
+  }, [page]);
 
   if (error) {
     return (
@@ -61,28 +82,46 @@ function DashboardTable() {
     );
   }
 
-  if (loading)
-    return (
-      <div style={{ alignContent: "center", textAlign: "center" }}>
-        <p>Loading...</p>
-      </div>
-    );
-
   return (
     <div style={{ padding: "1rem" }}>
       <CardWrapper style={{ width: "100%" }}>
         <h4 style={{ textAlign: "center" }}>All Interactions</h4>
-        <Table
-          rows={rows}
-          columns={[
-            { key: "id", label: "ID" },
-            { key: "type", label: "Type" },
-            { key: "location", label: "Location" },
-            { key: "format", label: "Format" },
-            { key: "date", label: "Date" },
-          ]}
-          readonly={true}
-        />
+        {loading ? (
+          <div style={{ alignContent: "center", textAlign: "center" }}>
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <Table
+            rows={rows}
+            columns={[
+              { key: "id", label: "ID" },
+              { key: "type", label: "Type" },
+              { key: "location", label: "Location" },
+              { key: "format", label: "Format" },
+              { key: "date", label: "Date" },
+            ]}
+            readonly={true}
+          />
+        )}
+        <div
+          style={{ display: "flex", width: "100%", justifyContent: "center" }}
+        >
+          <button
+            onClick={() => {
+              setPage((page) => page - 1);
+            }}
+          >
+            -
+          </button>
+          <div>{page + 1}</div>
+          <button
+            onClick={() => {
+              setPage((page) => page + 1);
+            }}
+          >
+            +
+          </button>
+        </div>
       </CardWrapper>
     </div>
   );
