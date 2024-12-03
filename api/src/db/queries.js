@@ -218,6 +218,20 @@ async function countRowsInTable(table) {
   }
 }
 
+async function countInteractionsAdmin(start, end) {
+  const rows = await db("interactions").count('* as total_interactions').whereRaw("strftime('%Y-%m', date) BETWEEN" +
+      " :start AND :end", {start, end}).first();
+
+  return rows.total_interactions;
+}
+
+async function countInteractionByCategoryAdmin(start, end, category) {
+  const table = `${category}s`
+
+   const rows = await db(table).select(`${table}.id`, `${table}.value`).count(`interactions.${category}_id as number_of_interactions`).leftJoin('interactions', `${table}.id`, `interactions.${category}_id`).whereRaw("strftime('%Y-%m', date) BETWEEN :start AND :end", {start, end}).groupBy(`${table}.id`)
+  return rows;
+}
+
 module.exports = {
   selectInteractions,
   selectAllFromTable,
@@ -233,5 +247,6 @@ module.exports = {
   insertRow,
   countAllInteractionByGroup,
   countRowsInTable,
-  // countAllInteractions,
+  countInteractionsAdmin,
+  countInteractionByCategoryAdmin
 };

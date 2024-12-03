@@ -1,6 +1,7 @@
 /* Middleware to handle actions requiring admin authorization */
 const queries = require("../db/queries");
 const { BadRequestError } = require("../lib/errorsClasses");
+const { countInteractionsAdmin } = require("../db/queries");
 
 // Get all rows from a given table
 async function tableGet(req, res, next) {
@@ -123,6 +124,34 @@ async function countTable(req, res, next) {
   }
 }
 
+async function reportGet(req, res, next) {
+  try {
+    const { start, end } = req.query;
+    if (!start || !end) throw new BadRequestError("No start or end provided");
+
+    // search database for counts of total interaction and counts of categories
+    const [total_interactions, type_count, location_count, format_count] =
+      await Promise.all([
+        countInteractionsAdmin(start, end),
+        queries.countInteractionByCategoryAdmin(start, end, "type"),
+        queries.countInteractionByCategoryAdmin(start, end, "location"),
+        queries.countInteractionByCategoryAdmin(start, end, "format"),
+      ]);
+
+    // todo: add queries for counts grouped by month
+
+    res.json({
+      message: "ok",
+      total_interactions,
+      type_count,
+      location_count,
+      format_count,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   rowGetById,
   tableGet,
@@ -131,4 +160,5 @@ module.exports = {
   statsGet,
   interactionsGet,
   countTable,
+  reportGet,
 };
