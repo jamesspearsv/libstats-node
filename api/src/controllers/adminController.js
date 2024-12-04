@@ -124,7 +124,8 @@ async function countTable(req, res, next) {
   }
 }
 
-async function reportGet(req, res, next) {
+// fetch cumulative count of interaction between a given range of months
+async function reportTotalGet(req, res, next) {
   try {
     const { start, end } = req.query;
     if (!start || !end) throw new BadRequestError("No start or end provided");
@@ -138,8 +139,6 @@ async function reportGet(req, res, next) {
         queries.countInteractionByCategoryAdmin(start, end, "format"),
       ]);
 
-    // todo: add queries for counts grouped by month
-
     res.json({
       message: "ok",
       total_interactions,
@@ -152,6 +151,16 @@ async function reportGet(req, res, next) {
   }
 }
 
+// todo: build controller to query database for counts grouped by month
+async function reportMonthlyGet(req, res, next) {
+  /*
+  query each database table (types, formats, and locations) and count interactions per row for each month
+  i.e. count the number of interactions in 2024-10 with the type_id of 1
+   */
+
+  return null;
+}
+
 module.exports = {
   rowGetById,
   tableGet,
@@ -160,5 +169,6 @@ module.exports = {
   statsGet,
   interactionsGet,
   countTable,
-  reportGet,
+  reportTotalGet,
+  reportMonthlyGet,
 };
