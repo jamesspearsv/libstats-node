@@ -108,7 +108,7 @@ async function interactionsGet(req, res, next) {
       queries.selectInteractions(limit, offset),
     ]);
 
-    res.json({ message: "ok", total_rows, rows });
+    return res.json({ message: "ok", total_rows, rows });
   } catch (error) {
     return next(error);
   }
@@ -139,7 +139,7 @@ async function reportTotalGet(req, res, next) {
         queries.countInteractionByCategoryAdmin(start, end, "format"),
       ]);
 
-    res.json({
+    return res.json({
       message: "ok",
       total_interactions,
       type_count,
@@ -158,7 +158,11 @@ async function reportMonthlyGet(req, res, next) {
   i.e. count the number of interactions in 2024-10 with the type_id of 1
    */
 
-  return null;
+  const { month } = req.query;
+
+  const rows = await queries.countInteractionsByCategoryByMonth(month, "type");
+
+  return res.json({ message: "ok", rows });
 }
 
 module.exports = {

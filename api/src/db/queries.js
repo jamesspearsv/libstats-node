@@ -219,17 +219,52 @@ async function countRowsInTable(table) {
 }
 
 async function countInteractionsAdmin(start, end) {
-  const rows = await db("interactions").count('* as total_interactions').whereRaw("strftime('%Y-%m', date) BETWEEN" +
-      " :start AND :end", {start, end}).first();
+  const rows = await db("interactions")
+    .count("* as total_interactions")
+    .whereRaw("strftime('%Y-%m', date) BETWEEN" + " :start AND :end", {
+      start,
+      end,
+    })
+    .first();
 
   return rows.total_interactions;
 }
 
 async function countInteractionByCategoryAdmin(start, end, category) {
-  const table = `${category}s`
+  const table = `${category}s`;
 
-   const rows = await db(table).select(`${table}.id`, `${table}.value`).count(`interactions.${category}_id as number_of_interactions`).leftJoin('interactions', `${table}.id`, `interactions.${category}_id`).whereRaw("strftime('%Y-%m', date) BETWEEN :start AND :end", {start, end}).groupBy(`${table}.id`)
+  const rows = await db(table)
+    .select(`${table}.id`, `${table}.value`)
+    .count("interactions.id as number_of_interactions")
+    .leftJoin("interactions", `${table}.id`, `interactions.${category}_id`)
+    .whereRaw("strftime('%Y-%m', date) BETWEEN :start AND :end", { start, end })
+    .groupBy(`${table}.id`);
   return rows;
+}
+
+async function countInteractionsByCategoryByMonth(month, category) {
+  try {
+    const table = `${category}s`;
+
+    // TODO: refactor to use knex.raw
+
+    const rows = await db(table)
+      .select(`${table}.id`, `${table}.value`)
+      .count("interactions.id as" + " number_of_interactions")
+      .leftJoin("interactions", function () {
+        this.on(`${table}.id`, "=", `interactions.${category}_id`).andOn(
+          `strftime('%Y-%m, interactions.date)`,
+          "=",
+          month,
+        );
+      })
+      .groupBy(`${table}.id`);
+
+    return rows;
+  } catch (error) {
+    console.error(error);
+    throw new DatabaseError(error.message);
+  }
 }
 
 module.exports = {
@@ -248,5 +283,6 @@ module.exports = {
   countAllInteractionByGroup,
   countRowsInTable,
   countInteractionsAdmin,
-  countInteractionByCategoryAdmin
+  countInteractionByCategoryAdmin,
+  countInteractionsByCategoryByMonth,
 };
