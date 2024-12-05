@@ -37,5 +37,6 @@ router.get("/count/:table", adminController.countTable);
 
 router.get("/report/total", adminController.reportTotalGet);
 router.get("/report/monthly", adminController.reportMonthlyGet);
+router.get("/report", adminController.adminReportGet);
 
 module.exports = router;

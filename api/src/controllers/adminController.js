@@ -124,6 +124,24 @@ async function countTable(req, res, next) {
   }
 }
 
+async function adminReportGet(req, res, next) {
+  /**
+   * TODO: Refactor /admin/report endpoint
+   * This endpoint should return a structured object for the given table during the given range in the db
+   * For example:
+   * {
+   *   total: [],
+   *   monthly: [month: [],month: [] month: []]
+   * }
+   **/
+  try {
+    const { start, end, category } = req.query;
+    res.json({ message: "wip", query: { start, end, category } });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 // fetch cumulative count of interaction between a given range of months
 async function reportTotalGet(req, res, next) {
   try {
@@ -160,7 +178,10 @@ async function reportMonthlyGet(req, res, next) {
 
   const { month } = req.query;
 
-  const rows = await queries.countInteractionsByCategoryByMonth(month, "type");
+  const rows = await queries.countInteractionsByCategoryByMonth(
+    month,
+    "format",
+  );
 
   return res.json({ message: "ok", rows });
 }
@@ -175,4 +196,5 @@ module.exports = {
   countTable,
   reportTotalGet,
   reportMonthlyGet,
+  adminReportGet,
 };

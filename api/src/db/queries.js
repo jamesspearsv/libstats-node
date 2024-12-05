@@ -246,21 +246,16 @@ async function countInteractionsByCategoryByMonth(month, category) {
   try {
     const table = `${category}s`;
 
-    // TODO: refactor to use knex.raw
-
-    const rows = await db(table)
+    return await db(table)
       .select(`${table}.id`, `${table}.value`)
-      .count("interactions.id as" + " number_of_interactions")
-      .leftJoin("interactions", function () {
-        this.on(`${table}.id`, "=", `interactions.${category}_id`).andOn(
-          `strftime('%Y-%m, interactions.date)`,
-          "=",
-          month,
-        );
-      })
+      .count("interactions.id as number_of_interactions")
+      .leftJoin(
+        db.raw(
+          "interactions on ??=?? AND strftime('%Y-%m', interactions.date)=?",
+          [`interactions.${category}_id`, `${table}.id`, month],
+        ),
+      )
       .groupBy(`${table}.id`);
-
-    return rows;
   } catch (error) {
     console.error(error);
     throw new DatabaseError(error.message);
