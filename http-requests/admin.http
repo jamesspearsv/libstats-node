@@ -29,5 +29,5 @@ GET http://localhost:3001/admin/count/interactions
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew
 
 ### Admin report
-GET http://localhost:3001/admin/report?start=2024-11&end=2024-12&category=type
+GET http://localhost:3001/admin/report?start=2024-11&end=2024-12&category=format
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew

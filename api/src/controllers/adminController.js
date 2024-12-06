@@ -2,6 +2,7 @@
 const queries = require("../db/queries");
 const { BadRequestError } = require("../lib/errorsClasses");
 const { countInteractionsAdmin } = require("../db/queries");
+const parseMonthRange = require("../lib/parseMonthRange");
 
 // Get all rows from a given table
 async function tableGet(req, res, next) {
@@ -137,6 +138,7 @@ async function adminReportGet(req, res, next) {
    **/
   try {
     const { start, end, category } = req.query;
+    const range = parseMonthRange(start, end);
 
     // query database for cumulative interactions counts during range
     const total = await queries.countInteractionsAdmin(start, end);
@@ -145,12 +147,29 @@ async function adminReportGet(req, res, next) {
       end,
       category,
     );
-    const count_by_month = await queries.countInteractionsByCategoryByMonth(
-      start,
-      category,
-    );
 
-    res.json({ message: "wip", total, total_detailed, count_by_month });
+    const montly_count = [];
+    for (const month of range) {
+      const rows = await queries.countInteractionsByCategoryByMonth(
+        month,
+        category,
+      );
+
+      const monthObject = {
+        month,
+      };
+
+      for (const row of rows) {
+        monthObject[row.value] = row.number_of_interactions;
+      }
+
+      console.log(rows);
+      montly_count.push(monthObject);
+    }
+
+    // console.log(montly_count[0]["Directional"]);
+
+    res.json({ message: "ok", range, total, total_detailed, montly_count });
   } catch (error) {
     return next(error);
   }
