@@ -130,60 +130,30 @@ async function adminReportGet(req, res, next) {
    * This endpoint should return a structured object for the given table during the given range in the db
    * For example:
    * {
+   *   total_interactions: number
    *   total: [],
    *   monthly: [month: [],month: [] month: []]
    * }
    **/
   try {
     const { start, end, category } = req.query;
-    res.json({ message: "wip", query: { start, end, category } });
+
+    // query database for cumulative interactions counts during range
+    const total = await queries.countInteractionsAdmin(start, end);
+    const total_detailed = await queries.countInteractionByCategoryAdmin(
+      start,
+      end,
+      category,
+    );
+    const count_by_month = await queries.countInteractionsByCategoryByMonth(
+      start,
+      category,
+    );
+
+    res.json({ message: "wip", total, total_detailed, count_by_month });
   } catch (error) {
     return next(error);
   }
-}
-
-// fetch cumulative count of interaction between a given range of months
-async function reportTotalGet(req, res, next) {
-  try {
-    const { start, end } = req.query;
-    if (!start || !end) throw new BadRequestError("No start or end provided");
-
-    // search database for counts of total interaction and counts of categories
-    const [total_interactions, type_count, location_count, format_count] =
-      await Promise.all([
-        countInteractionsAdmin(start, end),
-        queries.countInteractionByCategoryAdmin(start, end, "type"),
-        queries.countInteractionByCategoryAdmin(start, end, "location"),
-        queries.countInteractionByCategoryAdmin(start, end, "format"),
-      ]);
-
-    return res.json({
-      message: "ok",
-      total_interactions,
-      type_count,
-      location_count,
-      format_count,
-    });
-  } catch (error) {
-    return next(error);
-  }
-}
-
-// todo: build controller to query database for counts grouped by month
-async function reportMonthlyGet(req, res, next) {
-  /*
-  query each database table (types, formats, and locations) and count interactions per row for each month
-  i.e. count the number of interactions in 2024-10 with the type_id of 1
-   */
-
-  const { month } = req.query;
-
-  const rows = await queries.countInteractionsByCategoryByMonth(
-    month,
-    "format",
-  );
-
-  return res.json({ message: "ok", rows });
 }
 
 module.exports = {
@@ -194,7 +164,5 @@ module.exports = {
   statsGet,
   interactionsGet,
   countTable,
-  reportTotalGet,
-  reportMonthlyGet,
   adminReportGet,
 };
