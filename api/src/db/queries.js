@@ -221,7 +221,7 @@ async function countRowsInTable(table) {
 async function countInteractionsAdmin(start, end) {
   const rows = await db("interactions")
     .count("* as total_interactions")
-    .whereRaw("strftime('%Y-%m', date) BETWEEN" + " :start AND :end", {
+    .whereRaw("strftime('%Y-%m', date) BETWEEN :start AND :end", {
       start,
       end,
     })
@@ -233,12 +233,24 @@ async function countInteractionsAdmin(start, end) {
 async function countInteractionByCategoryAdmin(start, end, category) {
   const table = `${category}s`;
 
-  const rows = await db(table)
+  const row = await db(table)
     .select(`${table}.id`, `${table}.value`)
     .count("interactions.id as number_of_interactions")
     .leftJoin("interactions", `${table}.id`, `interactions.${category}_id`)
     .whereRaw("strftime('%Y-%m', date) BETWEEN :start AND :end", { start, end })
     .groupBy(`${table}.id`);
+
+  const rows = await db(table)
+    .select(`${table}.id`, `${table}.value`)
+    .count("interactions.id as number_of_interactions")
+    .leftJoin(
+      db.raw(
+        "interactions ON ??=?? AND strftime('%Y-%m', interactions.date) BETWEEN ? AND ?",
+        [`${table}.id`, `interactions.${category}_id`, start, end],
+      ),
+    )
+    .groupBy(`${table}.id`);
+
   return rows;
 }
 
@@ -251,7 +263,7 @@ async function countInteractionsByCategoryByMonth(month, category) {
       .count("interactions.id as number_of_interactions")
       .leftJoin(
         db.raw(
-          "interactions on ??=?? AND strftime('%Y-%m', interactions.date)=?",
+          "interactions ON ??=?? AND strftime('%Y-%m', interactions.date)=?",
           [`interactions.${category}_id`, `${table}.id`, month],
         ),
       )
