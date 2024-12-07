@@ -29,8 +29,12 @@ router.get("/formats/:id", adminController.updateRowById);
 router.post("/formats", adminController.addNewRow);
 router.get("/formats", adminController.tableGet);
 
+// todo: rename to a more semantic route and controller name. (i.e /admin/summary/count?)
 router.get("/stats", adminController.statsGet);
+// todo: rename to a more semantic route and controller name. (i.e /admin/summary/interactions?)
 router.get("/interactions", adminController.interactionsGet);
 router.get("/count/:table", adminController.countTable);
+
+router.get("/report", adminController.adminReportGet);
 
 module.exports = router;

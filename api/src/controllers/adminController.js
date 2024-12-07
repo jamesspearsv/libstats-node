@@ -1,12 +1,14 @@
 /* Middleware to handle actions requiring admin authorization */
-const queries = require("../db/queries");
+const queries = require("../db/queries/adminQueries");
+const { selectAllFromTable } = require("../db/queries/appQueries");
 const { BadRequestError } = require("../lib/errorsClasses");
+const parseMonthRange = require("../lib/parseMonthRange");
 
 // Get all rows from a given table
 async function tableGet(req, res, next) {
   try {
     table = req.table;
-    const rows = await queries.selectAllFromTable(table);
+    const rows = await selectAllFromTable(table);
 
     return res.json({ message: "ok", rows });
   } catch (error) {
@@ -107,7 +109,7 @@ async function interactionsGet(req, res, next) {
       queries.selectInteractions(limit, offset),
     ]);
 
-    res.json({ message: "ok", total_rows, rows });
+    return res.json({ message: "ok", total_rows, rows });
   } catch (error) {
     return next(error);
   }
@@ -123,6 +125,60 @@ async function countTable(req, res, next) {
   }
 }
 
+async function adminReportGet(req, res, next) {
+  try {
+    const { start, end, category } = req.query;
+    if (!start || !end || !category) {
+      throw new BadRequestError("Start, end, and category must be provided");
+    }
+
+    if (!["type", "location", "format"].includes(category)) {
+      throw new BadRequestError("Invalid category provided");
+    }
+
+    // query database for cumulative interactions counts during range
+    const total_interactions = await queries.countInteractionsAdmin(start, end);
+    const total_detailed = await queries.countInteractionByCategoryAdmin(
+      start,
+      end,
+      category,
+    );
+
+    // parse range between start and end month
+    const range = parseMonthRange(start, end);
+    const monthly_details = [];
+    // query database for each month in range
+    for (const month of range) {
+      const rows = await queries.countInteractionsByCategoryByMonth(
+        month,
+        category,
+      );
+
+      const monthObject = {
+        month,
+      };
+
+      // push data from each row to new formatted object
+      for (const row of rows) {
+        monthObject[row.value] = row.number_of_interactions;
+      }
+
+      // push month object to monthly_details array
+      monthly_details.push(monthObject);
+    }
+
+    res.json({
+      message: "ok",
+      range,
+      total_interactions,
+      total_detailed,
+      monthly_details,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   rowGetById,
   tableGet,
@@ -131,4 +187,5 @@ module.exports = {
   statsGet,
   interactionsGet,
   countTable,
+  adminReportGet,
 };
