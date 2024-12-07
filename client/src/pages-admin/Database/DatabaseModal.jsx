@@ -133,7 +133,7 @@ function DatabaseModal({ table, rowId, modalOpen, setModalOpen, setRefresh }) {
       style={{ width: "fit-content" }}
     >
       <Form
-        title={mode === "updating"}
+        title={mode === "updating" ? "Update Row" : "Add Row"}
         onSubmit={submitForm}
         style={{
           width: "100%",
