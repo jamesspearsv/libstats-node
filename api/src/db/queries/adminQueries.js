@@ -140,7 +140,6 @@ async function countInteractionsByCategoryByMonth(month, category) {
       )
       .groupBy(`${table}.id`);
   } catch (error) {
-    console.error(error);
     throw new DatabaseError(error.message);
   }
 }

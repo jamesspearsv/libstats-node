@@ -1,3 +1,5 @@
+const { BadRequestError } = require("./errorsClasses");
+
 function parseMonthRange(startMonth, endMonth) {
   // Parse inputs to extract year and month
   const [startYear, startMonthNum] = startMonth.split("-").map(Number);
@@ -12,7 +14,9 @@ function parseMonthRange(startMonth, endMonth) {
     startYear > endYear ||
     (startYear === endYear && startMonthNum > endMonthNum)
   ) {
-    throw new Error("Start month must be before or equal to the end month.");
+    throw new BadRequestError(
+      "Start month must be before or equal to the end month.",
+    );
   }
 
   while (

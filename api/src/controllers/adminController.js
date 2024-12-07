@@ -126,29 +126,28 @@ async function countTable(req, res, next) {
 }
 
 async function adminReportGet(req, res, next) {
-  /**
-   * TODO: Refactor /admin/report endpoint
-   * This endpoint should return a structured object for the given table during the given range in the db
-   * For example:
-   * {
-   *   total_interactions: number
-   *   total: [],
-   *   monthly: [month: [],month: [] month: []]
-   * }
-   **/
   try {
     const { start, end, category } = req.query;
-    const range = parseMonthRange(start, end);
+    if (!start || !end || !category) {
+      throw new BadRequestError("Start, end, and category must be provided");
+    }
+
+    if (!["type", "location", "format"].includes(category)) {
+      throw new BadRequestError("Invalid category provided");
+    }
 
     // query database for cumulative interactions counts during range
-    const total = await queries.countInteractionsAdmin(start, end);
+    const total_interactions = await queries.countInteractionsAdmin(start, end);
     const total_detailed = await queries.countInteractionByCategoryAdmin(
       start,
       end,
       category,
     );
 
-    const montly_count = [];
+    // parse range between start and end month
+    const range = parseMonthRange(start, end);
+    const monthly_details = [];
+    // query database for each month in range
     for (const month of range) {
       const rows = await queries.countInteractionsByCategoryByMonth(
         month,
@@ -159,15 +158,22 @@ async function adminReportGet(req, res, next) {
         month,
       };
 
+      // push data from each row to new formatted object
       for (const row of rows) {
         monthObject[row.value] = row.number_of_interactions;
       }
 
-      console.log(rows);
-      montly_count.push(monthObject);
+      // push month object to monthly_details array
+      monthly_details.push(monthObject);
     }
 
-    res.json({ message: "ok", range, total, total_detailed, montly_count });
+    res.json({
+      message: "ok",
+      range,
+      total_interactions,
+      total_detailed,
+      monthly_details,
+    });
   } catch (error) {
     return next(error);
   }
