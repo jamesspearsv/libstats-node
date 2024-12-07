@@ -1,14 +1,14 @@
 /* Middleware to handle actions requiring admin authorization */
-const queries = require("../db/queries");
+const queries = require("../db/queries/adminQueries");
+const { selectAllFromTable } = require("../db/queries/appQueries");
 const { BadRequestError } = require("../lib/errorsClasses");
-const { countInteractionsAdmin } = require("../db/queries");
 const parseMonthRange = require("../lib/parseMonthRange");
 
 // Get all rows from a given table
 async function tableGet(req, res, next) {
   try {
     table = req.table;
-    const rows = await queries.selectAllFromTable(table);
+    const rows = await selectAllFromTable(table);
 
     return res.json({ message: "ok", rows });
   } catch (error) {
@@ -166,8 +166,6 @@ async function adminReportGet(req, res, next) {
       console.log(rows);
       montly_count.push(monthObject);
     }
-
-    // console.log(montly_count[0]["Directional"]);
 
     res.json({ message: "ok", range, total, total_detailed, montly_count });
   } catch (error) {

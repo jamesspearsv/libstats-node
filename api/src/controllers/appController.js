@@ -2,7 +2,7 @@
 Middleware to handle actions not requiring admin authorization
  */
 
-const queries = require("../db/queries");
+const queries = require("../db/queries/appQueries");
 const { BadRequestError } = require("../lib/errorsClasses");
 
 // get all rows from types, locations, and formats tables
