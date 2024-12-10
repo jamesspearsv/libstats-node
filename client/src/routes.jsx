@@ -7,6 +7,7 @@ import Admin from "./Admin.jsx";
 import Login from "./pages-admin/Login.jsx";
 import Dashboard from "./pages-admin/Dashboard/Dashboard.jsx";
 import Database from "./pages-admin/Database/Database.jsx";
+import AdminReporting from "./pages-admin/Reporting/AdminReporting.jsx";
 
 const routes = [
   {
@@ -26,6 +27,7 @@ const routes = [
       { index: true, element: <Dashboard /> },
       { path: "login", element: <Login /> },
       { path: "database", element: <Database /> },
+      { path: "reporting", element: <AdminReporting /> },
     ],
   },
 ];
