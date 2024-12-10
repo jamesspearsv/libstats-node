@@ -30,7 +30,12 @@ function SelectInput({ label, options, handleChange, value }) {
 
 SelectInput.propTypes = {
   label: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   handleChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
 };
