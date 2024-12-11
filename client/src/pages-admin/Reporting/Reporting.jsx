@@ -1,6 +1,7 @@
 import ReportingParams from "./ReportingParams.jsx";
 import { Navigate, useOutletContext } from "react-router-dom";
 import { useState } from "react";
+import ReportingDisplay from "./ReportingDisplay.jsx";
 
 const defaultParams = {
   startMonth: "",
@@ -39,6 +40,7 @@ function Reporting() {
         <p>endMonth: {params.endMonth}</p>
         <p>category: {params.category}</p>
       </div>
+      <ReportingDisplay params={params} />
     </div>
   );
 }

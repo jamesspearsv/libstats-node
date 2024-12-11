@@ -10,12 +10,8 @@ const categories = [
 
 function ReportingParams({ params, updateParams }) {
   function handleFormChange(e) {
-    console.log("id", e.target.id);
-    console.log("value", e.target.value);
-
     const param = e.target.id;
     const value = e.target.value;
-
     updateParams(param, value);
   }
 
@@ -33,6 +29,7 @@ function ReportingParams({ params, updateParams }) {
               name="startMonth"
               value={params.startMonth}
               onChange={handleFormChange}
+              placeholder={"YYYY-MM"}
             />
           </div>
           <div>
@@ -44,6 +41,7 @@ function ReportingParams({ params, updateParams }) {
               type="month"
               value={params.endMonth}
               onChange={handleFormChange}
+              placeholder={"YYYY-MM"}
             />
           </div>
           <div>
