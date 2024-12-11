@@ -35,7 +35,6 @@ function DashboardTable() {
         validateAdminResponse(res, json, setAuth);
 
         const total = Math.ceil(json.total_rows / limit);
-        console.log(total);
         setTotalPages(total);
       } catch (error) {
         console.error(error);

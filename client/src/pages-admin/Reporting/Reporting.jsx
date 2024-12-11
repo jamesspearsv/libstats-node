@@ -1,8 +1,26 @@
 import ReportingParams from "./ReportingParams.jsx";
 import { Navigate, useOutletContext } from "react-router-dom";
+import { useState } from "react";
+
+const defaultParams = {
+  startMonth: "",
+  endMonth: "",
+  category: "",
+};
 
 function Reporting() {
   const { auth } = useOutletContext();
+  const [params, setParams] = useState(defaultParams);
+
+  function updateParams(param, value) {
+    setParams((prevParams) => {
+      return { ...prevParams, [param]: value };
+    });
+  }
+
+  function resetParams() {
+    setParams(defaultParams);
+  }
 
   if (!auth) return <Navigate to={"/admin/login"} />;
 
@@ -15,7 +33,12 @@ function Reporting() {
         alignItems: "center",
       }}
     >
-      <ReportingParams />
+      <ReportingParams params={params} updateParams={updateParams} />
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <p>startMonth: {params.startMonth}</p>
+        <p>endMonth: {params.endMonth}</p>
+        <p>category: {params.category}</p>
+      </div>
     </div>
   );
 }

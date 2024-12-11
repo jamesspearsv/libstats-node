@@ -127,8 +127,8 @@ async function countTable(req, res, next) {
 
 async function adminReportGet(req, res, next) {
   try {
-    const { start, end, category } = req.query;
-    if (!start || !end || !category) {
+    const { startMonth, endMonth, category } = req.query;
+    if (!startMonth || !endMonth || !category) {
       throw new BadRequestError("Start, end, and category must be provided");
     }
 
@@ -137,15 +137,18 @@ async function adminReportGet(req, res, next) {
     }
 
     // query database for cumulative interactions counts during range
-    const total_interactions = await queries.countInteractionsAdmin(start, end);
+    const total_interactions = await queries.countInteractionsAdmin(
+      startMonth,
+      endMonth,
+    );
     const total_detailed = await queries.countInteractionByCategoryAdmin(
-      start,
-      end,
+      startMonth,
+      endMonth,
       category,
     );
 
     // parse range between start and end month
-    const range = parseMonthRange(start, end);
+    const range = parseMonthRange(startMonth, endMonth);
     const monthly_details = [];
     // query database for each month in range
     for (const month of range) {

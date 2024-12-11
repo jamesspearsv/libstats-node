@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
-import CardWrapper from "../../components/CardWrapper.jsx";
 import Form from "../../components/Form.jsx";
 import SelectInput from "../../components/SelectInput.jsx";
-import { useState } from "react";
 
 const categories = [
   { id: "type", value: "Types" },
@@ -10,21 +8,15 @@ const categories = [
   { id: "location", value: "Locations" },
 ];
 
-function ReportingParams() {
-  //   todo : raise state to parent component
-  const [params, setParams] = useState({
-    startMonth: null,
-    endMonth: null,
-    category: "",
-  });
+function ReportingParams({ params, updateParams }) {
+  function handleFormChange(e) {
+    console.log("id", e.target.id);
+    console.log("value", e.target.value);
 
-  function handleCagetoryChange(e) {
-    setParams((params) => ({ ...params, category: e.target.value }));
-  }
+    const param = e.target.id;
+    const value = e.target.value;
 
-  // todo: finish updater function
-  function handleMonthChange(e) {
-    return;
+    updateParams(param, value);
   }
 
   return (
@@ -36,10 +28,11 @@ function ReportingParams() {
               Starting Month
             </label>
             <input
+              id="startMonth"
               type="month"
               name="startMonth"
               value={params.startMonth}
-              onChange={handleMonthChange}
+              onChange={handleFormChange}
             />
           </div>
           <div>
@@ -47,17 +40,18 @@ function ReportingParams() {
               Ending Month
             </label>
             <input
+              id="endMonth"
               type="month"
               value={params.endMonth}
-              onChange={handleMonthChange}
+              onChange={handleFormChange}
             />
           </div>
           <div>
             <SelectInput
               label={"Category"}
               options={categories}
-              handleChange={handleCagetoryChange}
               value={params.category}
+              handleChange={handleFormChange}
             />
           </div>
         </div>
@@ -65,5 +59,14 @@ function ReportingParams() {
     </div>
   );
 }
+
+ReportingParams.propTypes = {
+  params: PropTypes.shape({
+    startMonth: PropTypes.string.isRequired,
+    endMonth: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+  }),
+  updateParams: PropTypes.func.isRequired,
+};
 
 export default ReportingParams;
