@@ -1,8 +1,14 @@
+/**
+ *
+ *
+ */
+
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { validateAdminResponse } from "../../lib/response.js";
 import { toast } from "react-hot-toast";
+import parseMonthInput from "../../lib/parseMonthInput.js";
 
 function ReportingDisplay({ params }) {
   const { auth, apihost, setAuth } = useOutletContext();
@@ -10,22 +16,19 @@ function ReportingDisplay({ params }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const regex = /[0-9]{4}-[0-9]{2}/;
-
   useEffect(() => {
-    // check that params form is complete
-    const { startMonth, endMonth, category } = params;
-
-    // todo : write matching function to validate month inputs in unsupported browsers
-    const match = startMonth.match(regex);
-    if (!match || match[0] !== startMonth) console.error("no match");
-    console.log(match);
-
-    if (!startMonth || !endMonth || !category) return;
-
     // perform async fetch operation
     (async () => {
       try {
+        // check that params form is complete
+        const { startMonth, endMonth, category } = params;
+        if (!startMonth || !endMonth || !category) return;
+
+        // todo : write matching function to validate month inputs in unsupported browsers
+        const results = parseMonthInput([startMonth, endMonth]);
+        if (results.includes(false))
+          throw new Error("Months must be in YYYY-MM format");
+
         // define fetch url and options
         const url = `${apihost}/admin/report?startMonth=${startMonth}&endMonth=${endMonth}&category=${category}`;
         const options = {
