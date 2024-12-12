@@ -2,6 +2,13 @@ import PropTypes from "prop-types";
 import Form from "../../components/Form.jsx";
 import SelectInput from "../../components/SelectInput.jsx";
 
+/**
+ * Component to capture admin report params user input
+ * @param {{startMonth: string, endMonth: string, category: string}} params Admin report params
+ * @param {function} updateParams Callback function to update report params
+ * @return {JSX.Element}
+ */
+
 const categories = [
   { id: "type", value: "Types" },
   { id: "format", value: "Formats" },

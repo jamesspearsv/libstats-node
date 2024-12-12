@@ -26,6 +26,11 @@ import CountReport from "../components/CountReport";
 import CardWrapper from "../components/CardWrapper";
 import TabSelector from "../components/TabSelector.jsx";
 
+/**
+ * App report page component
+ * @returns {JSX.Element}
+ */
+
 function Report() {
   const defaultFormState = {
     start: "",

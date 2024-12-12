@@ -13,6 +13,16 @@ import Form from "../../components/Form.jsx";
 import Button from "../../components/Button.jsx";
 import { validateAdminResponse } from "../../lib/response.js";
 
+/**
+ * Modal component used to add and edit rows in database tables
+ * @param {string} table
+ * @param {string} rowId
+ * @param {boolean} modalOpen
+ * @param {() => void} setModalOpen
+ * @param {() => void} setRefresh
+ * @returns {JSX.Element}
+ */
+
 function DatabaseModal({ table, rowId, modalOpen, setModalOpen, setRefresh }) {
   /* Component State */
   const { apihost, auth, setAuth } = useOutletContext();

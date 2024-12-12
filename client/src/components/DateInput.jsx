@@ -3,6 +3,8 @@ import styles from "./DateInput.module.css";
 
 /* Custom date input with label and callback */
 
+// todo: begin here with jsdoc task
+
 function DateInput({ label, value, handleChange }) {
   const id = label.toLowerCase();
 

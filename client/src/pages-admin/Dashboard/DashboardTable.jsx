@@ -7,6 +7,11 @@ import CardWrapper from "../../components/CardWrapper.jsx";
 import ErrorComponent from "../../components/ErrorComponent.jsx";
 import { validateAdminResponse } from "../../lib/response.js";
 
+/**
+ * Component used to fetch and render all rows in interactions table
+ * @returns {JSX.Element}
+ */
+
 function DashboardTable() {
   const { apihost, auth, setAuth } = useOutletContext();
   const [rows, setRows] = useState([]);

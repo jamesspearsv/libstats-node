@@ -15,6 +15,11 @@ const defaultFormState = {
   format: "",
 };
 
+/**
+ * App recording page component
+ * @returns {JSX.Element}
+ */
+
 function Record() {
   // Component state
   const { apihost, options } = useOutletContext();

@@ -14,6 +14,11 @@ import {
 import { validateAdminResponse } from "../../lib/response.js";
 import ErrorComponent from "../../components/ErrorComponent.jsx";
 
+/**
+ * Component used to fetch and render database stats
+ * @returns {JSX.Element}
+ */
+
 function DashboardStats() {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
   const { apihost, auth, setAuth } = useOutletContext();

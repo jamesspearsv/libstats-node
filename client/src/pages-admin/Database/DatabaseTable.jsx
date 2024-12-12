@@ -1,8 +1,3 @@
-/*
-Table wrapper component for Database.jsx.
-Responsible for fetching and rendering table rows using the app's table component.
- */
-
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useOutletContext } from "react-router-dom";
@@ -11,6 +6,15 @@ import CardWrapper from "../../components/CardWrapper.jsx";
 import Table from "../../components/Table.jsx";
 import Button from "../../components/Button.jsx";
 import { validateAdminResponse } from "../../lib/response.js";
+
+/**
+ * Component used to fetch and render database table rows
+ * @param {string} table
+ * @param {(string) => void} setRowId
+ * @param {(boolean) => void} setModalOpen
+ * @param {number} refresh
+ * @returns {JSX.Element}
+ */
 
 function DatabaseTable({ table, setRowId, setModalOpen, refresh }) {
   const { apihost, auth, setAuth } = useOutletContext();

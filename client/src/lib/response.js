@@ -1,5 +1,9 @@
-/*
-Helper functions to validate API responses
+/**
+ * Helper function to validate API responses
+ * @param {res} res
+ * @param {json} json
+ * @param {function} setAuth
+ * @returns {void}
  */
 
 export function validateAdminResponse(res, json, setAuth) {

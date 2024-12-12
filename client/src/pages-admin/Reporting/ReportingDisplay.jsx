@@ -1,14 +1,15 @@
-/**
- *
- *
- */
-
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { validateAdminResponse } from "../../lib/response.js";
 import { toast } from "react-hot-toast";
 import parseMonthInput from "../../lib/parseMonthInput.js";
+
+/**
+ * A React component to fetch and render admin report data
+ * @param {{startMonth: string, endMonth: string, categoy: string}} params Parameters for admin report
+ * @returns {JSX.Element}
+ */
 
 function ReportingDisplay({ params }) {
   const { auth, apihost, setAuth } = useOutletContext();

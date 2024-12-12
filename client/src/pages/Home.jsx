@@ -7,6 +7,11 @@ import ErrorComponent from "../components/ErrorComponent.jsx";
 
 import styles from "./Home.module.css";
 
+/**
+ * App homepage component
+ * @returns {JSX.Element}
+ */
+
 function Home() {
   const { apihost, options } = useOutletContext();
   const [effectTrigger, setEffectTrigger] = useState(true);

@@ -1,9 +1,15 @@
 import PropTypes from "prop-types";
 import styles from "./Button.module.css";
 
-/*
+/**
  * Custom button component
- * Variant corresponds to styles in Button.module.css
+ * @param {string} id - prop to set `data-id` property of button
+ * @param {string} text - button text property
+ * @param {() => void} action - button click callback function
+ * @param {'primary' | 'danger'} variant - styled button variant
+ * @param {'button' | 'submit'} type
+ * @param {Object} [style] - Optional React style object
+ * @returns {JSX.Element}
  */
 
 function Button({ id, text, action, variant, type, style }) {
