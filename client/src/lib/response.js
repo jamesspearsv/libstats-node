@@ -1,8 +1,8 @@
 /**
  * Helper function to validate API responses
- * @param {res} res
- * @param {json} json
- * @param {function} setAuth
+ * @param {Response} res
+ * @param {Object} json
+ * @param {() => void} setAuth
  * @returns {void}
  */
 

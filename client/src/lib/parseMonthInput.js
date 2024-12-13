@@ -1,7 +1,7 @@
 /**
  * Validates dates strings for YYYY-MM format
- * @param {string[]} inputs
- * @returns {boolean[]}
+ * @param {Array<string>} inputs
+ * @returns {Array<boolean>}
  */
 
 export default function parseMonthInput(inputs) {
