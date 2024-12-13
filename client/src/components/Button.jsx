@@ -3,9 +3,9 @@ import styles from "./Button.module.css";
 
 /**
  * Custom button component
- * @param {string} id - prop to set `data-id` property of button
+ * @param {string} [id] - prop to set `data-id` property of button
  * @param {string} text - button text property
- * @param {(event) => void} action - button click callback function
+ * @param {(e: Event) => void} action - button click callback function
  * @param {'primary' | 'danger'} variant - styled button variant
  * @param {'button' | 'submit'} type
  * @param {Object} [style] - Optional React style object
@@ -31,7 +31,7 @@ Button.propTypes = {
   text: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   variant: PropTypes.string.isRequired,
-  action: PropTypes.func,
+  action: PropTypes.func.isRequired,
   style: PropTypes.object,
 };
 

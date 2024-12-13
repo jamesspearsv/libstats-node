@@ -1,6 +1,11 @@
 import PropTypes from "prop-types";
 
-/* Error message page */
+/**
+ * Custom error component used throughout app
+ * @param {string} status - HTTP status code represented as a string
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 function ErrorComponent({ status }) {
   return (

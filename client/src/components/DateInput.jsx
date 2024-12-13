@@ -5,11 +5,11 @@ import styles from "./DateInput.module.css";
 
 /**
  * Custom date input with label and callback
- * @param id {string}
- * @param label {string}
- * @param type {'date' | 'month'}
- * @param value {string}
- * @param handleChange {(event) => void}
+ * @param {string} id
+ * @param {string} label
+ * @param {'date' | 'month'} type
+ * @param {string} value
+ * @param {(e: Event) => void} handleChange
  * @returns {JSX.Element}
  */
 

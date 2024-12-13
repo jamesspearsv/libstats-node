@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 /**
  * Wrapper to provide UI styling to children
- * @param {JSX.ElementS} children
- * @param {Objest} style - optional React inline styles
+ * @param {React.ReactNode} children
+ * @param {Object} [style] - optional React inline styles
  * @returns {JSX.Element}
  */
 

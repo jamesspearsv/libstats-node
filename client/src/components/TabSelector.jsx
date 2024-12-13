@@ -1,7 +1,14 @@
 import PropTypes from "prop-types";
 import styles from "./TabSelector.module.css";
 
-/* Custom tab selector element */
+/**
+ * Custom tab selector component
+ * @param {Arry<{id: string, label: string}>} tabs
+ * @param {(e: Event) => void} handleClick
+ * @param {string} activeTab
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 function TabSelector({ tabs, handleClick, activeTab }) {
   return (

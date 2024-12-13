@@ -23,6 +23,7 @@ function ReportingDisplay({ params }) {
       try {
         // check that params form is complete
         const { startMonth, endMonth, category } = params;
+        // early return if form is incomplete
         if (!startMonth || !endMonth || !category) return;
 
         const results = parseMonthInput([startMonth, endMonth]);

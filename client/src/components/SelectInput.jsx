@@ -1,7 +1,16 @@
 import PropTypes from "prop-types";
 import styles from "./SelectInput.module.css";
 
-/* Custom select input with label, options, and callback */
+/**
+ * Custom select input with id, label, options, and a callback
+ * @param {string} id
+ * @param {string} label
+ * @param {Array<{id: number, value: string}>}options
+ * @param {(e: Event) => void} handleChange
+ * @param {string} value
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 function SelectInput({ id, label, options, handleChange, value }) {
   const style = {

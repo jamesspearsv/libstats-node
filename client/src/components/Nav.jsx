@@ -2,7 +2,12 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./Nav.module.css";
 
-/* App navigation menu */
+/**
+ * Add navigation menu component
+ * @param  {Array<{label: string, route: string}>} navItems
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 function Nav({ navItems }) {
   return (
