@@ -5,7 +5,7 @@ import styles from "./SelectInput.module.css";
  * Custom select input with id, label, options, and a callback
  * @param {string} id
  * @param {string} label
- * @param {Array<{id: number, value: string}>}options
+ * @param {Array<{id: number | string, value: string}>}options
  * @param {(e: Event) => void} handleChange
  * @param {string} value
  * @returns {JSX.Element}
@@ -40,7 +40,7 @@ SelectInput.propTypes = {
   label: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       value: PropTypes.string.isRequired,
     }),
   ).isRequired,
