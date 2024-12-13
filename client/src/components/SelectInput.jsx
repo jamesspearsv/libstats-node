@@ -3,13 +3,11 @@ import styles from "./SelectInput.module.css";
 
 /* Custom select input with label, options, and callback */
 
-function SelectInput({ label, options, handleChange, value }) {
+function SelectInput({ id, label, options, handleChange, value }) {
   const style = {
     display: "flex",
     flexDirection: "column",
   };
-
-  const id = label.toLowerCase();
 
   return (
     <div style={style} className={styles.customSelect}>
@@ -29,10 +27,11 @@ function SelectInput({ label, options, handleChange, value }) {
 }
 
 SelectInput.propTypes = {
+  id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
       value: PropTypes.string.isRequired,
     }),
   ).isRequired,

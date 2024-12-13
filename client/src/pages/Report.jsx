@@ -139,16 +139,21 @@ function Report() {
       >
         <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
           <DateInput
-            label="Start"
+            id={"start"}
+            label="Starting Date"
+            type="date"
             value={formState.start}
             handleChange={handleDateChange}
           />
           <DateInput
-            label="End"
+            id={"end"}
+            label="Ending Date"
+            type="date"
             value={formState.end}
             handleChange={handleDateChange}
           />
           <SelectInput
+            id={"location"}
             label="Location"
             options={options.locations}
             handleChange={handleSelectChange}

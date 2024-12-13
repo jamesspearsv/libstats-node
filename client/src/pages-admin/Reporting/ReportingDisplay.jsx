@@ -25,7 +25,6 @@ function ReportingDisplay({ params }) {
         const { startMonth, endMonth, category } = params;
         if (!startMonth || !endMonth || !category) return;
 
-        // todo : write matching function to validate month inputs in unsupported browsers
         const results = parseMonthInput([startMonth, endMonth]);
         if (results.includes(false))
           throw new Error("Months must be in YYYY-MM format");
@@ -45,6 +44,8 @@ function ReportingDisplay({ params }) {
 
         // validate API response
         validateAdminResponse(res, json, setAuth);
+
+        console.log(json);
 
         setReport(json);
         setLoading(false);

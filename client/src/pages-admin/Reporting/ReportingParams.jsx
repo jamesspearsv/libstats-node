@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import Form from "../../components/Form.jsx";
 import SelectInput from "../../components/SelectInput.jsx";
+import DateInput from "../../components/DateInput.jsx";
 
 /**
  * Component to capture admin report params user input
@@ -27,32 +28,26 @@ function ReportingParams({ params, updateParams }) {
       <Form>
         <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
           <div>
-            <label htmlFor={"startMonth"} style={{ fontWeight: "bold" }}>
-              Starting Month
-            </label>
-            <input
-              id="startMonth"
-              type="month"
-              name="startMonth"
+            <DateInput
+              id={"startMonth"}
+              label={"Starting Month"}
+              type={"month"}
               value={params.startMonth}
-              onChange={handleFormChange}
-              placeholder={"YYYY-MM"}
+              handleChange={handleFormChange}
             />
           </div>
           <div>
-            <label htmlFor={"endMonth"} style={{ fontWeight: "bold" }}>
-              Ending Month
-            </label>
-            <input
-              id="endMonth"
-              type="month"
+            <DateInput
+              id={"endMonth"}
+              label={"Ending Month"}
               value={params.endMonth}
-              onChange={handleFormChange}
-              placeholder={"YYYY-MM"}
+              type={"month"}
+              handleChange={handleFormChange}
             />
           </div>
           <div>
             <SelectInput
+              id={"category"}
               label={"Category"}
               options={categories}
               value={params.category}

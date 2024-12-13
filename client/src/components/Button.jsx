@@ -5,7 +5,7 @@ import styles from "./Button.module.css";
  * Custom button component
  * @param {string} id - prop to set `data-id` property of button
  * @param {string} text - button text property
- * @param {() => void} action - button click callback function
+ * @param {(event) => void} action - button click callback function
  * @param {'primary' | 'danger'} variant - styled button variant
  * @param {'button' | 'submit'} type
  * @param {Object} [style] - Optional React style object
