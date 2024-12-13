@@ -23,7 +23,7 @@ function DateInput({ id, label, type, value, handleChange }) {
         type={type}
         name={id}
         id={id}
-        placeholder={type === "month" && "YYYY-MM"}
+        placeholder={type === "month" ? "YYYY-MM" : undefined}
         value={value}
         onChange={handleChange}
       />
