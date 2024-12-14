@@ -4,6 +4,16 @@ import { useOutletContext } from "react-router-dom";
 import { validateAdminResponse } from "../../lib/response.js";
 import { toast } from "react-hot-toast";
 import parseMonthInput from "../../lib/parseMonthInput.js";
+import CardWrapper from "../../components/CardWrapper.jsx";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
 
 /**
  * A React component to fetch and render admin report data
@@ -71,7 +81,77 @@ function ReportingDisplay({ params }) {
   if (loading) return <div>Set your report parameters above</div>;
   if (error) return <div>Error loading report -- {error.message}</div>;
 
-  return "Reporting!";
+  return (
+    <div style={{ width: "100%", margin: "0 2.5rem" }}>
+      <div
+        style={{ width: "75%", margin: "auto", display: "flex", gap: "2rem" }}
+      >
+        <CardWrapper
+          style={{
+            flex: 1,
+            textAlign: "center",
+            alignContent: "center",
+          }}
+        >
+          <div style={{ fontWeight: "bold" }}>Total Interactions</div>
+          <div>{report.total_interactions}</div>
+        </CardWrapper>
+        {/* todo : extract into separate component */}
+        <CardWrapper style={{ flex: 2 }}>
+          <ResponsiveContainer width="100%" height={275}>
+            <PieChart>
+              <Pie
+                data={report.total_detailed}
+                dataKey={"number_of_interactions"}
+                nameKey={"value"}
+                label={false}
+                labelLine={false}
+                animationBegin={0}
+                animationDuration={1000}
+              >
+                {report.total_detailed.map((row, index) => (
+                  <Cell key={row.id} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend
+                layout={"vertical"}
+                verticalAlign={"middle"}
+                align={"right"}
+                content={() => (
+                  <ul style={{ listStyle: "none", padding: "1rem" }}>
+                    {report.total_detailed.map((row, index) => (
+                      <li
+                        key={row.id}
+                        style={{
+                          color: COLORS[index % COLORS.length],
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: "1rem",
+                          padding: ".25rem 0",
+                        }}
+                      >
+                        <span>{row.value}</span>
+                        <span>
+                          {row.number_of_interactions} (
+                          {(
+                            (row.number_of_interactions /
+                              report.total_interactions) *
+                            100
+                          ).toFixed()}
+                          %)
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </CardWrapper>
+      </div>
+    </div>
+  );
 }
 
 ReportingDisplay.propTypes = {

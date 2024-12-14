@@ -10,9 +10,9 @@ import ReportingDisplay from "./ReportingDisplay.jsx";
 
 function Reporting() {
   const defaultParams = {
-    startMonth: "",
-    endMonth: "",
-    category: "",
+    startMonth: "2024-11",
+    endMonth: "2024-12",
+    category: "type",
   };
   const { auth } = useOutletContext();
   const [params, setParams] = useState(defaultParams);

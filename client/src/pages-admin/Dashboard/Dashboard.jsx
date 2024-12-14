@@ -13,7 +13,7 @@ function Dashboard() {
   if (!auth) return <Navigate to={"/admin/login"} />;
 
   return (
-    <div>
+    <div style={{ margin: "0 2.5rem" }}>
       <DashboardStats />
       <DashboardTable />
     </div>

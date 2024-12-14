@@ -122,7 +122,7 @@ function DashboardStats() {
                     <div>
                       {row.total_interactions} (
                       {(
-                        (parseFloat(row.total_interactions) /
+                        (parseInt(row.total_interactions) /
                           parseInt(stats.count_total)) *
                         100
                       ).toFixed()}
