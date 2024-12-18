@@ -1,7 +1,12 @@
 import styles from "./CardWrapper.module.css";
 import PropTypes from "prop-types";
 
-/* Wrapper to provide UI styling to elements */
+/**
+ * Wrapper to provide UI styling to children
+ * @param {React.ReactNode} children
+ * @param {Object} [style] - optional React inline styles
+ * @returns {JSX.Element}
+ */
 
 function CardWrapper({ children, style }) {
   return (

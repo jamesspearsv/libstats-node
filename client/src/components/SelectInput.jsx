@@ -1,15 +1,22 @@
 import PropTypes from "prop-types";
 import styles from "./SelectInput.module.css";
 
-/* Custom select input with label, options, and callback */
+/**
+ * Custom select input with id, label, options, and a callback
+ * @param {string} id
+ * @param {string} label
+ * @param {Array<{id: number | string, value: string}>}options
+ * @param {(e: Event) => void} handleChange
+ * @param {string} value
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
-function SelectInput({ label, options, handleChange, value }) {
+function SelectInput({ id, label, options, handleChange, value }) {
   const style = {
     display: "flex",
     flexDirection: "column",
   };
-
-  const id = label.toLowerCase();
 
   return (
     <div style={style} className={styles.customSelect}>
@@ -29,8 +36,14 @@ function SelectInput({ label, options, handleChange, value }) {
 }
 
 SelectInput.propTypes = {
+  id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   handleChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
 };

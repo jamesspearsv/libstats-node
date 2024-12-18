@@ -3,7 +3,15 @@ import PropTypes from "prop-types";
 import styles from "./Modal.module.css";
 import Button from "./Button";
 
-/* Utility modal component */
+/**
+ * Custom modal component
+ * @param {boolean} isOpen
+ * @param {(boolean) => void} setIsOpen
+ * @param {React.ReactNode} children
+ * @param {Object} [style]
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 function Modal({ isOpen, setIsOpen, children, style }) {
   const modalRef = useRef(null);

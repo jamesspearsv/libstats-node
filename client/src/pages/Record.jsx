@@ -15,6 +15,11 @@ const defaultFormState = {
   format: "",
 };
 
+/**
+ * App recording page component
+ * @returns {JSX.Element}
+ */
+
 function Record() {
   // Component state
   const { apihost, options } = useOutletContext();
@@ -87,18 +92,21 @@ function Record() {
         style={{ margin: "auto ", width: "max(20%, 350px)" }}
       >
         <SelectInput
+          id={"type"}
           label="Type"
           options={options.types}
           handleChange={handleSelectChange}
           value={formState.type}
         />
         <SelectInput
+          id={"location"}
           label="Location"
           options={options.locations}
           handleChange={handleSelectChange}
           value={formState.location}
         />
         <SelectInput
+          id={"format"}
           label="Format"
           options={options.formats}
           handleChange={handleSelectChange}
