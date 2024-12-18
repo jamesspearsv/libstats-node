@@ -42,7 +42,10 @@ app.use((error, req, res, next) => {
   console.error(error);
   res
     .status(error.statusCode || 500)
-    .json({ message: error.message || "Server Error", details: error.details });
+    .json({
+      message: error.message || "Server Error",
+      details: error.details || "None",
+    });
 });
 
 app.listen(PORT, () => {

@@ -26,6 +26,11 @@ import CountReport from "../components/CountReport";
 import CardWrapper from "../components/CardWrapper";
 import TabSelector from "../components/TabSelector.jsx";
 
+/**
+ * App report page component
+ * @returns {JSX.Element}
+ */
+
 function Report() {
   const defaultFormState = {
     start: "",
@@ -134,16 +139,21 @@ function Report() {
       >
         <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
           <DateInput
-            label="Start"
+            id={"start"}
+            label="Starting Date"
+            type="date"
             value={formState.start}
             handleChange={handleDateChange}
           />
           <DateInput
-            label="End"
+            id={"end"}
+            label="Ending Date"
+            type="date"
             value={formState.end}
             handleChange={handleDateChange}
           />
           <SelectInput
+            id={"location"}
             label="Location"
             options={options.locations}
             handleChange={handleSelectChange}

@@ -59,6 +59,7 @@ function Admin() {
         navItems={[
           { label: "Back to App", route: "/" },
           { label: "Dashboard", route: "/admin" },
+          { label: "Reporting", route: "/admin/reporting" },
           { label: "Database", route: "/admin/database" },
         ]}
       />

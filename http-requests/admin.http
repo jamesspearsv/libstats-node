@@ -24,6 +24,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aS
 GET http://localhost:3001/admin/interactions?page=1&limit=20
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew
 
-### GET /count/:table
+### GET /admin/count/:table
 GET http://localhost:3001/admin/count/interactions
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew
+
+### Admin report
+GET http://localhost:3001/admin/report?startMonth=2024-11&endMonth=2024-12&category=location
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Mzc3MWRlYTkwYTc4NjllNzdjMTc.z8ZJjS4aSbhn6NnoW65WIWZWRzxxVUsIUEzwInvHnew

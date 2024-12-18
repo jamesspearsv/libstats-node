@@ -1,26 +1,6 @@
-const db = require("./connection");
-const { getDateToday } = require("../lib/dates");
-const { DatabaseError } = require("../lib/errorsClasses");
-
-async function selectInteractions(limit, offset) {
-  try {
-    return await db("interactions")
-      .select(
-        "interactions.id",
-        "types.value as type",
-        "locations.value as location",
-        "formats.value as format",
-        "date",
-      )
-      .join("types", "interactions.type_id", "=", "types.id")
-      .join("locations", "interactions.location_id", "=", "locations.id")
-      .join("formats", "interactions.format_id", "=", "formats.id")
-      .limit(limit)
-      .offset(offset);
-  } catch (error) {
-    throw DatabaseError(error.message);
-  }
-}
+const db = require("../connection");
+const { getDateToday } = require("../../lib/dates");
+const { DatabaseError } = require("../../lib/errorsClasses");
 
 // Select all columns from given table
 async function selectAllFromTable(table) {
@@ -151,75 +131,7 @@ async function countInteractionsThisMonth() {
   }
 }
 
-// Select row by id from a given table
-async function selectRowFromTable(table, id) {
-  try {
-    return await db(table).select("*").where("id", id).first();
-  } catch (error) {
-    throw new DatabaseError(error.message);
-  }
-}
-
-// Update row by id from a given table
-async function updateRowFromTable(table, id, values) {
-  try {
-    const rows = await db(table).where("id", id).update(values, ["*"]);
-    return rows[0];
-  } catch (error) {
-    throw new DatabaseError(error.message);
-  }
-}
-
-// Insert new row into specified table
-async function insertRow(table, row) {
-  try {
-    const rows = await db(table).insert(row, ["*"]);
-    return rows[0];
-  } catch (error) {
-    throw new DatabaseError(error.message);
-  }
-}
-
-// Count all rows in interactions table
-async function countAllInteractions() {
-  try {
-    const count = await db("interactions")
-      .count("interactions.id as total")
-      .first();
-
-    return count.total;
-  } catch (error) {
-    throw new DatabaseError(error.message);
-  }
-}
-
-// Count rows in interaction grouped by a given group
-async function countAllInteractionByGroup(group) {
-  try {
-    return await db(`${group}s`)
-      .select(`${group}s.id`, `${group}s.value`)
-      .count("interactions.id as total_interactions")
-      .leftJoin("interactions", `${group}s.id`, "=", `interactions.${group}_id`)
-      .groupBy(`${group}s.id`);
-  } catch (error) {
-    throw new DatabaseError(error.message);
-  }
-}
-
-async function countRowsInTable(table) {
-  try {
-    const rows = await db.raw(`SELECT COUNT(id) AS total_rows FROM  :table:`, {
-      table,
-    });
-
-    return rows[0].total_rows;
-  } catch (error) {
-    throw new DatabaseError(error.message);
-  }
-}
-
 module.exports = {
-  selectInteractions,
   selectAllFromTable,
   insertInteraction,
   checkIfExists,
@@ -228,10 +140,4 @@ module.exports = {
   countInteractionsByCategory,
   countInteractionsByDay,
   countInteractionsThisMonth,
-  selectRowFromTable,
-  updateRowFromTable,
-  insertRow,
-  countAllInteractionByGroup,
-  countRowsInTable,
-  // countAllInteractions,
 };

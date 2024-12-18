@@ -1,13 +1,14 @@
-/*
-Database page in app admin area. Contains DatabaseTable and DatabaseModal components to help organize code.
- */
-
 import { Navigate, useOutletContext } from "react-router-dom";
 import { useState } from "react";
 import TabSelector from "../../components/TabSelector.jsx";
 import DatabaseTable from "./DatabaseTable.jsx";
 import DatabaseModal from "./DatabaseModal.jsx";
 import styles from "./Database.module.css";
+
+/**
+ * Database page in admin app
+ * @returns {JSX.Element}
+ */
 
 function Database() {
   const { auth } = useOutletContext();

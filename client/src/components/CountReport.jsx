@@ -8,6 +8,13 @@ import styles from "./CountReport.module.css";
  *     id, value, number_of_interactions
  */
 
+/**
+ * Component used to display count summary on app report page
+ * @param {string} title - report title
+ * @param {{id: number, value: string, number_of_interaction: number}} count - report from database
+ * @returns {JSX.Element}
+ */
+
 function CountReport({ title, count }) {
   return (
     <div className={styles.report}>
