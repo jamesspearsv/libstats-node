@@ -2,6 +2,7 @@ import ReportingParams from "./ReportingParams.jsx";
 import { Navigate, useOutletContext } from "react-router-dom";
 import { useState } from "react";
 import ReportingDisplay from "./ReportingDisplay.jsx";
+import Button from "../../components/Button.jsx";
 
 /**
  * Admin reporting page in admin app
@@ -10,9 +11,9 @@ import ReportingDisplay from "./ReportingDisplay.jsx";
 
 function Reporting() {
   const defaultParams = {
-    startMonth: "2024-11",
-    endMonth: "2024-12",
-    category: "type",
+    startMonth: "",
+    endMonth: "",
+    category: "",
   };
   const { auth } = useOutletContext();
   const [params, setParams] = useState(defaultParams);
@@ -39,12 +40,7 @@ function Reporting() {
       }}
     >
       <ReportingParams params={params} updateParams={updateParams} />
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <p>startMonth: {params.startMonth}</p>
-        <p>endMonth: {params.endMonth}</p>
-        <p>category: {params.category}</p>
-      </div>
-      <ReportingDisplay params={params} />
+      <ReportingDisplay params={params} resetParams={resetParams} />
     </div>
   );
 }

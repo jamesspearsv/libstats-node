@@ -170,12 +170,15 @@ async function adminReportGet(req, res, next) {
       monthly_details.push(monthObject);
     }
 
+    const keys = Object.keys(monthly_details[0]);
+
     res.json({
       message: "ok",
       range,
       total_interactions,
       total_detailed,
       monthly_details,
+      keys,
     });
   } catch (error) {
     return next(error);

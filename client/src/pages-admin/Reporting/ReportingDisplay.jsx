@@ -8,20 +8,26 @@ import CardWrapper from "../../components/CardWrapper.jsx";
 import {
   Cell,
   Legend,
+  Line,
+  LineChart,
   Pie,
   PieChart,
   ResponsiveContainer,
   Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
+import Button from "../../components/Button.jsx";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#185c36"];
 
 /**
  * A React component to fetch and render admin report data
  * @param {{startMonth: string, endMonth: string, categoy: string}} params Parameters for admin report
+ * @param {() => void} resetParams
  * @returns {JSX.Element}
  */
 
-function ReportingDisplay({ params }) {
+function ReportingDisplay({ params, resetParams }) {
   const { auth, apihost, setAuth } = useOutletContext();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -77,27 +83,44 @@ function ReportingDisplay({ params }) {
     })();
   }, [params]);
 
+  function resetReport() {
+    setReport(null);
+    setLoading(true);
+    setError(null);
+    resetParams();
+  }
+
   //   if params are incomplete or error has occurred
   if (loading) return <div>Set your report parameters above</div>;
   if (error) return <div>Error loading report -- {error.message}</div>;
 
   return (
-    <div style={{ width: "100%", margin: "0 2.5rem" }}>
+    <div style={{ width: "75%", margin: "0 2.5rem" }}>
       <div
-        style={{ width: "75%", margin: "auto", display: "flex", gap: "2rem" }}
+        style={{
+          margin: "auto",
+          display: "flex",
+          gap: "2rem",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
+        {/* todo : extract into separate component */}
         <CardWrapper
           style={{
-            flex: 1,
             textAlign: "center",
             alignContent: "center",
+            height: "fit-content",
+            width: "fit-content",
+
+            padding: "1rem 2.5rem",
           }}
         >
           <div style={{ fontWeight: "bold" }}>Total Interactions</div>
           <div>{report.total_interactions}</div>
         </CardWrapper>
         {/* todo : extract into separate component */}
-        <CardWrapper style={{ flex: 2 }}>
+        <CardWrapper style={{ width: "60%" }}>
           <ResponsiveContainer width="100%" height={275}>
             <PieChart>
               <Pie
@@ -150,6 +173,39 @@ function ReportingDisplay({ params }) {
           </ResponsiveContainer>
         </CardWrapper>
       </div>
+      <div style={{ marginTop: "1rem" }}>
+        {/* todo : extract into separate component */}
+        <CardWrapper style={{ width: "90%", margin: "auto" }}>
+          <ResponsiveContainer width="100%" height={275}>
+            <LineChart data={report.monthly_details}>
+              {report.keys.map(
+                (key, index) =>
+                  key !== "month" && (
+                    <Line
+                      key={index}
+                      type={"monotone"}
+                      dataKey={key}
+                      stroke={COLORS[index % COLORS.length]}
+                      strokeWidth={1.375}
+                    />
+                  ),
+              )}
+              <XAxis dataKey={"month"} />
+              <YAxis />
+              <Legend />
+              <Tooltip />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardWrapper>
+      </div>
+      <div style={{ width: "fit-content", margin: "auto", padding: "1rem" }}>
+        <Button
+          type={"button"}
+          variant={"primary"}
+          text={"Reset Report"}
+          action={resetReport}
+        />
+      </div>
     </div>
   );
 }
@@ -160,6 +216,7 @@ ReportingDisplay.propTypes = {
     endMonth: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
   }),
+  resetParams: PropTypes.func.isRequired,
 };
 
 export default ReportingDisplay;
