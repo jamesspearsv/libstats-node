@@ -29,8 +29,8 @@ function Button({ id, text, action, variant, type, style }) {
 Button.propTypes = {
   id: PropTypes.string,
   text: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  variant: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["button", "submit"]).isRequired,
+  variant: PropTypes.oneOf(["primary", "danger"]).isRequired,
   action: PropTypes.func,
   style: PropTypes.object,
 };
