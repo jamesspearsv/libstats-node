@@ -1,3 +1,4 @@
+# TODO: Update package locations using `/packages` dir
 version: '3'
 services:
   client:
