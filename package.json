@@ -1,0 +1,19 @@
+{
+  "name": "libstats-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:api": "pnpm run --filter api dev",
+    "dev:client": "pnpm run --filter client dev",
+    "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:client\"",
+    "install": "pnpm -r install && pnpm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

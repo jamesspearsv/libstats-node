@@ -1,13 +1,12 @@
 {
-  "name": "libstats-node",
+  "name": "api",
   "version": "1.0.0",
   "description": "LibStats reference statistics tracking tool build on NodeJS and React",
   "main": "./app.js",
   "scripts": {
+    "install": "pnpm install",
     "start": "node src/app.js",
-    "client": "cd ../client && npm run dev",
-    "dev": "nodemon src/app.js",
-    "app": "concurrently \"npm run dev\" \"npm run client\""
+    "dev": "nodemon src/app.js"
   },
   "author": "James Spears",
   "license": "ISC",
