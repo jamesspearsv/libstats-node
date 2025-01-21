@@ -12,7 +12,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - '80:80'
+      - '${CLIENT_PORT}:80'
     depends_on:
       - api
     networks:

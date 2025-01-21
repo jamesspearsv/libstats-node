@@ -166,6 +166,7 @@ Create an `.env` file in the project root with the following contents
 ```env
 NODE_ENV=production
 NODE_PORT=[...]
+CLIENT_PORT=[...]
 ORIGINS=[...]
 VITE_API_HOST=http://[...]:${NODE_PORT}
 TZ=America/New_York
@@ -176,8 +177,9 @@ ADMIN_PASSWORD=[...]
 These variables in this `.env` are used by the app in production.
 
 - `NODE_ENV`: Defines which environment the API is running in the API container
-- `NODE_PORT`: Defines which port is exposed by the API container in Docker. Defaults to `3001` if not provided
-- `ORIGINS`: Comma separated list of client origins (`http://localhost,http://localhost:3000`). Allowed origins in the CORS configuration for the API
+- `NODE_PORT`: Defines which port is exposed by the API container in Docker.
+- `CLIENT_PORT`: Defines which port is exposed by the client container.
+- `ORIGINS`: Comma separated list of client origins (`http://localhost:${CLIENT_PORT},http://localhost:${CLIENT_PORT}`). Allowed origins in the CORS configuration for the API. `${CLIENT_PORT}` represents the value specified above.
 - `VITE_API_HOST`: Variable to pass the API host to the client frontend. Replace placeholder with host server IP or
   hostname (`localhost`)
 - `TZ`: Sets the timezone of the API container and impacts the default timezone for timestamps during database insertions and request logging
