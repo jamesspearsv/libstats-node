@@ -1,15 +1,14 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "LibStats reference statistics tracking tool build on NodeJS and React",
-  "main": "./app.js",
+  "description": "LibStats API and date base using Express, KnexJS, and SQLite3",
+  "main": "./src/app.js",
   "scripts": {
-    "install": "pnpm install",
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "migrate": "pnpx knex migrate:latest",
+    "seed": "pnpx knex seed:run"
   },
-  "author": "James Spears",
-  "license": "ISC",
   "dependencies": {
     "better-sqlite3": "^11.3.0",
     "cors": "^2.8.5",
@@ -19,8 +18,6 @@
     "knex": "^3.1.0"
   },
   "devDependencies": {
-    "concurrently": "^9.0.1",
-    "nodemon": "^3.1.7",
-    "prettier": "^3.4.1"
+    "nodemon": "^3.1.7"
   }
 }

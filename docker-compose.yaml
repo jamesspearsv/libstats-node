@@ -5,7 +5,7 @@ services:
     container_name: client
     env_file: .env
     build:
-      context: ./client
+      context: ./packages/client
       dockerfile: Dockerfile
       args:
         VITE_API_HOST: ${VITE_API_HOST}
@@ -22,7 +22,7 @@ services:
   api:
     container_name: api
     build:
-      context: ./api
+      context: ./packages/api
       dockerfile: Dockerfile
     ports:
       - '${NODE_PORT}:${NODE_PORT}'
@@ -30,7 +30,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./api/data/production.sqlite:/api/data/production.sqlite
+      - ./packages/api/data/production.sqlite:/api/data/production.sqlite
     restart: unless-stopped
 
 networks:

@@ -1,14 +1,14 @@
 {
-  "name": "libstats-node",
+  "name": "libstate-node",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Reference statistics tracking tool build on NodeJS and React",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:api": "pnpm run --filter api dev",
-    "dev:client": "pnpm run --filter client dev",
     "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:client\"",
-    "install": "pnpm -r install && pnpm install"
+    "dev:api": "pnpm --filter api dev",
+    "dev:client": "pnpm --filter client dev",
+    "db:migrate": "pnpm --filter api migrate",
+    "db:seed": "pnpm --filter api seed"
   },
   "keywords": [],
   "author": "",
