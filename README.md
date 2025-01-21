@@ -146,14 +146,16 @@ The general project structure include two packages `packages/client` and `packag
 
 ## Installation & Configuration
 
+To get started using this project you will need a current version of NodeJS. You can install NodeJS using [Node Version Manager](https://github.com/nvm-sh/nvm).
+
+This project uses [pnpm](https://pnpm.io/) for a package manager and dependency management. If you do not have pnpm already run `npm install -g pnpm` to install the latest version.
+
 ### 1. Clone the repository
 
 ```bash
 git clone https://github.com/jamesspearsv/libstats-node.git
 cd libstats-node
 ```
-
-This project uses [pnpm](https://pnpm.io/) for a package manager and dependency management. If you do not have pnpm already run `npm install -g pnpm` to install the latest version.
 
 ### 2. Install dependencies
 
