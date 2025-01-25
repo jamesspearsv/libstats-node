@@ -1,17 +1,18 @@
+# TODO: Update package locations using `/packages` dir
 version: '3'
 services:
   client:
     container_name: client
     env_file: .env
     build:
-      context: ./client
+      context: ./packages/client
       dockerfile: Dockerfile
       args:
         VITE_API_HOST: ${VITE_API_HOST}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - '80:80'
+      - '${CLIENT_PORT}:80'
     depends_on:
       - api
     networks:
@@ -21,7 +22,7 @@ services:
   api:
     container_name: api
     build:
-      context: ./api
+      context: ./packages/api
       dockerfile: Dockerfile
     ports:
       - '${NODE_PORT}:${NODE_PORT}'
@@ -29,7 +30,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./api/data/production.sqlite:/api/data/production.sqlite
+      - ./packages/api/data/production.sqlite:/api/data/production.sqlite
     restart: unless-stopped
 
 networks:
