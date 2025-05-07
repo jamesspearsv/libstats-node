@@ -1,8 +1,8 @@
 /* Middleware to handle actions requiring admin authorization */
-const queries = require("../db/queries/adminQueries");
-const { selectAllFromTable } = require("../db/queries/appQueries");
-const { BadRequestError } = require("../lib/errorsClasses");
-const parseMonthRange = require("../lib/parseMonthRange");
+const queries = require('../db/queries/adminQueries');
+const { selectAllFromTable } = require('../db/queries/appQueries');
+const { BadRequestError } = require('../lib/errorsClasses');
+const parseMonthRange = require('../lib/parseMonthRange');
 
 // Get all rows from a given table
 async function tableGet(req, res, next) {
@@ -10,7 +10,7 @@ async function tableGet(req, res, next) {
     table = req.table;
     const rows = await selectAllFromTable(table);
 
-    return res.json({ message: "ok", rows });
+    return res.json({ message: 'ok', rows });
   } catch (error) {
     return next(error);
   }
@@ -28,7 +28,7 @@ async function rowGetById(req, res, next) {
     if (!row)
       return next(new BadRequestError(`No row in ${table} with id ${id}`));
 
-    res.json({ message: "Row found", row });
+    res.json({ message: 'Row found', row });
   } catch (error) {
     return next(error);
   }
@@ -47,7 +47,7 @@ async function updateRowById(req, res, next) {
     if (row.length < 1)
       return next(new BadRequestError(`No row in ${table} with id ${id}`));
 
-    return res.json({ message: "Row updated", row });
+    return res.json({ message: 'Row updated', row });
   } catch (error) {
     return next(error);
   }
@@ -59,11 +59,11 @@ async function addNewRow(req, res, next) {
     const table = req.table;
     const newRow = req.body;
 
-    if (!newRow) return next(new BadRequestError("No data provided"));
+    if (!newRow) return next(new BadRequestError('No data provided'));
 
     const row = await queries.insertRow(table, newRow);
 
-    return res.json({ message: "New row added", row });
+    return res.json({ message: 'New row added', row });
   } catch (error) {
     return next(error);
   }
@@ -74,14 +74,14 @@ async function statsGet(req, res, next) {
   try {
     const [count_total, count_type, count_location, count_format] =
       await Promise.all([
-        await queries.countRowsInTable("interactions"),
-        await queries.countAllInteractionByGroup("type"),
-        await queries.countAllInteractionByGroup("location"),
-        await queries.countAllInteractionByGroup("format"),
+        queries.countRowsInTable('interactions'),
+        queries.countAllInteractionByGroup('type'),
+        queries.countAllInteractionByGroup('location'),
+        queries.countAllInteractionByGroup('format'),
       ]);
 
     return res.json({
-      message: "ok",
+      message: 'ok',
       count_total,
       count_type,
       count_location,
@@ -97,19 +97,19 @@ async function interactionsGet(req, res, next) {
     const { page, limit } = req.query;
 
     if (!limit || !page) {
-      throw new BadRequestError("No page or limit provided");
+      throw new BadRequestError('No page or limit provided');
     } else if (isNaN(parseInt(page)) || isNaN(parseInt(limit))) {
-      throw new BadRequestError("Limit and page must be integers");
+      throw new BadRequestError('Limit and page must be integers');
     }
 
     const offset = parseInt(page) * parseInt(limit);
 
     const [total_rows, rows] = await Promise.all([
-      queries.countRowsInTable("interactions"),
+      queries.countRowsInTable('interactions'),
       queries.selectInteractions(limit, offset),
     ]);
 
-    return res.json({ message: "ok", total_rows, rows });
+    return res.json({ message: 'ok', total_rows, rows });
   } catch (error) {
     return next(error);
   }
@@ -117,9 +117,9 @@ async function interactionsGet(req, res, next) {
 
 async function countTable(req, res, next) {
   try {
-    const table = req.url.split("/")[2];
+    const table = req.url.split('/')[2];
     const total_rows = await queries.countRowsInTable(table);
-    res.json({ message: "ok", total_rows });
+    res.json({ message: 'ok', total_rows });
   } catch (error) {
     return next(error);
   }
@@ -129,22 +129,22 @@ async function adminReportGet(req, res, next) {
   try {
     const { startMonth, endMonth, category } = req.query;
     if (!startMonth || !endMonth || !category) {
-      throw new BadRequestError("Start, end, and category must be provided");
+      throw new BadRequestError('Start, end, and category must be provided');
     }
 
-    if (!["type", "location", "format"].includes(category)) {
-      throw new BadRequestError("Invalid category provided");
+    if (!['type', 'location', 'format'].includes(category)) {
+      throw new BadRequestError('Invalid category provided');
     }
 
     // query database for cumulative interactions counts during range
     const total_interactions = await queries.countInteractionsAdmin(
       startMonth,
-      endMonth,
+      endMonth
     );
     const total_detailed = await queries.countInteractionByCategoryAdmin(
       startMonth,
       endMonth,
-      category,
+      category
     );
 
     // parse range between start and end month
@@ -154,7 +154,7 @@ async function adminReportGet(req, res, next) {
     for (const month of range) {
       const rows = await queries.countInteractionsByCategoryByMonth(
         month,
-        category,
+        category
       );
 
       const monthObject = {
@@ -173,7 +173,7 @@ async function adminReportGet(req, res, next) {
     const keys = Object.keys(monthly_details[0]);
 
     res.json({
-      message: "ok",
+      message: 'ok',
       range,
       total_interactions,
       total_detailed,
